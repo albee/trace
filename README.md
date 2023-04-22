@@ -6,7 +6,7 @@
 * ***Stable branch: `main`***
 
 <p align="center">
-  <img src="/img/astrobee_td.gif" />
+  <img src="astrobee_td.gif" />
 </p>
 
 TRACE (Tumbling Rendezvous via Autonmous Characterization and Execution) is a set of software modules that enable autonomous rendezvous with arbitrary tumbling targets. A significant percentage of space debris like rocket bodies and [defunct satellites](https://earth.esa.int/eogateway/missions/envisat) are in uncontrolled tumbles, often with unknown tumble characteristics. In order to soft dock for servicing, refueling, or de-orbit, a servicer spacecaft must figure out the nature of the target's tumble and safely reach the target. This often eliminates teleoperation as a feasible option---this is where TRACE comes in. TRACE has been [demonstrated on-orbit](https://spectrum.ieee.org/space-junk-astrobee) over multiple test sessions on the International Space Station using NASA's Astrobee robots. 
