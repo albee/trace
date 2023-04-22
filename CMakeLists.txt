@@ -1,0 +1,26 @@
+cmake_minimum_required(VERSION 3.0)
+project(trace)
+
+set(TRACE_VERSION 0.0.1)
+
+if ( "${CMAKE_VERSION}" VERSION_GREATER 3.0.0 )
+  cmake_policy(SET CMP0045 OLD)
+  cmake_policy(SET CMP0046 OLD)
+endif()
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wno-unused-local-typedefs -Wno-packed-bitfield-compat -std=c++14")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-unused-local-typedefs -Wno-packed-bitfield-compat -std=c++14")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--no-undefined")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
+
+add_subdirectory(data)
+add_subdirectory(target-coordinator)
+add_subdirectory(chaser-coordinator)
+add_subdirectory(uc-bound)
+add_subdirectory(motion-planner-interface)
+add_subdirectory(mit-slam)
+add_subdirectory(casadi-nmpc)
+add_subdirectory(execute-asap)
+add_subdirectory(trace-msgs)
+add_subdirectory(polhode-alignment)
+add_subdirectory(spheres-vertigo)

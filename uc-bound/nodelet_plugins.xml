@@ -1,0 +1,9 @@
+<library path="lib/libuc_bound">
+  <class name="uc_bound/UCBoundNodelet"
+  	type="uc_bound::UCBoundNodelet"
+  	base_class_type="nodelet::Nodelet">
+    <description>
+    	Nodelet for calculating uncertainty bounds on the chaser state for tube-MPC.
+    </description>
+  </class>
+</library>

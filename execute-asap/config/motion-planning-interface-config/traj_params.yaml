@@ -1,0 +1,22 @@
+# Parameters for the DLR motion planner wrapper nodelet.
+
+/td/motion_planner_interface/target_J: [17023.3, 397.1, -2171.4, 397.1, 124825.7, 344.2, -2171.4, 344.2, 129112.2]  # ENVISAT
+# /td/motion_planner_interface/target_J: [0.153, 0.0, 0.0, 0.0, 0.143, 0.0, 0.0, 0.0, 0.162]                        # Astrobee
+/td/motion_planner_interface/chaser_J: [0.2517, 0.0, 0.0, 0.0, 0.2517, 0.0, 0.0, 0.0, 0.2517]                        # Astrobee (ground)
+
+/td/motion_planner_interface/chaser_m: 18.9715 # Astrobee (ground)
+
+# predefined state for test5 unit test (ONLY for test5)
+/td/motion_planner_interface/predef_chaser_pos_ground: [0, 0.6, 0]
+/td/motion_planner_interface/predef_target_pos_ground: [0, -0.5, 0]
+/td/motion_planner_interface/predef_target_att_ground: [0, 0, 0, 1]
+/td/motion_planner_interface/predef_target_omega_ground: [0, 0, 3.53] # deg/s
+
+/td/motion_planner_interface/predef_chaser_pos_iss: [0, 0, 0]
+/td/motion_planner_interface/predef_target_pos_iss: [0, -1.5, 0]
+# /td/motion_planner_interface/predef_target_att_iss: [-0.0019, 0.2250, -0.4604, 0.8587]
+# /td/motion_planner_interface/predef_target_omega_iss: [-0.0516, 3.53, 3.53]
+/td/motion_planner_interface/predef_target_att_iss: [0.4436, 0.5777, -0.4975, -0.5016]
+/td/motion_planner_interface/predef_target_omega_iss: [-0.1489, 3.535, 3.535]
+
+/td/motion_planner_interface/predef_LUT_param: 4

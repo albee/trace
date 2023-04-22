@@ -1,0 +1,33 @@
+<package>
+  <name>ff_msg_conversions</name>
+  <version>1.0.0</version>
+  <description>
+    This package converts FF msgs to standard messages visualizable in rviz.
+  </description>
+  <license>
+    TBD
+  </license>
+  <author email="mit@mit.edu">
+  </author>
+  <maintainer email="mit@mit.edu">
+  </maintainer>
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>message_runtime</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>ff_msgs</build_depend>
+  <build_depend>config_reader</build_depend>
+  <build_depend>tf2</build_depend>
+  <build_depend>tf2_ros</build_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>message_runtime</run_depend>
+  <run_depend>message_runtime</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>ff_msgs</run_depend>
+  <run_depend>tf2</run_depend>
+  <run_depend>tf2_ros</run_depend>
+</package>

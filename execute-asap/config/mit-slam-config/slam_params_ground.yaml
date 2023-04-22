@@ -1,0 +1,105 @@
+# Parameters for the SLAM node.
+
+# Some test parameters.
+
+# Automatically start SLAM process upon launch
+# /td/mit_slam/activate: true
+
+/td/mit_slam/slam_ground: true
+
+# State output to console for each callback.
+/td/mit_slam/verbose: false
+
+# Print time taken for each component
+/td/mit_slam/timing_verbose: false
+
+# Setting to just publish simulation truth
+/td/mit_slam/pub_truth: false
+
+# use raw clouds instead of correspondences for reg.
+/td/mit_slam/use_raw_clouds: false
+
+# use raw imu data instead of EKF accel data (EKF automatically deals with biases)
+/td/mit_slam/use_raw_imu: false
+
+# compute inertia
+/td/mit_slam/compute_inertia: false
+
+# Check for loop closures or not
+# loop_max_rot is in radians
+/td/mit_slam/loop_closure_enable: true
+/td/mit_slam/loop_max_rot: 0.78
+/td/mit_slam/loop_max_trans: 0.3
+
+# frames before close to convergence
+/td/mit_slam/convergence_frames: 5
+
+# frames of collecting omega measurements before optimizing inertia
+/td/mit_slam/omega_meas_frames: 5
+
+# Graph timer rate (seconds)
+/td/mit_slam/graph_dt: 2
+
+# Frequency at which we want to operate the SLAM ROS node [Hz].
+/td/mit_slam/loop_rate: 70
+
+# Number of frames in history window for loop closures.
+/td/mit_slam/loop_idx_hist: 10
+
+# Forgetting factor for target angular velocity smoothing
+/td/mit_slam/ff: 0.90
+
+# Number of matches before downsampling for Teaser reg. step
+/td/mit_slam/downsample_thresh: 300
+
+# Number of matches required for loop-closure
+/td/mit_slam/loop_match_thresh: 350
+
+# IMU dt [s]
+/td/mit_slam/imu_dt: 0.016
+
+# EKF dt [s] (avg. 45Hz in ground hardware data)
+/td/mit_slam/ekf_dt: 0.02222
+
+# State propagator dt [s]
+/td/mit_slam/prop_dt: 0.2
+/td/mit_slam/target_J: [17023.3, 397.1, -2171.4, 397.1, 124825.7, 344.2, -2171.4, 344.2, 129112.2]  # ENVISAT
+/td/mit_slam/chaser_J: [0.153, 0.0, 0.0, 0.0, 0.143, 0.0, 0.0, 0.0, 0.162]                        # Astrobee
+
+# Initial chaser pose estimate in world frame.
+# Format: 4x4 T matrix, arranged in row-major order
+# 90 deg around z
+/td/mit_slam/T_WC0_iss: [0.0, -1.0, 0.0, 0.0,
+                                1.0, 0.0, 0.0, -1.5,
+                                0.0, 0.0, 1.0, 0.0,
+                                0.0, 0.0, 0.0, 1.0]
+
+# -90 deg around z
+/td/mit_slam/T_WC0_ground: [0.0, 1.0, 0.0, 0.0,
+                                -1.0, 0.0, 0.0, 1.1,
+                                0.0, 0.0, 1.0, 0.0,
+                                0.0, 0.0, 0.0, 1.0]
+
+# Initial chaser velocity in world frame.
+/td/mit_slam/v_WC0: [0.0, 0.0, 0.0]
+
+# Thresholds for considering lidar odometry to be bad
+/td/mit_slam/cloud_odom_bad_x: 0.35
+/td/mit_slam/cloud_odom_bad_y: 0.35
+/td/mit_slam/cloud_odom_bad_z: 0.35
+/td/mit_slam/cloud_odom_bad_alpha: 0.5
+
+# IMU present biases
+/td/mit_slam/imu_bias_acc_x_ground: 0.00845
+/td/mit_slam/imu_bias_acc_y_ground: -0.0268
+/td/mit_slam/imu_bias_acc_z_ground: 0.0
+/td/mit_slam/imu_bias_omega_x_ground: 0.0
+/td/mit_slam/imu_bias_omega_y_ground: 0.0
+/td/mit_slam/imu_bias_omega_z_ground: 0.0003373
+
+/td/mit_slam/imu_bias_acc_x_iss: 0.0
+/td/mit_slam/imu_bias_acc_y_iss: 0.0
+/td/mit_slam/imu_bias_acc_z_iss: 0.0
+/td/mit_slam/imu_bias_acc_vx_iss: 0.0
+/td/mit_slam/imu_bias_acc_vy_iss: 0.0
+/td/mit_slam/imu_bias_acc_vz_iss: 0.0

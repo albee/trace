@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>target_coordinator</name>
+  <version>0.0.0</version>
+  <description>Sends tumbling trajectory to Target.
+  </description>
+  <license>
+  	TBD
+  </license>
+  <author email="mit@mit.edu">
+  </author>
+  <maintainer email="mit@mit.edu">
+  </maintainer>
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>rt_analyze</depend>
+  <depend>ff_common</depend>
+  <depend>vpp_msgs</depend>
+  <depend>roscpp</depend>
+  <depend>nodelet</depend>
+  <depend>pluginlib</depend>
+  <depend>actionlib</depend>
+  <depend>tf</depend>
+  <depend>ff_msgs</depend>
+  <depend>ff_util</depend>
+  <depend>geometry_msgs</depend>
+  <depend>ff_msg_conversions</depend>
+  <depend>sensor_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>data</depend>
+  <depend>trace_msgs</depend>
+  <depend>std_srvs</depend>
+  <export>
+    <nodelet plugin="${prefix}/nodelet_plugins.xml" />
+  </export>
+</package>

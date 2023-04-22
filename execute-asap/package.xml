@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>execute_asap</name>
+  <version>0.0.0</version>
+  <description>
+    Utilities for execute_ASAP.
+  </description>
+  <license>
+    TBD
+  </license>
+  <author email="mit@mit.edu">
+  </author>
+  <maintainer email="mit@mit.edu">
+  </maintainer>
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>rospy</depend>
+  <depend>std_msgs</depend>
+  <depend>ff_msgs</depend>
+  <depend>ff_util</depend>
+</package>

@@ -1,0 +1,33 @@
+<launch>
+  <arg name="robot" default="$(optenv ASTROBEE_ROBOT sim)" />
+  <arg name="world" default="$(optenv ASTROBEE_WORLD iss)" />
+  <arg name="output" default="screen"/>          <!-- Where nodes should log    -->
+  
+  <env name="ASTROBEE_ROBOT" value="$(arg robot)" />
+  <env name="ASTROBEE_WORLD" value="$(arg world)" />
+  <env if="$(eval optenv('ASTROBEE_CONFIG_DIR','')=='')"
+       name="ASTROBEE_CONFIG_DIR" value="$(find astrobee)/config" />
+  <env if="$(eval optenv('ASTROBEE_RESOURCE_DIR','')=='')"
+       name="ASTROBEE_RESOURCE_DIR" value="$(find astrobee)/resources" />
+  <env if="$(eval optenv('ROSCONSOLE_CONFIG_FILE','')=='')"
+       name="ROSCONSOLE_CONFIG_FILE" value="$(find astrobee)/resources/logging.config"/>
+
+<!--   <include file="$(find ff_util)/launch/ff_nodelet.launch">
+    <arg name="name" value="backup_controller" />
+    <arg name="manager" value="blargh" />
+    <arg name="class" value="backup_controller/backup_controller" />
+  </include> -->
+
+   <!-- Start a nodelet manager, if needed -->
+  <node
+        pkg="nodelet" type="nodelet" name="backup_controller_manager"
+        args="manager"
+        output="$(arg output)"/>
+
+  <!-- Now inject the nodelet into the nodelet manager -->
+  <node pkg="nodelet" type="nodelet" name="backup_controller"
+        required="false" respawn="false"
+        args="load backup_controller/BackupControllerNodelet backup_controller_manager"
+        output="$(arg output)"/>
+
+</launch>

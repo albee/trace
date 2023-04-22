@@ -1,0 +1,14 @@
+time stamp
+bool converged
+bool inertia_estimated
+float64 graph_update_time
+float64 blob_time
+float64 feat_time
+float64 match_time
+float64 reg_time
+float64 loop_time
+float64 isam_time
+float64 inertia_time
+int32 trunc_pcd_size
+int32 num_matches
+int32 loop_closure_count

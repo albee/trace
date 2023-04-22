@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>chaser_coordinator</name>
+  <version>0.0.0</version>
+  <description>
+    Chaser trajectory slicing and control.
+  </description>
+  <license>
+    TBD
+  </license>
+  <author email="mit@mit.edu">
+  </author>
+  <maintainer email="mit@mit.edu">
+  </maintainer>
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>roscpp</depend>
+  <depend>nodelet</depend>
+  <depend>pluginlib</depend>
+  <depend>actionlib</depend>
+  <depend>tf</depend>
+  <depend>ff_util</depend>
+  <depend>ff_msgs</depend>
+  <depend>ff_msg_conversions</depend>
+  <depend>geometry_msgs</depend>
+  <depend>ff_common</depend>
+  <depend>data</depend>
+  <depend>trace_msgs</depend>
+  <depend>std_srvs</depend>
+  <export>
+    <nodelet plugin="${prefix}/nodelet_plugins.xml" />
+  </export>
+</package>

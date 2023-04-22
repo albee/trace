@@ -1,0 +1,9 @@
+[submodule "external/casadi"]
+	path = external/casadi
+	url = https://github.com/casadi/casadi
+[submodule "external/TEASER-plusplus"]
+	path = external/TEASER-plusplus
+	url = https://github.com/MIT-SPARK/TEASER-plusplus
+[submodule "external/gtsam"]
+	path = external/gtsam
+	url = https://github.com/borglab/gtsam

@@ -1,0 +1,21 @@
+# Parameters for the target coordinator node.
+
+# Some test parameters.
+
+# Length of time (s) before target tumble is considered settled.
+/td/target_coordinator/target_settle_length: 20
+
+# Test case inertia tensor
+/td/target_coordinator/target_J: [17023.3, 397.1, -2171.4, 397.1, 124825.7, 344.2, -2171.4, 344.2, 129112.2]  # ENVISAT
+# /td/target_coordinator/target_J: [0.153, 0.0, 0.0, 0.0, 0.143, 0.0, 0.0, 0.0, 0.162]                        # Astrobee
+
+# Regulation error thresholds
+/td/target_coordinator/pos_reg_thresh: 0.05
+/td/target_coordinator/vel_reg_thresh: 0.015
+/td/target_coordinator/att_reg_thresh: 0.05
+/td/target_coordinator/omega_reg_thresh: 0.05
+
+# Max limits on velocity for setpoints (sanity check)
+/td/target_coordinator/max_omega: 0.2
+
+/td/target_coordinator/reg_time: 10.0

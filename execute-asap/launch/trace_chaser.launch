@@ -1,0 +1,82 @@
+<!-- Copyright (c) 2017, United States Government, as represented by the     -->
+<!-- Administrator of the National Aeronautics and Space Administration.     -->
+<!--                                                                         -->
+<!-- All rights reserved.                                                    -->
+<!--                                                                         -->
+<!-- The Astrobee platform is licensed under the TBD -->
+<!-- (the "License"); you may not use this file except in compliance with    -->
+<!-- the License. You may obtain a copy of the License at                    -->
+<!--                                                                         -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                          -->
+<!--                                                                         -->
+<!-- Unless required by applicable law or agreed to in writing, software     -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,       -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or         -->
+<!-- implied. See the License for the specific language governing            -->
+<!-- permissions and limitations under the License.                          -->
+
+<launch>
+  <arg name="robot" default="$(optenv ASTROBEE_ROBOT queen)" />
+  <arg name="world" default="$(optenv ASTROBEE_WORLD iss)" />
+  <arg name="llp" default="local" />          <!-- LLP IP address            -->
+  <arg name="env" default="iss" />            <!-- ISS/ground -->
+  <arg name="mlp" default="local" />          <!-- MLP IP address           -->
+  <arg name="ns" default="" />                <!-- Robot namespace           -->
+  <arg name="spurn" default=""/>              <!-- PRevent a specific node   -->
+  <arg name="nodes" default=""/>              <!-- Launch specific nodes     -->
+  <arg name="extra" default=""/>              <!-- Inject an additional node -->
+  <arg name="debug" default=""/>              <!-- Debug node group          -->
+  <arg name="output" default="screen"/>
+
+  <env name="ASTROBEE_ROBOT" value="$(arg robot)" />
+  <env name="ASTROBEE_WORLD" value="$(arg world)" />
+  <env if="$(eval optenv('ASTROBEE_CONFIG_DIR','')=='')"
+       name="ASTROBEE_CONFIG_DIR" value="$(find astrobee)/config" />
+  <env if="$(eval optenv('ASTROBEE_RESOURCE_DIR','')=='')"
+       name="ASTROBEE_RESOURCE_DIR" value="$(find astrobee)/resources" />
+  <env if="$(eval optenv('ROSCONSOLE_CONFIG_FILE','')=='')"
+       name="ROSCONSOLE_CONFIG_FILE" value="$(find astrobee)/resources/logging.config"/>
+
+    <!-- LLP -->
+    <group unless="$(eval arg('llp')=='disabled')">
+
+      <machine unless="$(eval arg('llp')=='local')" name="llp" address="$(arg llp)">
+      </machine>
+
+      <include file="$(find execute_asap)/launch/td_chaser_LLP.launch" >
+        <arg name="ns" value="$(arg ns)" />            <!-- Robot namespace           -->
+        <arg name="spurn" value="$(arg spurn)" />      <!-- Prevent node         -->
+        <arg name="nodes" value="$(arg nodes)" />      <!-- Launch node group    -->
+        <arg name="extra" value="$(arg extra)" />      <!-- Inject extra nodes   -->
+        <arg name="debug" value="$(arg debug)" />      <!-- Debug node group     -->
+        <arg name="output" value="$(arg output)" />
+      </include>
+
+      <!-- If we have specified a bag, then play it back into flight software-->
+      <!-- node pkg="astrobee" type="check_env.sh" name="llp_check_env" output="screen" -->
+
+    </group>
+
+    <!-- MLP -->
+    <group unless="$(eval arg('mlp')=='disabled')">
+
+      <machine unless="$(eval arg('mlp')=='local')" name="mlp" address="$(arg mlp)">
+      </machine>
+
+      <!-- If we have specified a bag, then play it back into flight software-->
+      <include file="$(find execute_asap)/launch/td_chaser_MLP.launch" >
+        <arg name="ns" value="$(arg ns)" />            <!-- Robot namespace           -->
+        <arg name="env" value="$(arg env)" />          <!-- ISS/ground -->
+        <arg name="spurn" value="$(arg spurn)" />      <!-- Prevent node         -->
+        <arg name="nodes" value="$(arg nodes)" />      <!-- Launch node group    -->
+        <arg name="extra" value="$(arg extra)" />      <!-- Inject extra nodes   -->
+        <arg name="debug" value="$(arg debug)" />      <!-- Debug node group     -->
+        <arg name="output" value="$(arg output)" />
+      </include>
+
+      <!-- If we have specified a bag, then play it back into flight software-->
+      <!-- node pkg="astrobee" type="check_env.sh" name="mlp_check_env" output="screen" -->
+
+    </group>
+
+</launch>

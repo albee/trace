@@ -1,0 +1,98 @@
+# Parameters for the uc bound nodelet.
+
+# Some test parameters.
+
+# Number of MC trials
+/td/uc_bound/mc_trials: 75
+
+# Motion planner trajectory dt
+/td/uc_bound/traj_dt: 0.2
+
+# Target offset from inertial frame
+/td/uc_bound/targ_offset_ground: [0.0, -0.5, -0.7]
+/td/uc_bound/targ_offset_iss: [10.9, -9.65, 4.9]
+#/td/uc_bound/targ_offset_iss: [0.0, -1.5, 0.0]
+
+# Max initial angle error perturbation (rad)
+# 0.2 is for the 5 Hz rate of the controller
+# deg2rad(2.0) * 0.2
+#/td/uc_bound/init_max_angle_error: 0.00698
+/td/uc_bound/init_max_angle_error: 0.004
+
+# Max initial angular velocity pertubation (rad/s)
+# deg2rad(0.25) * 0.2
+#/td/uc_bound/init_max_w_error: 0.00087266
+/td/uc_bound/init_max_w_error: 0.0006
+
+# Max angle error perturbation (rad)
+# deg2rad(2.0) * 0.2
+#/td/uc_bound/max_angle_error: 0.00698
+/td/uc_bound/max_angle_error: 0.004
+
+# Max angular velocity pertubation (rad/s)
+# deg2rad(0.25) * 0.2
+#/td/uc_bound/max_w_error: 0.00087266
+/td/uc_bound/max_w_error: 0.0006
+
+# Max inertia perturbation (kg*m^2)
+#/td/uc_bound/max_J_axis_1: 1000
+#/td/uc_bound/max_J_axis_2: 5000
+#/td/uc_bound/max_J_axis_3: 5000
+#/td/uc_bound/max_J_prod_1: 30
+#/td/uc_bound/max_J_prod_1: 75
+#/td/uc_bound/max_J_prod_1: 30
+
+/td/uc_bound/max_J_axis_1: 0
+/td/uc_bound/max_J_axis_2: 0
+/td/uc_bound/max_J_axis_3: 0
+/td/uc_bound/max_J_prod_1: 0
+/td/uc_bound/max_J_prod_1: 0
+/td/uc_bound/max_J_prod_1: 0
+
+# Test case inertia tensor
+/td/uc_bound/target_J: [17023.3, 397.1, -2171.4, 397.1, 124825.7, 344.2, -2171.4, 344.2, 129112.2]  # ENVISAT
+# /td/uc_bound/target_J: [0.153, 0.0, 0.0, 0.0, 0.143, 0.0, 0.0, 0.0, 0.162]                        # Astrobee
+
+# Unit test case MATLAB comparison
+/td/uc_bound/unit_matlab_result: [0.0331, 0.0260, 0.0537, -0.0331, -0.0260, -0.0537, 0.0069, 0.0055, 0.0073, -0.0069, -0.0055, -0.0073]
+
+# Unit test position error threshold with MATLAB comparison
+/td/uc_bound/unit_error_thresh_pos: 0.015
+
+# Unit test velocity error threshold with MATLAB comparison
+/td/uc_bound/unit_error_thresh_vel: 0.0025
+
+# Position constraint for UC bound trials
+/td/uc_bound/p_constraint_iss: [2.0, 4.0, 2.0]
+#/td/uc_bound/p_constraint_iss: [12.0, 14.0, 12.0]
+
+# Position constraint center of UC bound trials
+/td/uc_bound/p_constraint_center_iss: [0.0, 0.75, 0.0]
+#/td/uc_bound/p_constraint_center_iss: [0.0, 0.75, 0.0]
+
+# Velocity constraint for UC bound trials
+#/td/uc_bound/v_constraint_iss: [1.2, 1.2, 1.2]
+/td/uc_bound/v_constraint_iss: [0.2, 0.2, 0.2]
+
+# Thrust constraint for UC bound trials
+/td/uc_bound/f_constraint_iss: [1.0, 0.75, 0.75]
+#/td/uc_bound/f_constraint_iss: [5.0, 3.75, 3.75]
+
+# Position constraint for UC bound trials
+/td/uc_bound/p_constraint_ground: [1.7, 1.7, 1.4]
+
+# Position constraint center of UC bound trials
+/td/uc_bound/p_constraint_center_ground: [0.0, 0.55, 0.0]
+
+# Velocity constraint for UC bound trials
+/td/uc_bound/v_constraint_ground: [0.1, 0.1, 0.1]
+
+# Thrust constraint for UC bound trials
+/td/uc_bound/f_constraint_ground: [0.849, 0.406, 0.486]
+
+# chaser mass
+/td/uc_bound/mass_iss: 9.583788668
+/td/uc_bound/mass_ground: 9.583788668
+
+# number of unit test iterations to validate it
+/td/uc_bound/unit_test_iters: 12

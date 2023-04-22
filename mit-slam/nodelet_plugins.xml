@@ -1,0 +1,9 @@
+<library path="lib/libmit_slam">
+  <class name="mit_slam/MitSlamNodelet"
+  	type="mit_slam::MitSlamNodelet"
+  	base_class_type="nodelet::Nodelet">
+    <description>
+    	Nodelet for chaser and target state estimation using iSAM and HazCam/IMU sensors.
+    </description>
+  </class>
+</library>

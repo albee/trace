@@ -1,0 +1,74 @@
+# Parameters for casadi_nmpc.
+
+### CasADi Vars
+/td/casadi_nmpc/T: 5.0 # Time horizon, [s]
+/td/casadi_nmpc/N: 5 # control intervals per time horizon (|x| is 1 greater)
+### CasADi Vars
+
+# # use DLR's EKF on top of Astrobee FSW factor graph localization (control only!)
+# /td/use_ekf_dlr: true
+# /td/dlr_timeout_period: 10.0  # time to wait after test commanding before using ekf_dlr outputs
+
+# control period in [s]
+/td/casadi_nmpc/control_period: 0.2
+
+# max positional control input [N]
+/td/casadi_nmpc/u_mag: 0.15
+
+# max attitude control input (sanity check) [N-m]
+/td/casadi_nmpc/torque_mag: 0.015
+
+# attitude controller proportional gain
+#/td/casadi_nmpc/k_p_orient: 0.0629
+#/td/casadi_nmpc/k_d_orient: 0.2832
+/td/casadi_nmpc/k_p_orient_ground: 0.5
+/td/casadi_nmpc/k_d_orient_ground: 0.4
+
+# attitude controller derivative gain
+/td/casadi_nmpc/k_p_orient_iss: 0.3
+/td/casadi_nmpc/k_d_orient_iss: 0.2
+
+# ancillary controller Q and R (LQR formulation)
+/td/casadi_nmpc/Q_pos_anc: 5
+/td/casadi_nmpc/Q_vel_anc: 10
+/td/casadi_nmpc/R_anc: 2
+
+############# Ground #############
+# astrobee mass (a little lighter is better for overshoot) [kg]
+/td/casadi_nmpc/mass_ground: 16.9715
+
+# MPC Q/R costs
+/td/casadi_nmpc/Q_pos_factor_ground: 50
+/td/casadi_nmpc/Q_vel_factor_ground: 5
+/td/casadi_nmpc/R_factor_ground: 0.1
+
+/td/casadi_nmpc/QN_pos_factor_ground: 100
+/td/casadi_nmpc/QN_vel_factor_ground: 10
+
+# Tube MPC Q/R costs
+/td/casadi_nmpc/Q_pos_tube_factor_ground: 50
+/td/casadi_nmpc/Q_vel_tube_factor_ground: 5
+/td/casadi_nmpc/R_tube_factor_ground: 0.1
+
+/td/casadi_nmpc/QN_pos_tube_factor_ground: 100
+/td/casadi_nmpc/QN_vel_tube_factor_ground: 10
+
+############# ISS #############
+# astrobee mass (a little lighter is better for overshoot) [kg]
+/td/casadi_nmpc/mass_iss: 9.5
+
+# MPC Q/R costs
+/td/casadi_nmpc/Q_pos_factor_iss: 50
+/td/casadi_nmpc/Q_vel_factor_iss: 5
+/td/casadi_nmpc/R_factor_iss: 20
+
+/td/casadi_nmpc/QN_pos_factor_iss: 100
+/td/casadi_nmpc/QN_vel_factor_iss: 10
+
+# Tube MPC Q/R costs
+/td/casadi_nmpc/Q_pos_tube_factor_iss: 50
+/td/casadi_nmpc/Q_vel_tube_factor_iss: 5
+/td/casadi_nmpc/R_tube_factor_iss: 0.1
+
+/td/casadi_nmpc/QN_pos_tube_factor_iss: 100
+/td/casadi_nmpc/QN_vel_tube_factor_iss: 10

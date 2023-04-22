@@ -1,0 +1,17 @@
+time stamp
+int32 test_number
+bool chaser_coord_ok
+bool target_coord_ok
+bool traj_finished
+bool chaser_regulate_finished
+bool target_regulate_finished
+bool slam_activate
+bool motion_planner_interface_activate
+bool uc_bound_activate
+bool motion_plan_finished
+float64 motion_plan_wait_time
+bool motion_plan_published
+bool uc_bound_finished
+bool mrpi_finished
+string td_control_mode
+string td_state_mode

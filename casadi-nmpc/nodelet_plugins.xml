@@ -1,0 +1,9 @@
+<library path="lib/libcasadi_nmpc">
+  <class name="casadi_nmpc/CasadiNMPCNodelet"
+  	type="casadi_nmpc::CasadiNMPCNodelet"
+  	base_class_type="nodelet::Nodelet">
+    <description>
+    	Nodelet for NMPC for 6 DOF
+    </description>
+  </class>
+</library>

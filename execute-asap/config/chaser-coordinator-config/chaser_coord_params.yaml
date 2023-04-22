@@ -1,0 +1,19 @@
+# Parameters for the target coordinator node.
+
+# Some test parameters.
+
+# rate to feed setpoints to ctl [Hz]
+/td/chaser_coordinator/gnc_ctl_setpoint_rate_: 5.0
+
+# whether or not to use tube mpc (true)
+/td/chaser_coordinator/use_tube_mpc: true
+# whether or not to override with default control need to add!
+/td/chaser_coordinator/use_pd: false
+
+# Regulation error thresholds
+/td/chaser_coordinator/pos_reg_thresh: 0.05
+/td/chaser_coordinator/vel_reg_thresh: 0.015
+/td/chaser_coordinator/att_reg_thresh: 0.05
+/td/chaser_coordinator/omega_reg_thresh: 0.05
+
+/td/chaser_coordinator/reg_time: 10.0

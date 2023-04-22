@@ -1,0 +1,9 @@
+<library path="lib/libtarget_coordinator">
+  <class name="target_coordinator/TargetCoordinatorNodelet"
+	 type="target_coordinator::TargetCoordinatorNodelet"
+	 base_class_type="nodelet::Nodelet">
+    <description>
+      This nodelet carries out setpoint commands for the Target's tumbling motion.
+    </description>
+  </class>
+</library>

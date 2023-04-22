@@ -1,0 +1,62 @@
+# Parameters for the SLAM node.
+
+# Some test parameters.
+
+# iSAM solver iterations
+/td/mit_slam/graph/opt_iters: 20
+
+# bias added to centroid range estimate due to Astrobee surface vs. COM
+# TODO: find a better way to set this for rotating cube (SPHERES was spherical)
+/td/mit_slam/graph/blob_range_bias: 0.125
+
+# chaser prior noise models
+# Note: GTSAM convention is rotation noise on the first 3 components, then translation
+# Bias order is accelBias, gyroBias, as in imuBias::ConstantBias.vector()
+#/td/mit_slam/graph/ppNM: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01]
+/td/mit_slam/graph/ppNM: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01]
+/td/mit_slam/graph/vpNM: [0.005, 0.005, 0.005]
+#/td/mit_slam/graph/bpNM: [0.01, 0.01, 0.001, 0.001, 0.001, 0.001]
+/td/mit_slam/graph/bpNM: [0.001, 0.001, 0.001, 0.001, 0.001, 0.001]
+/td/mit_slam/graph/blobpNM: 0.1
+
+# target prior noise model
+/td/mit_slam/graph/gpNM: 0.00000001
+
+# prior noise model for geo offset
+/td/mit_slam/graph/tpNM: 2
+#/td/mit_slam/graph/tpNM: 2
+
+# LIDAR odometry noise
+/td/mit_slam/graph/gNM: [0.02, 0.02, 0.02, 0.04, 0.04, 0.04]
+/td/mit_slam/graph/lcNM: [0.02, 0.02, 0.02, 0.04, 0.04, 0.04]
+#/td/mit_slam/graph/gNM: [0.005, 0.005, 0.005, 0.01, 0.01, 0.01]
+#/td/mit_slam/graph/lcNM: [0.005, 0.005, 0.005, 0.01, 0.01, 0.01]
+#/td/mit_slam/graph/gNM: [0.04, 0.04, 0.04, 0.08, 0.08, 0.08]
+#/td/mit_slam/graph/lcNM: [0.04, 0.04, 0.04, 0.08, 0.08, 0.08]
+#/td/mit_slam/graph/gNM: [0.1, 0.1, 0.1, 0.15, 0.15, 0.15]
+#/td/mit_slam/graph/lcNM: [0.03, 0.03, 0.03, 0.05, 0.05, 0.05]
+
+# Rotation kinematic factor noise
+/td/mit_slam/graph/rkfNM: 0.001
+#/td/mit_slam/graph/rkfNM: 0.005
+
+# Blob centroid estimate noise
+/td/mit_slam/graph/blobNM: [0.15, 0.15, 0.1]
+#/td/mit_slam/graph/blobNM: [0.05, 0.05, 0.15]
+
+# IMU noise and bias parameters (Epson G362)
+# Also referenced https://github.com/haidai/gtsam/blob/master/examples/ImuFactorsExample.cpp
+#/td/mit_slam/graph/imu_accel_noise_sigma: 0.00021929
+#/td/mit_slam/graph/imu_gyro_noise_sigma: 0.00001655
+#/td/mit_slam/graph/imu_accel_bias_rw_sigma: 0.005060
+#/td/mit_slam/graph/imu_gyro_bias_rw_sigma: 0.0000055192
+#/td/mit_slam/graph/imu_integration_error_cov_factor: 0.00000001
+#/td/mit_slam/graph/imu_bias_acc_omega_int_factor: 0.00001
+
+#/td/mit_slam/graph/imu_accel_noise_sigma: 0.021929
+/td/mit_slam/graph/imu_accel_noise_sigma: 0.02
+/td/mit_slam/graph/imu_gyro_noise_sigma: 0.00001655
+/td/mit_slam/graph/imu_accel_bias_rw_sigma: 0.005060
+/td/mit_slam/graph/imu_gyro_bias_rw_sigma: 0.0000055192
+/td/mit_slam/graph/imu_integration_error_cov_factor: 0.00000001
+/td/mit_slam/graph/imu_bias_acc_omega_int_factor: 0.00001

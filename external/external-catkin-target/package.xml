@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>external</name>
+  <version>0.0.0</version>
+  <description>
+    Build and install external packages.
+  </description>
+  <license>
+    TBD
+  </license>
+  <author email="mit@mit.edu">
+  </author>
+  <maintainer email="mit@mit.edu">
+  </maintainer>
+  <buildtool_depend>catkin</buildtool_depend>
+  <export>
+    <nodelet plugin="${prefix}/nodelet_plugins.xml" />
+  </export>
+</package>

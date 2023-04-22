@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>casadi_nmpc</name>
+  <version>0.0.0</version>
+  <description>
+    A translational robust model predictive controller.
+  </description>
+  <license>
+    TBD
+  </license>
+  <author email="mit@mit.edu">
+  </author>
+  <maintainer email="mit@mit.edu">
+  </maintainer>
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>roscpp</depend>
+  <depend>nodelet</depend>
+  <depend>pluginlib</depend>
+  <depend>actionlib</depend>
+  <depend>tf</depend>
+  <depend>external</depend>
+  <depend>ff_msgs</depend>
+  <depend>ff_util</depend>
+  <depend>geometry_msgs</depend>
+  <depend>data</depend>
+  <depend>trace_msgs</depend>
+  <depend>ekf_dlr</depend>
+  <export>
+    <nodelet plugin="${prefix}/nodelet_plugins.xml" />
+  </export>
+</package>

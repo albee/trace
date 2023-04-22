@@ -1,0 +1,9 @@
+<library path="lib/libmotion_planner_interface">
+  <class name="motion_planner_interface/MotionPlannerInterfaceNodelet"
+  	type="motion_planner_interface::MotionPlannerInterfaceNodelet"
+  	base_class_type="nodelet::Nodelet">
+    <description>
+    	Nodelet for motion planner interfacing.
+    </description>
+  </class>
+</library>

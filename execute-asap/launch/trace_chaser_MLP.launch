@@ -1,0 +1,75 @@
+<!-- Copyright (c) 2017, United States Government, as represented by the     -->
+<!-- Administrator of the National Aeronautics and Space Administration.     -->
+<!--                                                                         -->
+<!-- All rights reserved.                                                    -->
+<!--                                                                         -->
+<!-- The Astrobee platform is licensed under the TBD -->
+<!-- (the "License"); you may not use this file except in compliance with    -->
+<!-- the License. You may obtain a copy of the License at                    -->
+<!--                                                                         -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                          -->
+<!--                                                                         -->
+<!-- Unless required by applicable law or agreed to in writing, software     -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,       -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or         -->
+<!-- implied. See the License for the specific language governing            -->
+<!-- permissions and limitations under the License.                          -->
+
+<launch>
+  <!-- Additional options -->
+  <arg name="spurn" default=""/>                 <!-- PRevent a specific node   -->
+  <arg name="nodes" default=""/>                 <!-- Launch specific nodes     -->
+  <arg name="extra" default=""/>                 <!-- Inject an additional node -->
+  <arg name="debug" default=""/>                 <!-- Debug a node set          -->
+  <arg name="output" default="screen"/>          <!-- Where nodes should log    -->
+  <arg name="ns" default="" />                   <!-- Robot namespace           -->
+  <arg name="env" default="iss" />
+
+  <!-- ***TD nodelets and managers***-->
+  <?comment launch-prefix="x-terminal-emulator -e gdb -ex run --args" ?>
+
+    <!-- Load params for queen -->
+    <rosparam command="load" file="$(find execute_asap)/config/mit_slam_config/slam_params_$(arg env).yaml"/>
+    <rosparam command="load" file="$(find execute_asap)/config/mit_slam_config/blob_params_$(arg env).yaml"/>
+    <rosparam command="load" file="$(find execute_asap)/config/mit_slam_config/cloud_params_$(arg env).yaml"/>
+    <rosparam command="load" file="$(find execute_asap)/config/mit_slam_config/graph_params_$(arg env).yaml"/>
+
+    <rosparam command="load" file="$(find execute_asap)/config/uc_bound_config/uc_bound_params.yaml"/>
+    <rosparam command="load" file="$(find execute_asap)/config/motion_planner_interface_config/traj_params.yaml"/>
+    <rosparam command="load" file="$(find execute_asap)/config/casadi_nmpc_config/casadi_nmpc_params.yaml"/>
+    <rosparam command="load" file="$(find execute_asap)/config/uc_bound_dummy_est_config/uc_bound_dummy_est_params.yaml"/>
+    <rosparam command="load" file="$(find execute_asap)/config/chaser_coordinator_config/chaser_coord_params.yaml"/>
+
+    <rosparam command="load" file="$(find execute_asap)/config/ekf_dlr_config/ekf_dlr_chaser_params.yaml"/>
+
+    <node pkg="inv_fam" type="inverse_FAM_implementation.py" name="inv_fam" 
+        output="$(arg output)"/>
+    <node pkg="ekf_dlr" type="ekf_observer" name="ekf_dlr"
+        output="$(arg output)"/>
+    <node pkg="nodelet" type="nodelet" name="mit_slam"
+        required="false" respawn="false"
+        args="standalone mit_slam/MitSlamNodelet"
+        output="$(arg output)"/>
+    <node pkg="nodelet" type="nodelet" name="chaser_coordinator"
+        required="false" respawn="false"
+        args="standalone chaser_coordinator/ChaserCoordinatorNodelet"
+        output="$(arg output)"/>
+    <node pkg="nodelet" type="nodelet" name="uc_bound"
+        required="false" respawn="false"
+        args="standalone uc_bound/UCBoundNodelet"
+        output="$(arg output)"/>
+    <node pkg="nodelet" type="nodelet" name="motion_planner_interface"
+        required="false" respawn="false"
+        args="standalone motion_planner_interface/TrajGenDLRNodelet"
+        output="$(arg output)"/>
+
+    <node pkg="casadi_nmpc" type="z_poly_calc.py" name="z_poly_calc"
+        required="false" respawn="false"
+        output="$(arg output)"/>
+    <!--
+    <node pkg="nodelet" type="nodelet" name="uc_bound_dummy_est"
+        required="false" respawn="false"
+        args="standalone uc_bound_dummy_est/UCBoundEstNodelet"
+        output="$(arg output)"/>
+    -->
+</launch>

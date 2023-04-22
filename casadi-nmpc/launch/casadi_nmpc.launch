@@ -1,0 +1,50 @@
+<!-- To create a standalone launchfile for your nodelet:
+1) Enter the nodelet names as below for the manager nodelet and the actual nodelet.
+2) Set desired logging levels for your nodelet in astrobee/resources/logging.config
+3) Roslaunch this launchfile, and any individual nodelets that you need.
+-->
+
+<launch>
+  <?comment launch-prefix="x-terminal-emulator -e gdb -ex run --args" ?>
+  <?comment launch-prefix="gdb -ex run --args" ?>
+  <?comment launch-prefix="valgrind --leak-check=full" ?>
+
+  <arg name="robot" default="$(optenv ASTROBEE_ROBOT sim)" />
+  <arg name="world" default="$(optenv ASTROBEE_WORLD iss)" />
+
+  <env name="ASTROBEE_ROBOT" value="$(arg robot)" />
+  <env name="ASTROBEE_WORLD" value="$(arg world)" />
+  <!-- <env if="$(eval optenv('ASTROBEE_CONFIG_DIR','')=='')"
+       name="ASTROBEE_CONFIG_DIR" value="$(find astrobee)/config" />
+  <env if="$(eval optenv('ASTROBEE_RESOURCE_DIR','')=='')"
+       name="ASTROBEE_RESOURCE_DIR" value="$(find astrobee)/resources" />
+  <env if="$(eval optenv('ROSCONSOLE_CONFIG_FILE','')=='')"
+       name="ROSCONSOLE_CONFIG_FILE" value="$(find astrobee)/resources/logging.config"/> -->
+
+  <arg name="spurn" default=""/>                 <!-- Prevent a specific node   -->
+  <arg name="nodes" default=""/>                 <!-- Launch specific nodes     -->
+  <arg name="extra" default=""/>                 <!-- Inject an additional node -->
+  <arg name="debug" default=""/>                 <!-- Debug a node set          -->
+  <arg name="dds" default="false"/>              <!-- Should DDS be started     -->
+  <arg name="output" default="screen"/>          <!-- Where nodes should log    -->
+
+  <rosparam command="load" file="$(find execute_asap)/config/casadi-nmpc-config/casadi_nmpc_params.yaml"/>
+  <rosparam command="load" file="$(find execute_asap)/config/uc-bound-config/uc_bound_params.yaml"/>
+
+  <!-- Start a nodelet manager, if needed -->
+  <node
+        pkg="nodelet" type="nodelet" name="nmpc_manager"
+        args="manager"
+        launch-prefix="gdb -ex run --args"
+        output="$(arg output)"/>
+
+  <!-- Now inject the nodelet into the nodelet manager -->
+  <node pkg="nodelet" type="nodelet" name="casadi_nmpc"
+        required="false" respawn="false"
+        args="load casadi_nmpc/CasadiNMPCNodelet nmpc_manager"
+        output="$(arg output)"/>
+
+  <!-- <node pkg="casadi_nmpc" type="z_poly_calc.py" name="z_poly_calc"
+        required="false" respawn="false"
+        output="$(arg output)"/> -->
+</launch>

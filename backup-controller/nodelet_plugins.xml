@@ -1,0 +1,9 @@
+<library path="lib/libbackup_controller">
+  <class name="backup_controller/BackupControllerNodelet"
+  	type="backup_controller::BackupControllerNodelet"
+  	base_class_type="nodelet::Nodelet">
+    <description>
+    	Nodelet for backup controller.
+    </description>
+  </class>
+</library>

@@ -1,0 +1,26 @@
+# Parameters for the BlobTracker.
+
+# Maximum distance for a point cloud point to be considered [m].
+/td/mit_slam/blob/max_x_distance_iss: 0.5
+/td/mit_slam/blob/max_y_distance_iss: 0.5
+/td/mit_slam/blob/max_z_distance_iss_x: 1.0
+/td/mit_slam/blob/max_z_distance_iss_y: 2.0
+/td/mit_slam/blob/max_z_distance_iss_z: 1.0
+
+/td/mit_slam/blob/max_x_distance_ground: 0.5
+/td/mit_slam/blob/max_y_distance_ground: 0.25
+/td/mit_slam/blob/max_z_distance_ground: 1.25
+
+/td/mit_slam/blob/centroid_add_ground: 0.15
+/td/mit_slam/blob/centroid_add_iss: 0.5
+
+# Maximum point cloud size before downsampling.
+/td/mit_slam/blob/max_pcd_size: 2000
+
+# Leaf sizes for voxel grid downsampling
+/td/mit_slam/blob/leaf_size_x: 0.009
+/td/mit_slam/blob/leaf_size_y: 0.009
+/td/mit_slam/blob/leaf_size_z: 0.009
+#/td/mit_slam/blob/leaf_size_x: 0.018
+#/td/mit_slam/blob/leaf_size_y: 0.018
+#/td/mit_slam/blob/leaf_size_z: 0.018

@@ -1,0 +1,13 @@
+std_msgs/Float64MultiArray w
+std_msgs/Float64MultiArray u_max
+float64 dt
+float64 mass
+float64 Q_pos_anc
+float64 Q_vel_anc
+float64 R_anc
+---
+std_msgs/Float64MultiArray K
+std_msgs/Float64MultiArray Au
+std_msgs/Float64MultiArray bu
+std_msgs/Float64MultiArray AZ
+std_msgs/Float64MultiArray bZ

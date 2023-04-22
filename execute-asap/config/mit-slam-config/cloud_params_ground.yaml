@@ -1,0 +1,48 @@
+# Parameters for the CloudOdometer.
+
+# TEASER++ robust registrator parameters.
+
+# Square of ratio between acceptable noise and noise bound. Usually set to 1.
+/td/mit_slam/cloud/teaser_cbar2: 1.0
+# When the solver does not estimate scale, it solves the registration problem
+# much faster.
+/td/mit_slam/cloud/teaser_estimate_scaling: false
+# A bound on the noise of each provided measurement.
+/td/mit_slam/cloud/teaser_noise_bound: 0.025;
+# Factor to multiple/divide the control parameter in the GNC algorithm.
+/td/mit_slam/cloud/teaser_rotation_gnc_factor: 1.4
+# Cost threshold for the GNC rotation estimators.
+/td/mit_slam/cloud/teaser_rotation_cost_threshold: 0.00001;
+
+# For raw cloud reg. setting
+# Square of ratio between acceptable noise and noise bound. Usually set to 1.
+#/td/mit_slam/cloud/teaser_cbar2: 1.0
+# When the solver does not estimate scale, it solves the registration problem
+# much faster.
+#/td/mit_slam/cloud/teaser_estimate_scaling: false
+# A bound on the noise of each provided measurement.
+#/td/mit_slam/cloud/teaser_noise_bound: 0.1;
+# Factor to multiple/divide the control parameter in the GNC algorithm.
+#/td/mit_slam/cloud/teaser_rotation_gnc_factor: 1.4
+# Cost threshold for the GNC rotation estimators.
+#/td/mit_slam/cloud/teaser_rotation_cost_threshold: 0.00001;
+
+
+# 3D feature detection parameters
+# For 2 meter scenario
+#/td/mit_slam/cloud/feat_norm_radius: 0.032
+#/td/mit_slam/cloud/feat_fpfh_radius: 0.04
+/td/mit_slam/cloud/feat_norm_radius: 0.032
+/td/mit_slam/cloud/feat_fpfh_radius: 0.04
+/td/mit_slam/cloud/feat_norm_scale: 0.0256
+/td/mit_slam/cloud/feat_fpfh_scale: 0.032
+/td/mit_slam/cloud/feat_min_norm_radius: 0.011
+/td/mit_slam/cloud/feat_min_fpfh_radius: 0.013
+#/td/mit_slam/cloud/feat_norm_scale: 0.03
+#/td/mit_slam/cloud/feat_fpfh_scale: 0.035
+
+# Matching parameters
+/td/mit_slam/cloud/match_use_absolute_scale: true
+/td/mit_slam/cloud/match_use_crosscheck: true
+/td/mit_slam/cloud/match_use_tuple_test: false
+/td/mit_slam/cloud/match_tuple_scale: 0.975
