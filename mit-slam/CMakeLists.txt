@@ -14,7 +14,6 @@ find_package(catkin REQUIRED COMPONENTS
   polhode_alignment
   tf
   tf2
-  external
   trace_msgs
   # teaserpp
 )
@@ -39,7 +38,6 @@ catkin_package(
   ff_msgs
   polhode_alignment
   data
-  external
   trace_msgs
 )
 

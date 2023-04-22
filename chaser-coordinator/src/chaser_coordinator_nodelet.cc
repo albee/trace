@@ -1451,6 +1451,8 @@ class ChaserCoordinatorNodelet : public ff_util::FreeFlyerNodelet {
   // Full traj., tube MPC and EKF state mode, HazCam recording
   int test10() {
     int result = test9();
+
+    return result;
   }
 
   // Full traj., tube MPC and SLAM state mode
