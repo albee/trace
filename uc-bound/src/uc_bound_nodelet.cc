@@ -1,7 +1,7 @@
 /**
  * @file uc_bound_nodelet.cc
  * @author Charles Oestreich
- * @brief Nodelet to calculate uncertainty bounds in the chaser inertial trajectory
+ * @brief Nodelet to calculate uncertainty bounds in the chaser satellite's inertial trajectory.
  * @version 0.1
  * @date 2023-04-21
  * 

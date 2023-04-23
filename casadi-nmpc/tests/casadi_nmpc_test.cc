@@ -35,6 +35,7 @@ TEST(CasadiNMPCTest, PDControl) {
     // eigen_x_des_traj_ = [[t x y z xd yd zd qx qy qz qw wx wy wz xdd ydd zdd wxd wyd wzd] ... ]
 
     // (1) no error
+    nodelet.eigen_x_des_traj_.resize(1, 17);
     nodelet.x_real_complete_ <<        0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 1.0,  0.0, 0.0, 0.0,  0.0, 0.0, 0.0,  0.0, 0.0, 0.0;
     nodelet.eigen_x_des_traj_ << 0.0,  0.0, 0.0, 0.0,  0.0, 0.0, 0.0,  0.0, 0.0, 0.0, 1.0,  0.0, 0.0, 0.0,  0.0, 0.0, 0.0;
     u_torques = nodelet.calc_torques_PD(false);

@@ -1,6 +1,6 @@
 /**
  * @file casadi_nmpc_nodelet.cc
- * @author Keenan albee
+ * @author Keenan Albee
  * @brief Robust tube MPC, nodelet wrapper.
  * 
  * 
@@ -46,7 +46,7 @@ namespace casadi_nmpc {
     CasadiNMPCNodelet::get_regulation_and_uc_bound_parameters();
 
     // Non-parameter initializations
-    x_des_traj_N_(N+1, 6);
+    x_des_traj_N_.resize(N+1, 6);
     u_opt_.setZero(6, 1);
     w_bound_ << 0.0, 0.0, 0.0, 0.0, 0.0, 0.0;
     x_real_ << 10.9, -9.65, 4.9, 0.0, 0.0, 0.0;  // dummy data until estimator publishes
