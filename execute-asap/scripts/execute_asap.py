@@ -46,8 +46,8 @@ BAG_PATH_SIM = DATA_PATH + "/output/rosbags/"  # must end in /, dir must exist!
 BAG_PATH_HARDWARE = "/data/bags/"  # must end in /, dir must exist!
 # Example: /data/bags/2021-04-14/bsharp/delayed/20210414_1701_phase1Loc_test_bag_0.bag
 
-TD_TARGET_LAUNCH_PATH = rospack.get_path("execute_asap") + "/launch/td_target.launch"
-TD_CHASER_LAUNCH_PATH = rospack.get_path("execute_asap") + "/launch/td_chaser.launch"
+TD_TARGET_LAUNCH_PATH = rospack.get_path("execute_asap") + "/launch/trace_target.launch"
+TD_CHASER_LAUNCH_PATH = rospack.get_path("execute_asap") + "/launch/trace_chaser.launch"
 
 # Topics to record---no recording if empty. MUST have a space between topics!
 TOPICS_SIM_CHASER_FULL = "/queen/gnc/ctl/command /queen/gnc/ekf /queen/gnc/ctl/setpoint /queen/hw/pmc/command /queen/loc/truth/pose /queen/loc/truth/twist /queen/hw/imu /queen/hw/depth_haz/points \
@@ -107,163 +107,163 @@ ROSBAG_NAME = "td_standard_rosbag"  # this gets overwritten!
 # Chaser trajectory files (or path to executable), indexed by test#
 CHASER_TRAJS_GND_SIM = {1: DATA_PATH+"", # test1 software launch checkout
     2: DATA_PATH+"", # test2 target coordinator unit test
-    3: DATA_PATH+"/input/TEST3-GND/", # test3 tube-MPC unit test (and gain switch)
-    4: DATA_PATH+"/input/TEST4-GND/", # Test4 PD attitude control unit test
-    5: TRAJ_GEN_PATH+"/bin/ground-traj3-public/", # test5 motion planner unit test
+    3: DATA_PATH+"/input/sample-trajectories/TEST3-GND/", # test3 tube-MPC unit test (and gain switch)
+    4: DATA_PATH+"/input/sample-trajectories/TEST4-GND/", # Test4 PD attitude control unit test
+    5: DATA_PATH+"/input/sample-trajectories/ground-traj3-public/", # test5 motion planner unit test
     6: DATA_PATH+"", # test6 SLAM unit test (chaser stationary)
-    7: DATA_PATH+"/input/sample_trajectories/chaser_slam_traj_ground.csv", # test7 SLAM unit test (chaser motion)
-    8: TRAJ_GEN_PATH+"/bin/ground-traj3-public/", # test8 full pipeline: nominal MPC, EKF state mode
-    9: TRAJ_GEN_PATH+"/bin/ground-traj3-public/", # test9 full pipeline: tube MPC, EKF state mode
-    10: TRAJ_GEN_PATH+"/bin/ground-traj3-public/", # test10 full pipeline: tube MPC, EKF state mode, HazCam recording
-    11: TRAJ_GEN_PATH+"/bin/ground-traj3-public/", # test11 full pipeline: tube MPC, SLAM state mode
-    12: DATA_PATH+"/input/TEST12-GND/",  # test12 predefined trajectory tube MPC with Astrobee noise levels
-    13: TRAJ_GEN_PATH+"/bin/ground-traj3-public/",
-    14: TRAJ_GEN_PATH+"/bin/ground-traj3-public/",
-    15: DATA_PATH+"/input/TEST3-GND/",
-    16: DATA_PATH+"/input/TEST3-GND/",
-    77: DATA_PATH+"/input/TEST12-GND/"  # debug
+    7: DATA_PATH+"/input/sample-trajectories/slam-traj/chaser_slam_traj_ground.csv", # test7 SLAM unit test (chaser motion)
+    8: TRAJ_GEN_PATH+"/input/sample-trajectories/ground-traj3-public/", # test8 full pipeline: nominal MPC, EKF state mode
+    9: TRAJ_GEN_PATH+"/input/sample-trajectories/ground-traj3-public/", # test9 full pipeline: tube MPC, EKF state mode
+    10: TRAJ_GEN_PATH+"/input/sample-trajectories/ground-traj3-public/", # test10 full pipeline: tube MPC, EKF state mode, HazCam recording
+    11: TRAJ_GEN_PATH+"/input/sample-trajectories/ground-traj3-public/", # test11 full pipeline: tube MPC, SLAM state mode
+    12: DATA_PATH+"/input/sample-trajectories/TEST12-GND/",  # test12 predefined trajectory tube MPC with Astrobee noise levels
+    13: TRAJ_GEN_PATH+"/input/sample-trajectories/ground-traj3-public/",
+    14: TRAJ_GEN_PATH+"/input/sample-trajectories/ground-traj3-public/",
+    15: DATA_PATH+"/input/sample-trajectories/TEST3-GND/",
+    16: DATA_PATH+"/input/sample-trajectories/TEST3-GND/",
+    77: DATA_PATH+"/input/sample-trajectories/TEST12-GND/"  # debug
     }
 
 CHASER_TRAJS_GND_HARDWARE = {1: DATA_PATH+"", # test1 software launch checkout
     2: DATA_PATH+"", # test2 target coordinator unit test
-    3: DATA_PATH+"/input/TEST3-GND/", # test3 tube-MPC unit test (and gain switch)
-    4: DATA_PATH+"/input/TEST4-GND/", # Test4 PD attitude control unit test
+    3: DATA_PATH+"/input/sample-trajectories/TEST3-GND/", # test3 tube-MPC unit test (and gain switch)
+    4: DATA_PATH+"/input/sample-trajectories/TEST4-GND/", # Test4 PD attitude control unit test
     5: "/opt/roam/mp/", # test5 motion planner unit test
     6: DATA_PATH+"", # test6 SLAM unit test (chaser stationary)
-    7: DATA_PATH+"/input/sample_trajectories/chaser_slam_traj_ground.csv", # test7 SLAM unit test (chaser motion)
+    7: DATA_PATH+"/input/sample-trajectories/slam-traj/chaser_slam_traj_ground.csv", # test7 SLAM unit test (chaser motion)
     8: "/opt/roam/mp/", # test8 full pipeline: nominal MPC, EKF state mode
     9: "/opt/roam/mp/", # test9 full pipeline: tube MPC, EKF state mode
     10:"/opt/roam/mp/", # test10 full pipeline: tube MPC, EKF state mode, HazCam recording
     11: "/opt/roam/mp/", # test11 full pipeline: tube MPC, SLAM state mode
-    12: DATA_PATH+"/input/TEST12-GND/", # test12 predefined trajectory tube MPC with Astrobee noise levels
+    12: DATA_PATH+"/input/sample-trajectories/TEST12-GND/", # test12 predefined trajectory tube MPC with Astrobee noise levels
     13: "/opt/roam/mp/",
     14: "/opt/roam/mp/",
-    15: DATA_PATH+"/input/TEST3-GND/",
-    16: DATA_PATH+"/input/TEST3-GND/"
+    15: DATA_PATH+"/input/sample-trajectories/TEST3-GND/",
+    16: DATA_PATH+"/input/sample-trajectories/TEST3-GND/"
     }
 
 CHASER_TRAJS_ISS_SIM = {1: DATA_PATH+"", # test1 software launch checkout
     2: DATA_PATH+"", # test2 target coordinator unit test
-    3: DATA_PATH+"/input/TEST3-ISS/", # test3 tube-MPC unit test (and gain switch)
-    4: DATA_PATH+"/input/TEST4-ISS/", # Test4 PD attitude control unit test
-    5: TRAJ_GEN_PATH+"/bin/iss-traj2-public/", # test5 motion planner unit test
+    3: DATA_PATH+"/input/sample-trajectories/TEST3-ISS/", # test3 tube-MPC unit test (and gain switch)
+    4: DATA_PATH+"/input/sample-trajectories/TEST4-ISS/", # Test4 PD attitude control unit test
+    5: TRAJ_GEN_PATH+"/input/sample-trajectories/iss-traj2-public/", # test5 motion planner unit test
     6: DATA_PATH+"", # test6 SLAM unit test (chaser stationary)
-    7: DATA_PATH+"/input/sample_trajectories/chaser_slam_traj.csv", # test7 SLAM unit test (chaser motion)
-    8: TRAJ_GEN_PATH+"/bin/iss-traj2-public/", # test8 full pipeline: nominal MPC, EKF state mode
-    9: TRAJ_GEN_PATH+"/bin/iss-traj2-public/", # test9 full pipeline: tube MPC, EKF state mode
-    10: TRAJ_GEN_PATH+"/bin/iss-traj2-public/", # test10 full pipeline: tube MPC, EKF state mode, HazCam recording
-    11: TRAJ_GEN_PATH+"/bin/iss-traj2-public/", # test11 full pipeline: tube MPC, SLAM state mode
-    12: DATA_PATH+"/input/TEST12-ISS/", # test12 predefined trajectory tube MPC with Astrobee noise levels
-    13: TRAJ_GEN_PATH+"/bin/iss-traj2-public/",
-    14: TRAJ_GEN_PATH+"/bin/iss-traj2-public/",
-    15: DATA_PATH+"/input/MIT-ISS/", # standard MPC
-    16: DATA_PATH+"/input/MIT-ISS/",  # tube MPC
-    77: DATA_PATH+"/input/TEST12-ISS/"  # debug
+    7: DATA_PATH+"/input/sample-trajectories/slam-traj/chaser_slam_traj.csv", # test7 SLAM unit test (chaser motion)
+    8: TRAJ_GEN_PATH+"/input/sample-trajectories/iss-traj2-public/", # test8 full pipeline: nominal MPC, EKF state mode
+    9: TRAJ_GEN_PATH+"/input/sample-trajectories/iss-traj2-public/", # test9 full pipeline: tube MPC, EKF state mode
+    10: TRAJ_GEN_PATH+"/input/sample-trajectories/iss-traj2-public/", # test10 full pipeline: tube MPC, EKF state mode, HazCam recording
+    11: TRAJ_GEN_PATH+"/input/sample-trajectories/iss-traj2-public/", # test11 full pipeline: tube MPC, SLAM state mode
+    12: DATA_PATH+"/input/sample-trajectories/TEST12-ISS/", # test12 predefined trajectory tube MPC with Astrobee noise levels
+    13: TRAJ_GEN_PATH+"/input/sample-trajectories/iss-traj2-public/",
+    14: TRAJ_GEN_PATH+"/input/sample-trajectories/iss-traj2-public/",
+    15: DATA_PATH+"/input/sample-trajectories/MIT-ISS/", # standard MPC
+    16: DATA_PATH+"/input/sample-trajectories/MIT-ISS/",  # tube MPC
+    77: DATA_PATH+"/input/sample-trajectories/TEST12-ISS/"  # debug
     }
 
 CHASER_TRAJS_ISS_HARDWARE = {1: DATA_PATH+"", # test1 software launch checkout
     2: DATA_PATH+"", # test2 target coordinator unit test
-    3: DATA_PATH+"/input/TEST3-ISS/", # test3 tube-MPC unit test
-    4: DATA_PATH+"/input/TEST4-ISS/", # Test4 PD attitude control unit test
+    3: DATA_PATH+"/input/sample-trajectories/TEST3-ISS/", # test3 tube-MPC unit test
+    4: DATA_PATH+"/input/sample-trajectories/TEST4-ISS/", # Test4 PD attitude control unit test
     5: "/opt/roam/mp-iss/", # test5 motion planner unit test
     6: DATA_PATH+"", # test6 SLAM unit test (chaser stationary)
-    7: DATA_PATH+"/input/sample_trajectories/chaser_slam_traj.csv", # test7 SLAM unit test (chaser motion)
+    7: DATA_PATH+"/input/sample-trajectories/slam-traj/chaser_slam_traj.csv", # test7 SLAM unit test (chaser motion)
     8: "/opt/roam/mp-iss/", # test8 full pipeline: nominal MPC, EKF state mode
     9: "/opt/roam/mp-iss/", # test9 full pipeline: tube MPC, EKF state mode
     10: "/opt/roam/mp-iss/", # test10 full pipeline: tube MPC, EKF state mode, HazCam recording
     11: "/opt/roam/mp-iss/", # test11 full pipeline: tube MPC, SLAM state mode
-    12: DATA_PATH+"/input/TEST12-ISS/", # test12 predefined trajectory tube MPC with Astrobee noise levels
+    12: DATA_PATH+"/input/sample-trajectories/TEST12-ISS/", # test12 predefined trajectory tube MPC with Astrobee noise levels
     13: "/opt/roam/mp-iss/",
     14: "/opt/roam/mp-iss/",
-    15: DATA_PATH+"/input/MIT-ISS/", # standard MPC
-    16: DATA_PATH+"/input/MIT-ISS/"  # tube MPC
+    15: DATA_PATH+"/input/sample-trajectories/MIT-ISS/", # standard MPC
+    16: DATA_PATH+"/input/sample-trajectories/MIT-ISS/"  # tube MPC
     }
 
 # Target trajectory files, indexed by test#
 TARGET_TRAJS_GND_SIM = {1: DATA_PATH+"", # test1 software launch checkout
-    2: DATA_PATH+"/input/sample_trajectories/targ_traj_ground1.dat", # test2 target coordinator unit test
+    2: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_ground1.dat", # test2 target coordinator unit test
     3: DATA_PATH+"", # test3 tube-MPC unit test
     4: DATA_PATH+"", # Test4 PD attitude control unit test
-    5: DATA_PATH+"/input/sample_trajectories/targ_traj_ground1.dat", # test5 motion planner unit test
-    6: DATA_PATH+"/input/sample_trajectories/targ_traj_ground1.dat", # test6 SLAM unit test (chaser stationary)
-    7: DATA_PATH+"/input/sample_trajectories/targ_traj_ground1.dat", # test7 SLAM unit test (chaser motion)
-    8: DATA_PATH+"/input/sample_trajectories/targ_traj_ground1.dat", # test8 full pipeline: nominal MPC, EKF state mode
-    9: DATA_PATH+"/input/sample_trajectories/targ_traj_ground1.dat", # test9 full pipeline: tube MPC, EKF state mode
-    10: DATA_PATH+"/input/sample_trajectories/targ_traj_ground1.dat", # test10 full pipeline: tube MPC, EKF state mode, HazCam recording
-    11: DATA_PATH+"/input/sample_trajectories/targ_traj_ground1.dat", # test11 full pipeline: tube MPC, SLAM state mode
+    5: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_ground1.dat", # test5 motion planner unit test
+    6: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_ground1.dat", # test6 SLAM unit test (chaser stationary)
+    7: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_ground1.dat", # test7 SLAM unit test (chaser motion)
+    8: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_ground1.dat", # test8 full pipeline: nominal MPC, EKF state mode
+    9: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_ground1.dat", # test9 full pipeline: tube MPC, EKF state mode
+    10: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_ground1.dat", # test10 full pipeline: tube MPC, EKF state mode, HazCam recording
+    11: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_ground1.dat", # test11 full pipeline: tube MPC, SLAM state mode
     12: "",  # test12 predefined trajectory tube MPC with Astrobee noise levels
-    13: DATA_PATH+"/input/sample_trajectories/targ_traj_ground1.dat",
-    14: DATA_PATH+"/input/sample_trajectories/targ_traj_ground1.dat",
+    13: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_ground1.dat",
+    14: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_ground1.dat",
     15: "",
     16: ""
     }
 
 TARGET_TRAJS_GND_HARDWARE = {1: DATA_PATH+"", # test1 software launch checkout
-    2: DATA_PATH+"/input/sample_trajectories/targ_traj_ground1.dat", # test2 target coordinator unit test
+    2: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_ground1.dat", # test2 target coordinator unit test
     3: DATA_PATH+"", # test3 tube-MPC unit test
     4: DATA_PATH+"", # Test4 PD attitude control unit test
-    5: DATA_PATH+"/input/sample_trajectories/targ_traj_ground1.dat", # test5 motion planner unit test
-    6: DATA_PATH+"/input/sample_trajectories/targ_traj_ground1.dat", # test6 SLAM unit test (chaser stationary)
-    7: DATA_PATH+"/input/sample_trajectories/targ_traj_ground1.dat", # test7 SLAM unit test (chaser motion)
-    8: DATA_PATH+"/input/sample_trajectories/targ_traj_ground1.dat", # test8 full pipeline: nominal MPC, EKF state mode
-    9: DATA_PATH+"/input/sample_trajectories/targ_traj_ground1.dat", # test9 full pipeline: tube MPC, EKF state mode
-    10: DATA_PATH+"/input/sample_trajectories/targ_traj_ground1.dat", # test10 full pipeline: tube MPC, EKF state mode, HazCam recording
-    11: DATA_PATH+"/input/sample_trajectories/targ_traj_ground1.dat", # test11 full pipeline: tube MPC, SLAM state mode
+    5: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_ground1.dat", # test5 motion planner unit test
+    6: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_ground1.dat", # test6 SLAM unit test (chaser stationary)
+    7: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_ground1.dat", # test7 SLAM unit test (chaser motion)
+    8: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_ground1.dat", # test8 full pipeline: nominal MPC, EKF state mode
+    9: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_ground1.dat", # test9 full pipeline: tube MPC, EKF state mode
+    10: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_ground1.dat", # test10 full pipeline: tube MPC, EKF state mode, HazCam recording
+    11: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_ground1.dat", # test11 full pipeline: tube MPC, SLAM state mode
     12: "",
-    13: DATA_PATH+"/input/sample_trajectories/targ_traj_ground1.dat",
-    14: DATA_PATH+"/input/sample_trajectories/targ_traj_ground1.dat",
+    13: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_ground1.dat",
+    14: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_ground1.dat",
     15: "",
     16: ""
     }
 
 TARGET_TRAJS_ISS_SIM = {1: DATA_PATH+"", # test1 software launch checkout
-    2: DATA_PATH+"/input/sample_trajectories/targ_traj_iss21.dat", # test2 target coordinator unit test
+    2: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss21.dat", # test2 target coordinator unit test
     3: DATA_PATH+"", # test3 tube-MPC unit test
     4: DATA_PATH+"", # Test4 PD attitude control unit test
-    5: DATA_PATH+"/input/sample_trajectories/targ_traj_iss21.dat", # test5 motion planner unit test
-    6: DATA_PATH+"/input/sample_trajectories/targ_traj_iss21.dat", # test6 SLAM unit test (chaser stationary)
-    7: DATA_PATH+"/input/sample_trajectories/targ_traj_iss21.dat", # test7 SLAM unit test (chaser motion)
-    8: DATA_PATH+"/input/sample_trajectories/targ_traj_iss21.dat", # test8 full pipeline: nominal MPC, EKF state mode
-    9: DATA_PATH+"/input/sample_trajectories/targ_traj_iss21.dat", # test9 full pipeline: tube MPC, EKF state mode
-    10: DATA_PATH+"/input/sample_trajectories/targ_traj_iss21.dat", # test10 full pipeline: tube MPC, EKF state mode, HazCam recording
-    11: DATA_PATH+"/input/sample_trajectories/targ_traj_iss21.dat", # test11 full pipeline: tube MPC, SLAM state mode
+    5: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss21.dat", # test5 motion planner unit test
+    6: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss21.dat", # test6 SLAM unit test (chaser stationary)
+    7: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss21.dat", # test7 SLAM unit test (chaser motion)
+    8: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss21.dat", # test8 full pipeline: nominal MPC, EKF state mode
+    9: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss21.dat", # test9 full pipeline: tube MPC, EKF state mode
+    10: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss21.dat", # test10 full pipeline: tube MPC, EKF state mode, HazCam recording
+    11: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss21.dat", # test11 full pipeline: tube MPC, SLAM state mode
     12: "",
-    13: DATA_PATH+"/input/sample_trajectories/targ_traj_iss21.dat",
-    14: DATA_PATH+"/input/sample_trajectories/targ_traj_iss21.dat",
+    13: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss21.dat",
+    14: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss21.dat",
     15: "",
     16: ""
     }
 
 TARGET_TRAJS_ISS_HARDWARE = {1: DATA_PATH+"", # test1 software launch checkout
-    2: DATA_PATH+"/input/sample_trajectories/targ_traj_iss21.dat", # test2 target coordinator unit test
+    2: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss21.dat", # test2 target coordinator unit test
     3: DATA_PATH+"", # test3 tube-MPC unit test
     4: DATA_PATH+"", # Test4 PD attitude control unit test
-    5: DATA_PATH+"/input/sample_trajectories/targ_traj_iss21.dat", # test5 motion planner unit test
-    6: DATA_PATH+"/input/sample_trajectories/targ_traj_iss21.dat", # test6 SLAM unit test (chaser stationary)
-    7: DATA_PATH+"/input/sample_trajectories/targ_traj_iss21.dat", # test7 SLAM unit test (chaser motion)
-    8: DATA_PATH+"/input/sample_trajectories/targ_traj_iss21.dat", # test8 full pipeline: nominal MPC, EKF state mode
-    9: DATA_PATH+"/input/sample_trajectories/targ_traj_iss21.dat", # test9 full pipeline: tube MPC, EKF state mode
-    10: DATA_PATH+"/input/sample_trajectories/targ_traj_iss21.dat", # test10 full pipeline: tube MPC, EKF state mode, HazCam recording
-    11: DATA_PATH+"/input/sample_trajectories/targ_traj_iss21.dat", # test11 full pipeline: tube MPC, SLAM state mode
+    5: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss21.dat", # test5 motion planner unit test
+    6: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss21.dat", # test6 SLAM unit test (chaser stationary)
+    7: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss21.dat", # test7 SLAM unit test (chaser motion)
+    8: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss21.dat", # test8 full pipeline: nominal MPC, EKF state mode
+    9: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss21.dat", # test9 full pipeline: tube MPC, EKF state mode
+    10: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss21.dat", # test10 full pipeline: tube MPC, EKF state mode, HazCam recording
+    11: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss21.dat", # test11 full pipeline: tube MPC, SLAM state mode
     12: "",
-    13: DATA_PATH+"/input/sample_trajectories/targ_traj_iss21.dat",
-    14: DATA_PATH+"/input/sample_trajectories/targ_traj_iss21.dat",
+    13: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss21.dat",
+    14: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss21.dat",
     15: "",
     16: ""
     }
 
-TARGET_TRAJS_ISS_LUT = {0: DATA_PATH+"/input/sample_trajectories/targ_traj_iss11.dat", # triaxial, x-axis
-    1: DATA_PATH+"/input/sample_trajectories/targ_traj_iss12.dat", # flat-spin, x-axis
-    2: DATA_PATH+"/input/sample_trajectories/targ_traj_iss13.dat", # stopped, x-axis
-    3: DATA_PATH+"/input/sample_trajectories/targ_traj_iss31.dat", # triaxial, z-axis
-    4: DATA_PATH+"/input/sample_trajectories/targ_traj_iss32.dat", # flat-spin, z-axis
-    5: DATA_PATH+"/input/sample_trajectories/targ_traj_iss33.dat", # stopped, z-axis
-    6: DATA_PATH+"/input/sample_trajectories/targ_traj_iss21.dat", # triaxial, y-axis
-    7: DATA_PATH+"/input/sample_trajectories/targ_traj_iss22.dat", # flat-spin, y-axis
-    8: DATA_PATH+"/input/sample_trajectories/targ_traj_iss23.dat" # stopped, y-axis
+TARGET_TRAJS_ISS_LUT = {0: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss11.dat", # triaxial, x-axis
+    1: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss12.dat", # flat-spin, x-axis
+    2: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss13.dat", # stopped, x-axis
+    3: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss31.dat", # triaxial, z-axis
+    4: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss32.dat", # flat-spin, z-axis
+    5: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss33.dat", # stopped, z-axis
+    6: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss21.dat", # triaxial, y-axis
+    7: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss22.dat", # flat-spin, y-axis
+    8: DATA_PATH+"/input/sample-trajectories/target-traj/targ_traj_iss23.dat" # stopped, y-axis
     }
 
-CHASER_TRAJ_ISS_LUT_SIM = TRAJ_GEN_PATH+"/bin/iss-traj2-public/"
+CHASER_TRAJ_ISS_LUT_SIM = DATA_PATH+"/input/sample-trajectories/iss-traj2-public/"
 CHASER_TRAJ_ISS_LUT_HARDWARE = "/opt/roam/mp-iss/"
 
 # a dictionary of all possible trajectory paths for "ground-sim", "ground-hardware", "iss-sim", and "iss-hardware"
@@ -285,7 +285,7 @@ class ASAP:
         bee_roles : ['role1' ... 'rolen']
         bee_topic_prefixes : [names of astrobees]
         bee_data_dirs : [[test1_dir, ... testn_dir]
-        				 [test1_dir, ... testn_dir]] traj information files for each [bee, test]
+                         [test1_dir, ... testn_dir]] traj information files for each [bee, test]
         bee_is_ground: environment, {'true', 'false'}
         bee_is_sim: {True', False} (as a bool)
         my_role : {'target', 'chaser'}. Uses /robot_name on hardware to set.
@@ -335,7 +335,7 @@ class ASAP:
 
 
     def start_td_nodelets(self):
-        """ Start up all TumbleDock nodelets. Works for /queen/ and /bumble/ or "/" namespaces.
+        """ Start up all TRACE nodelets. Works for /queen/ and /bumble/ or "/" namespaces.
         """
         if self.bee_is_ground == "true":
             ENV = "ground"
@@ -360,7 +360,7 @@ class ASAP:
         launch_proc = subprocess.Popen(command, shell=True)
 
     def stop_td_nodelets(self):
-        """ Stop all TumbleDock nodelets. Works for /queen/ and /bumble/ or / namespaces.
+        """ Stop all TRACE nodelets. Works for /queen/ and /bumble/ or / namespaces.
         """
         commands = []
         manager_commands = []
@@ -590,8 +590,8 @@ class ASAP:
                     elif str(test_number)[0] == '3' and str(test_number)[1] == '2':
                         traj_file = TARGET_TRAJS_ISS_LUT[4]
                     elif str(test_number)[0] == '3' and str(test_number)[1] == '3':
-		        traj_file = TARGET_TRAJS_ISS_LUT[5]
-		    elif str(test_number)[0] == '2' and str(test_number)[1] == '1':
+                        traj_file = TARGET_TRAJS_ISS_LUT[5]
+                    elif str(test_number)[0] == '2' and str(test_number)[1] == '1':
                         traj_file = TARGET_TRAJS_ISS_LUT[6]
                     elif str(test_number)[0] == '2' and str(test_number)[1] == '2':
                         traj_file = TARGET_TRAJS_ISS_LUT[7]
@@ -628,7 +628,7 @@ class ASAP:
                 # target coordinator takes it from here
                 print("[EXECUTE_ASAP]: Test passed to chaser coordinator.")
 
-    	# Assume this is running individually on each Astrobee. Run a single thread.
+        # Assume this is running individually on each Astrobee. Run a single thread.
         else:
             print("*** [EXECUTE_ASAP]: Using ENV:= "+ENV+" SIM:= "+SIM+" ***")
 
@@ -650,7 +650,7 @@ class ASAP:
                     elif str(test_number)[0] == '3' and str(test_number)[1] == '2':
                         traj_file = TARGET_TRAJS_ISS_LUT[4]
                     elif str(test_number)[0] == '3' and str(test_number)[1] == '3':
-		                traj_file = TARGET_TRAJS_ISS_LUT[5]
+                        traj_file = TARGET_TRAJS_ISS_LUT[5]
                     elif str(test_number)[0] == '2' and str(test_number)[1] == '1':
                         traj_file = TARGET_TRAJS_ISS_LUT[6]
                     elif str(test_number)[0] == '2' and str(test_number)[1] == '2':
@@ -861,7 +861,7 @@ if __name__ == "__main__":
             global_gds_param_count = global_gds_param_count + 1
 
         # Run/stop tests or wait based on GDS params. Start if not -1.
-        if (ASAP_main.test_num is not -1 and ASAP_main.test_started == False):
+        if (ASAP_main.test_num != -1 and ASAP_main.test_started == False):
             if ASAP_main.test_num_okay():  # sanity check the test num before sending
                 ASAP_main.run_test()
             else:

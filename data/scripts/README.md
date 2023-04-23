@@ -14,7 +14,7 @@ See `main_traj_demo_script.m` for a complete usage example.
 
 ## Visualizing Tumble Trajectories
 
-You can viusalize TumbleDock trajectories using
+You can viusalize TRACE trajectories using
 
 `tumble_anim.m`
 

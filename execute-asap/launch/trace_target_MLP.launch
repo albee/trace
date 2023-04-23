@@ -1,20 +1,3 @@
-<!-- Copyright (c) 2017, United States Government, as represented by the     -->
-<!-- Administrator of the National Aeronautics and Space Administration.     -->
-<!--                                                                         -->
-<!-- All rights reserved.                                                    -->
-<!--                                                                         -->
-<!-- The Astrobee platform is licensed under the TBD -->
-<!-- (the "License"); you may not use this file except in compliance with    -->
-<!-- the License. You may obtain a copy of the License at                    -->
-<!--                                                                         -->
-<!--     http://www.apache.org/licenses/LICENSE-2.0                          -->
-<!--                                                                         -->
-<!-- Unless required by applicable law or agreed to in writing, software     -->
-<!-- distributed under the License is distributed on an "AS IS" BASIS,       -->
-<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or         -->
-<!-- implied. See the License for the specific language governing            -->
-<!-- permissions and limitations under the License.                          -->
-
 <launch>
   <!-- Additional options -->
   <arg name="spurn" default=""/>                 <!-- PRevent a specific node   -->
@@ -24,22 +7,17 @@
   <arg name="output" default="screen"/>          <!-- Where nodes should log    -->
   <arg name="ns" default="" />                   <!-- Robot namespace           -->
 
-  <!-- ***TD nodelets and managers***-->
+  <!-- ***TRACE nodelets and managers***-->
   <?comment launch-prefix="x-terminal-emulator -e gdb -ex run --args" ?>
 
   <!-- Load params for bumble -->
-  <rosparam command="load" file="$(find execute_asap)/config/target_coordinator_config/targ_coord_params.yaml"/>
-  <rosparam command="load" file="$(find execute_asap)/config/casadi_nmpc_config/casadi_nmpc_params.yaml"/>
-  <rosparam command="load" file="$(find execute_asap)/config/ekf_dlr_config/ekf_dlr_target_params.yaml"/>
+  <rosparam command="load" file="$(find execute_asap)/config/target-coordinator-config/targ_coord_params.yaml"/>
+  <rosparam command="load" file="$(find execute_asap)/config/casadi-nmpc-config/casadi_nmpc_params.yaml"/>
 
-  <node pkg="inv_fam" type="inverse_FAM_implementation.py" name="inv_fam" 
-        output="$(arg output)"/>
-  <node pkg="ekf_dlr" type="ekf_observer" name="ekf_dlr"
-        output="$(arg output)"/>
   <node pkg="nodelet" type="nodelet" name="target_coordinator"
         required="false" respawn="false"
         args="standalone target_coordinator/TargetCoordinatorNodelet"
         output="$(arg output)"/>
 
-    <!-- ***end TD nodelets and managers***-->
+  <!-- ***end TRACE nodelets and managers***-->
 </launch>

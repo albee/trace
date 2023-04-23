@@ -1,8 +1,8 @@
 # execute_asap
 
-*Note: MIT is working on open-sourcing an updated version of `execute_asap`. However, this version will likely stick for ROAM-2 testing.*
+*Note: MIT has open-sourced an updated version of `execute_asap`. However, this version is compatible with TRACE testing.*
 
-A set of tools that handle high-level coordination of ROAM-TS1 and ROAM-TS2. Trajectory input can be in the form of a CSV or DLR-formatted directory.
+A set of tools that handle high-level coordination of ROAM-TS1 and ROAM-TS2. Trajectory input can be in the form of a CSV or standard formatted directory (see `data/input/sample-trajectories`).
 
 - `execute_asap.py` : high-level coordinating script
 - `chaser_test.py` : chaser-level coordinating script
@@ -16,7 +16,7 @@ The `execute_asap` nodelet listens to incoming GDS ROS parameters that define a 
 
 ## Usage:
 
-For running a test in the simulator, use your desired TEST_NUMBER as an argument with the `pub_gds_topics.py` script. This script sets the parameters that GDS eventually will set. `execute_asap.py` listens to these parameters, launches the TumbleDock nodelets, and hands it off to individual *roles*, in this case
+For running a test in the simulator, use your desired TEST_NUMBER as an argument with the `pub_gds_topics.py` script. This script sets the parameters that GDS eventually will set. `execute_asap.py` listens to these parameters, launches the TRACE nodelets, and hands it off to individual *roles*, in this case
 Chaser and Target. `chaser_asap.py` and `target_asap.py` set the chaser/target initial conditions and test-specific parameters; real-time logic throughout a test is handled by *coordinator nodelets*, `chaser_coordinator_nodelet.cc` and `target_coordinator_nodelet.cc`.
 
 Run using: rosrun execute_asap pub_gds_topics.py [--ground] [--sim] test_number, e.g.,
@@ -29,11 +29,11 @@ Run using: rosrun execute_asap pub_gds_topics.py [--ground] [--sim] test_number,
 
 ## Canceling a test:
 
-To end a test and kill TumbleDock nodelets, run the script with a -1:
+To end a test and kill TRACE nodelets, run the script with a -1:
 
 `rosrun execute_asap pub_gds_topics.py --ground --sim -1` : to cancel tests on the ground for sim.
 
-This will stop all ROS bag recording and will also kill the TumbleDock nodelets. The `execute_asap` nodelet will still run, offering the opportunity to run another test and launch TumbleDock nodelets again.
+This will stop all ROS bag recording and will also kill the TRACE nodelets. The `execute_asap` nodelet will still run, offering the opportunity to run another test and launch TRACE nodelets again.
 
 ## Robot namespacing:
 

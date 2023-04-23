@@ -2,9 +2,9 @@
 
 You've found the right place to get and dump your data!
 
-Inputs to the ROAM-TS1 and ROAM-TS2 are placed in `data/input/`.
+Inputs (like sample trajectories) are placed in `data/input/`.
 
-Outputs (in simulation) should be placed in `data/output/`. Actual output on Astrobee hardware will likely be `/data/`, pending confirmation.
+Outputs (in simulation) should be placed in `data/output/`. Actual output on Astrobee hardware differs.
 
 ## Creating Reference Trajectories
 
@@ -18,7 +18,7 @@ See `main_traj_demo_script.m` for a complete usage example.
 
 ## Visualizing Tumble Trajectories
 
-You can viusalize TumbleDock trajectories using
+You can viusalize TRACE trajectories using
 
 `tumble_anim.m`
 

@@ -73,7 +73,7 @@ class UCBoundNodelet : public ff_util::FreeFlyerNodelet {
 
  private:
   // Parameters
-  std::string instruction_ = "no_action";  // TumbleDock instruction parameter, set by ASAP
+  std::string instruction_ = "no_action";  // TRACE instruction parameter, set by ASAP
   std::string sim_ = "false";
   std::string traj_filename_;
   int test_number_ = 0;
@@ -95,8 +95,8 @@ class UCBoundNodelet : public ff_util::FreeFlyerNodelet {
 
   bool unit_test_complete_ = false;
 
-  // 0 = pre-saved DLR trajectory for unit test
-  // 1 = Caroline's online motion planner format
+  // 0 = pre-saved CSV trajectory for unit test
+  // 1 = standard online motion planner format
   int traj_type_;
 
   float loop_rate_ = 1;
@@ -120,7 +120,7 @@ class UCBoundNodelet : public ff_util::FreeFlyerNodelet {
   Vector4f targ_att0_;
   Vector3f targ_w0_;
 
-  // Subscriber for DLR motion plan
+  // Subscriber for motion plan
   ros::Subscriber sub_x_des_traj_;
   ros::Subscriber sub_inertia_;
 
@@ -401,7 +401,7 @@ class UCBoundNodelet : public ff_util::FreeFlyerNodelet {
     MatrixXf nom_chaser_pos(num_rows, 3);
     MatrixXf nom_chaser_vel(num_rows, 3);
 
-    // Center pre-saved DLR trajectory on target
+    // Center pre-saved trajectory on target
     if (traj_type_ == 0) {
       for (int i = 0; i < 3; i++) {
         nom_chaser_pos.col(i) = nom_chaser_traj_data.col(i + 1);
@@ -416,8 +416,8 @@ class UCBoundNodelet : public ff_util::FreeFlyerNodelet {
     }
     // Center online motion planner on target
     // Time is gone from online motion planner trajectory read in, thus use
-    // col(i) not col(i+1) Basing pos, vel, acc columns off of dlr_utils.h
-    // (get_dlr_output_x)
+    // col(i) not col(i+1) Basing pos, vel, acc columns off of traj_utils.h
+    // (get_traj_output_x)
     else {
       for (int i = 0; i < 3; i++) {
         nom_chaser_pos.col(i) = nom_chaser_traj_data.col(1 + i) -

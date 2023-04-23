@@ -35,7 +35,6 @@
   <node
         pkg="nodelet" type="nodelet" name="nmpc_manager"
         args="manager"
-        launch-prefix="gdb -ex run --args"
         output="$(arg output)"/>
 
   <!-- Now inject the nodelet into the nodelet manager -->

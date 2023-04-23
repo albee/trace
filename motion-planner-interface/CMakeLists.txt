@@ -17,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   ff_util
   trace_msgs
   ff_msgs
+  ff_msg_conversions
 )
 
 add_message_files(
@@ -46,16 +47,18 @@ catkin_package(
     ff_util
     trace_msgs
     ff_msgs
+    ff_msg_conversions
 )
 
 find_package(Eigen3 REQUIRED)
 
 add_library(motion_planner_interface
   ${CMAKE_CURRENT_SOURCE_DIR}/../data/src/traj_utils.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/motion_planner_interface_nodelet.cc
 )
 
 target_include_directories(motion_planner_interface PUBLIC
-  ${catkin_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIRS} include ${CMAKE_CURRENT_SOURCE_DIR}/../data/include
+  ${catkin_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIRS} include ${CMAKE_CURRENT_SOURCE_DIR}/../data/include/
 )
 
 target_link_libraries(motion_planner_interface

@@ -459,7 +459,8 @@ namespace casadi_nmpc {
       // find the relative rotation quaternion from q0 to q_updated (Target)...
       q_targ_IB_0 = tf2::Quaternion{eigen_q_targ_0_hist_(traj_idx_ + i, 0), eigen_q_targ_0_hist_(traj_idx_ + i, 1), eigen_q_targ_0_hist_(traj_idx_ + i, 2), eigen_q_targ_0_hist_(traj_idx_ + i, 3)};
       q_shift = q_targ_IB_new * q_targ_IB_0.inverse();
-      R_shift = q2dcm(Vector4f{q_shift[0], q_shift[1], q_shift[2], q_shift[3]}).cast<double>();
+      R_shift = q2dcm(Vector4f(static_cast<float>(q_shift[0]), static_cast<float>(q_shift[1]),
+                               static_cast<float>(q_shift[2]), static_cast<float>(q_shift[3]))).cast<double>();
       // ...and apply this rotation to the planned Chaser attitude.
 
       // if (i == 0 || i == 1) {

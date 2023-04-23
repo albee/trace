@@ -39,13 +39,16 @@
 #include <ff_msgs/ControlState.h>
 #include <ff_msgs/FlightMode.h>
 #include <ff_msgs/EkfState.h>
-#include <msg-conversions/ff_msg_conversions.h>
+#include <ff_msg_conversions/ff_msg_conversions.h>
 
 // TRACE
 #include "mpdebugmsg.h"
 #include <trace_msgs/TDStatus.h>
 #include <trace_msgs/TDMotionPlannerInterfaceStatus.h>
 #include "data/att_utils.h"
+#include "data/eigen_msg.h"
+#include "data/eigen_kdl.h"
+#include "data/traj_utils.h"
 
 namespace motion_planner_interface {
 
@@ -275,7 +278,7 @@ class MotionPlannerInterfaceNodelet : public ff_util::FreeFlyerNodelet {
     // Call motion planner with the relevant inputs
     std::vector<int> params{1, 1, LUT_param_0_};
 
-    // adjust y for DLR convention on x- and z-axis tests
+    // adjust y for standard convention on x- and z-axis tests
     if (test_number_ > 100) {
       std::string test_number_str = std::to_string(test_number_);
       if (test_number_str[0] == '1') { // x
@@ -311,7 +314,7 @@ class MotionPlannerInterfaceNodelet : public ff_util::FreeFlyerNodelet {
     // call motion planner
     NODELET_INFO_STREAM("[MotionPlannerInterface]: Planner executable call reached");
     try {
-      mpMIT_call_ = dlr::call_dlr(params, chaser_pos, chaser_mass, target_inertia, target_pos, target_quat, target_ang_vel, TRAJ_PATH_, SIM_, GROUND_);
+      mpMIT_call_ = traj_utils::call_planner(params, chaser_pos, chaser_mass, target_inertia, target_pos, target_quat, target_ang_vel, TRAJ_PATH_, SIM_, GROUND_);
     }
     catch (...) {
       NODELET_ERROR_STREAM("[MotionPlannerInterface]: Planner executable call failed! Call errored.");
@@ -360,7 +363,7 @@ class MotionPlannerInterfaceNodelet : public ff_util::FreeFlyerNodelet {
     readinname = TRAJ_PATH_ + "mp_str.dat";
     std::string svals;
     debugfile.open(readinname);
-    std::getline(debugfile,svals);
+    std::getline(debugfile, svals);
     debugfile.close();
 
     // mp_vio.dat
@@ -387,7 +390,9 @@ class MotionPlannerInterfaceNodelet : public ff_util::FreeFlyerNodelet {
     tf::matrixEigenToMsg(nreadin, nreadout);
     pub_debug_numbers_.publish(nreadout);
 
-    pub_debug_string_.publish(svals);
+    std_msgs::String msg;
+    msg.data = svals;
+    pub_debug_string_.publish(msg);
 
     std_msgs::Float64MultiArray vreadout;
     tf::matrixEigenToMsg(vvreadin, vreadout);

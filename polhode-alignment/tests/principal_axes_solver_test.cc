@@ -339,13 +339,8 @@ TEST(PrincipalAxesSolverTest, Construction) {
   const Eigen::MatrixXd Gn_omega = Eigen::Matrix3d(aa_GB) * Bn_omega_tru;
   */
   std::string filename;
-  //filename = "/home/charles/td_ws/freeflyer-shared-td/develop/data/slam_data/analysis/smooth_omega60.csv";
-  //filename = "/home/charles/td_ws/freeflyer-shared-td/develop/data/slam_data/analysis/smooth_omega90.csv";
-  //filename = "/home/charles/td_ws/freeflyer-shared-td/develop/data/slam_data/analysis/smooth_omega120.csv";
-  //filename = "/home/charles/td_ws/freeflyer-shared-td/develop/data/slam_data/analysis/smooth_omega150.csv";
-  std::string TD_PATH = "/home/albee/workspaces/astrobee-ws-td/freeflyer-shared-td";
-  filename = TD_PATH + "/develop/data/slam_data/analysis/smooth_omega_test6_flipped.csv";
-  // filename = "/home/charles/td_ws/freeflyer-shared-td/develop/data/slam_data/analysis/smooth_omega_test6_flipped.csv";
+  std::string TD_PATH = "SET_TO_YOUR_TRACE_PATH";
+  filename = TD_PATH + "/data/input/target-tumbles/smooth_omega_test6_flipped.csv";
   Eigen::MatrixXd Gn_omega = load_csv<Eigen::MatrixXd>(filename).transpose();
 
   // Initial conditions.

@@ -24,7 +24,6 @@
   <depend>geometry_msgs</depend>
   <depend>data</depend>
   <depend>trace_msgs</depend>
-  <depend>ekf_dlr</depend>
   <export>
     <nodelet plugin="${prefix}/nodelet_plugins.xml" />
   </export>

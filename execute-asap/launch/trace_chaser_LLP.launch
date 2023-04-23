@@ -1,24 +1,5 @@
-<!-- Copyright (c) 2017, United States Government, as represented by the     -->
-<!-- Administrator of the National Aeronautics and Space Administration.     -->
-<!--                                                                         -->
-<!-- All rights reserved.                                                    -->
-<!--                                                                         -->
-<!-- The Astrobee platform is licensed under the TBD -->
-<!-- (the "License"); you may not use this file except in compliance with    -->
-<!-- the License. You may obtain a copy of the License at                    -->
-<!--                                                                         -->
-<!--     http://www.apache.org/licenses/LICENSE-2.0                          -->
-<!--                                                                         -->
-<!-- Unless required by applicable law or agreed to in writing, software     -->
-<!-- distributed under the License is distributed on an "AS IS" BASIS,       -->
-<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or         -->
-<!-- implied. See the License for the specific language governing            -->
-<!-- permissions and limitations under the License.                          -->
-
 <launch>
-
   <!-- Additional options -->
-  <arg name="drivers"/>                       <!-- Should we launch drivers? -->
   <arg name="spurn" default=""/>              <!-- PRevent a specific node   -->
   <arg name="nodes" default=""/>              <!-- Launch specific nodes     -->
   <arg name="extra" default=""/>              <!-- Inject an additional node -->
@@ -27,13 +8,16 @@
   <arg name="ns"    default="" />             <!-- Robot namespace           -->
   <arg name="loc_only" default="false"/>           <!-- Only run localization     -->
 
-  <!-- ***TD nodelets and managers***-->
+  <!-- ***TRACE nodelets and managers***-->
   <?comment launch-prefix="x-terminal-emulator -e gdb -ex run --args" ?>
-  <rosparam command="load" file="$(find execute_asap)/config/casadi_nmpc_config/casadi_nmpc_params.yaml"/>
+  
+  <rosparam command="load" file="$(find execute_asap)/config/casadi-nmpc-config/casadi_nmpc_params.yaml"/>
+
   <param name="td/instruct" type="string" value="no_action" />
 
     <node pkg="nodelet" type="nodelet" name="casadi_nmpc"
           required="false" respawn="false"
           args="standalone casadi_nmpc/CasadiNMPCNodelet"
           output="$(arg output)"/>
+  <!-- ***end TRACE nodelets and managers***-->
 </launch>

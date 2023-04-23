@@ -25,6 +25,7 @@
   <depend>message_generation</depend>
   <depend>message_runtime</depend>
   <depend>trace_msgs</depend>
+  <depend>ff_msg_conversions</depend>
   <export>
     <nodelet plugin="${prefix}/nodelet_plugins.xml" />
   </export>

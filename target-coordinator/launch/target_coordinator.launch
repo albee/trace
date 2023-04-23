@@ -1,163 +1,40 @@
-
-
-
-<!-- Copyright (c) 2017, United States Government, as represented by the     -->
-<!-- Administrator of the National Aeronautics and Space Administration.     -->
-<!--                                                                         -->
-<!-- All rights reserved.                                                    -->
-<!--                                                                         -->
-<!-- The Astrobee platform is licensed under the TBD -->
-<!-- (the "License"); you may not use this file except in compliance with    -->
-<!-- the License. You may obtain a copy of the License at                    -->
-<!--                                                                         -->
-<!--     http://www.apache.org/licenses/LICENSE-2.0                          -->
-<!--                                                                         -->
-<!-- Unless required by applicable law or agreed to in writing, software     -->
-<!-- distributed under the License is distributed on an "AS IS" BASIS,       -->
-<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or         -->
-<!-- implied. See the License for the specific language governing            -->
-<!-- permissions and limitations under the License.                          -->
-
 <launch>
-<!--
-  Launch options
--->
+  <?comment launch-prefix="gdb -ex run --args" ?>
+  <?comment launch-prefix="valgrind --leak-check=full" ?>
 
-  <!-- Context options (NB: THESE ARE OVERRIDDEN BY ENVIRONMENT VARIABLES)   -->
   <arg name="robot" default="$(optenv ASTROBEE_ROBOT sim)" />
   <arg name="world" default="$(optenv ASTROBEE_WORLD iss)" />
-  <arg name="ns" default="" />                  <!-- Robot namespace prefix  -->
-  <arg name="output" default="screen"/>         <!-- Where nodes should log: "log" or "screen"  -->
-  <arg name="spurn" default=""/>                <!-- Prevent a specific node -->
-  <arg name="nodes" default=""/>                <!-- Launch specific nodes   -->
-  <arg name="extra" default=""/>                <!-- Inject additional node  -->
-  <arg name="debug" default=""/>                <!-- Debug node group        -->
-  <arg name="sim" default="local" />            <!-- SIM IP address          -->
-  <arg name="llp" default="local" />            <!-- LLP IP address          -->
-  <arg name="mlp" default="local" />            <!-- MLP IP address          -->
-  <arg name="rec" default="" />                 <!-- Record local data       -->
-  <arg name="dds" default="false" />             <!-- Enable DDS, disabled for sim!              -->
 
-  <!-- General options -->
-  <arg name="gviz" default="false" />           <!-- Start GNC visualizer    -->
-  <arg name="rviz" default="true" />           <!-- Start visualization     -->
-  <arg name="sviz" default="false" />           <!-- Start simulation GUI    -->
-  <arg name="rqt" default="false" />            <!-- Start user interface    -->
-  <arg name="gds" default="false" />            <!-- Enable GDS              -->
-  <arg name="agent1" default="Bsharp"/>         <!-- GDS Agent1              -->
-  <arg name="agent2" default="Bumble"/>         <!-- GDS Agent2              -->
-  <arg name="agent3" default="Honey"/>          <!-- GDS Agent3              -->
-  <arg name="vmware" default="false" />          <!-- Enable vmware           -->
-  <arg name="speed" default="1" />              <!-- Speed multiplier        -->
-  <arg name="sdebug" default="false" />         <!-- Debug simulator         -->
-  <arg name="stats" default="false" />          <!-- Message statistics      -->
-
-  <!-- Robots to launch -->
-  <arg name="bumble" default="true" />         <!-- Insert default '/' robot    -->
-  <arg name="honey" default="true" />          <!-- Insert a honey robot    -->
-
-  <!-- Start locations -->
-    <arg if="$(eval arg('world')=='iss')"
-    name="pose" default="10.9 -6.65 4.9 0 0 0 1" />    <!-- default="10.001 -9.754 4.410 1 0 0 0" /> scalar last!-->
-
-  <arg if="$(eval arg('world')=='granite')"
-    name="pose" default="0 0 -0.7 0, 0, -0.8509035, 0.525322" />
-
-
-
-<!--
-  Set variables and start spinning up nodes. Refer to launch file diagram for details.
--->
-
-  <!-- Make sure all environment variables are set for controller -->
-  <!-- Override the robot and world environment variables all the time. The -->
-  <!-- environment variables are the default if they are set. So in this -->
-  <!-- case we are overriding the environment variables with themselves. -->
-  <!-- Roslaunch arguments override the environment variable which is what -->
-  <!-- this will do. -->
   <env name="ASTROBEE_ROBOT" value="$(arg robot)" />
   <env name="ASTROBEE_WORLD" value="$(arg world)" />
-  <env if="$(eval optenv('ASTROBEE_CONFIG_DIR','')=='')"
+  <!-- <env if="$(eval optenv('ASTROBEE_CONFIG_DIR','')=='')"
        name="ASTROBEE_CONFIG_DIR" value="$(find astrobee)/config" />
   <env if="$(eval optenv('ASTROBEE_RESOURCE_DIR','')=='')"
        name="ASTROBEE_RESOURCE_DIR" value="$(find astrobee)/resources" />
   <env if="$(eval optenv('ROSCONSOLE_CONFIG_FILE','')=='')"
-       name="ROSCONSOLE_CONFIG_FILE" value="$(find astrobee)/resources/logging.config"/>
+       name="ROSCONSOLE_CONFIG_FILE" value="$(find astrobee)/resources/logging.config"/> -->
 
-  <!-- Declare our global logging format -->
-  <env name="ROSCONSOLE_FORMAT" value="[${severity}] [${time}] : (${logger}) ${message}"/>
+  <arg name="spurn" default=""/>                 <!-- Prevent a specific node   -->
+  <arg name="nodes" default=""/>                 <!-- Launch specific nodes     -->
+  <arg name="extra" default=""/>                 <!-- Inject an additional node -->
+  <arg name="debug" default=""/>                 <!-- Debug a node set          -->
+  <arg name="dds" default="false"/>              <!-- Should DDS be started     -->
+  <arg name="output" default="screen"/>          <!-- Where nodes should log    -->
 
-  <!-- Always launch on the local machine -->
-  <group>
-    <machine name ="local" address="localhost" default="true"/>
-    <!-- Start the descriptions (ISS, dock, granite) for visualization purposes -->
-    <include file="$(find astrobee)/launch/controller/descriptions.launch">
-      <arg name="world" value="$(arg world)"/>
-    </include>
-    <!-- Start ground controller services -->
-    <include if="$(arg stats)" file="$(find astrobee)/launch/controller/stats.launch"/>
-    <include if="$(arg gviz)" file="$(find astrobee)/launch/controller/gviz.launch"/>
-    <include if="$(arg gds)" file="$(find astrobee)/launch/controller/gds.launch">
-      <arg name="world" value="$(arg world)"/>
-      <arg name="agent1" value="$(arg agent1)"/>
-      <arg name="agent2" value="$(arg agent2)"/>
-      <arg name="agent3" value="$(arg agent3)"/>
-    </include>
-    <include if="$(arg rqt)" file="$(find astrobee)/launch/controller/rqt.launch"/>
-    <include if="$(arg rviz)" file="$(find astrobee)/launch/controller/rviz.launch">
-<!--       <arg name="viewfile" value="$(arg world)"/> -->
-      <arg name="viewfile" value="td"/>
-    </include>
-    <!-- Launch a recorder for this robot-->
-    <include unless="$(eval arg('rec')=='')"
-             file="$(find astrobee)/launch/controller/bagrecord.launch">
-      <arg name="bag" value="$(arg rec)"/>
-    </include>
-  </group>
+  <rosparam command="load" file="$(find execute_asap)/config/target-coordinator-config/targ_coord_params.yaml"/>
+  <rosparam command="load" file="$(find execute_asap)/config/uc-bound-config/uc_bound_params.yaml"/>
 
-  <!-- Allow the simulator to be optionally launched remotely-->
-  <group>
-    <!-- Connect and update environment variables if required -->
-    <machine unless="$(eval arg('sim')=='local')" name="sim_server" default="true"
-             address="$(arg sim)" user="astrobee" password="astrobee" timeout="10"/>
-    <!-- Update the environment variables relating to absolute paths -->
-    <env unless="$(eval arg('sim')=='local')"
-         name="ASTROBEE_CONFIG_DIR" value="/home/astrobee/native/config" />
-    <env unless="$(eval arg('sim')=='local')"
-         name="ASTROBEE_RESOURCE_DIR" value="home/astrobee/native/resources" />
-    <env unless="$(eval arg('sim')=='local')"
-         name="ROSCONSOLE_CONFIG_FILE" value="/home/astrobee/native/resources/logging.config"/>
-    <env unless="$(eval arg('sim')=='local')"
-         name="DISPLAY" value=":0"/>
-    <env unless="$(eval arg('sim')=='local')"
-         name="ROS_IP" value="$(arg sim)"/>
-    <!-- Start the simulator -->
-    <include file="$(find astrobee)/launch/controller/sim_start.launch">
-      <arg name="world" value="$(arg world)" />
-      <arg name="sviz" value="$(arg sviz)" />
-      <arg name="vmware" value="$(arg vmware)" />
-      <arg name="speed" value="$(arg speed)" />
-      <arg name="debug" value="$(arg sdebug)" />
-    </include>
-  </group>
+  <!-- Start a nodelet manager, if needed -->
+  <node
+        pkg="nodelet" type="nodelet" name="target_coordinator_manager"
+        args="manager"
+        output="$(arg output)"/>
 
-  <!-- Auto-insert default '/' at a desired initial location -->
-  <group if="$(arg default)">
-    <include file="$(find astrobee)/launch/spawn.launch">
-      <arg name="robot" value="$(arg robot)" />      <!-- Type of robot      -->
-      <arg name="world" value="$(arg world)" />      <!-- Execution context  -->
-      <arg name="ns" value="$(arg ns)" />            <!-- Robot namespace    -->
-      <arg name="output" value="$(arg output)" />    <!-- Output for logging -->
-      <arg name="pose" value="$(arg pose)" />        <!-- Initial robot pose -->
-      <arg name="spurn" value="$(arg spurn)" />      <!-- Prevent node       -->
-      <arg name="nodes" value="$(arg nodes)" />      <!-- Launch node group  -->
-      <arg name="extra" value="$(arg extra)" />      <!-- Inject extra nodes -->
-      <arg name="debug" value="$(arg debug)" />      <!-- Debug a node set   -->
-      <arg name="sim" value="$(arg sim)" />          <!-- SIM IP address     -->
-      <arg name="llp" value="$(arg llp)" />          <!-- LLP IP address     -->
-      <arg name="mlp" value="$(arg mlp)" />          <!-- MLP IP address     -->
-      <arg name="dds" value="$(arg dds)" />          <!-- Enable DDS         -->
-    </include>
-  </group>
+  <!-- Now inject the nodelet into the nodelet manager -->
+  <node pkg="nodelet" type="nodelet" name="target_coordinator"
+        required="false" respawn="false"
+        args="load target_coordinator/TargetCoordinatorNodelet target_coordinator_manager"
+        output="$(arg output)"/>
 
+  <param name="td/instruct" type="string" value="no_action" />
 </launch>

@@ -1,10 +1,8 @@
 # Tutorial
 
-MIT/DLR-developed code for ROAM/TumbleDock. This includes a set of nodelets, Python coordinating scripts, a DLR executable, standalone Python scripts, and a data storage folder.
+This walkthrough overviews the code for TRACE, which includes a set of rendezvous nodelets, Python coordinating scripts, standalone Python scripts, and a data storage folder. TRACE is intergrated with the Astrobee simulation for testing purposes, but can be adapted to other simulation environments. This tutorial assumes
+you've successfully set up your environment from README.md.
 
-Execution flow is provided using the ASAP (Astrobe Science Application Package) interface; consult the Notion for a general introduction on how tests are performed and nodes are integrated.
-
-*Note: MIT is working on open-sourcing an updated version of the ASAP interface. However, this version will likely stick for ROAM-2 testing.*
 
 ## Simulation Usage
 
@@ -21,7 +19,7 @@ Execution flow is provided using the ASAP (Astrobe Science Application Package) 
 `rosrun executive teleop_tool -ns "bumble/" -reset_bias`
 `rosrun executive teleop_tool -ns "honey/" -reset_bias`
 
-- Run a ROAM test (after sim launch)
+- Run a TRACE test (after sim launch)
 ```
 `rosrun execute_asap pub_gds_topics.py --ground --sim 1` : to run test 1 on the ground for sim
 
@@ -84,10 +82,6 @@ The nodelet package for sending trajectory commands to the controller topic (Cha
 
 data folder for test `input/` and `output/`
 
-## ekf_DLR
-
-An EKF for localization outlier rejection, which exists as a submodule. Please contact DLR for access.
-
 ## execute_ASAP
 
 High-level commanding scripts. These are currently pure Python scripts that use the ROS parameter server.
@@ -110,16 +104,12 @@ The nodelet package for sending trajectory commands to the controller topic (Tar
 
 ## trace_msgs
 
-Custom msg definitions used by ROAM nodes.
+Custom msg definitions used by TRACE nodes.
 
 ## motion_planner_interface
 
-The nodelet running DLR's export-controlled executable. The executable itself resides in data/ and is NOT in this public repository. There are currently some demo versions available provided by DLR.
+An interface to output of a motion planner. Demonstration motion plans are available in `data/input/sample-trajectories` for demonstration purposes.
 
 ## uc_bound
 
 Uncertainty characterizer, produces an uncertainty bound used by the Tube MPC.
-
-## uc_bound_dummy_est
-
-Stand-in estimator for intermediate testing.

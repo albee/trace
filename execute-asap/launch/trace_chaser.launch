@@ -1,20 +1,3 @@
-<!-- Copyright (c) 2017, United States Government, as represented by the     -->
-<!-- Administrator of the National Aeronautics and Space Administration.     -->
-<!--                                                                         -->
-<!-- All rights reserved.                                                    -->
-<!--                                                                         -->
-<!-- The Astrobee platform is licensed under the TBD -->
-<!-- (the "License"); you may not use this file except in compliance with    -->
-<!-- the License. You may obtain a copy of the License at                    -->
-<!--                                                                         -->
-<!--     http://www.apache.org/licenses/LICENSE-2.0                          -->
-<!--                                                                         -->
-<!-- Unless required by applicable law or agreed to in writing, software     -->
-<!-- distributed under the License is distributed on an "AS IS" BASIS,       -->
-<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or         -->
-<!-- implied. See the License for the specific language governing            -->
-<!-- permissions and limitations under the License.                          -->
-
 <launch>
   <arg name="robot" default="$(optenv ASTROBEE_ROBOT queen)" />
   <arg name="world" default="$(optenv ASTROBEE_WORLD iss)" />
@@ -37,46 +20,35 @@
   <env if="$(eval optenv('ROSCONSOLE_CONFIG_FILE','')=='')"
        name="ROSCONSOLE_CONFIG_FILE" value="$(find astrobee)/resources/logging.config"/>
 
-    <!-- LLP -->
-    <group unless="$(eval arg('llp')=='disabled')">
+  <!-- LLP -->
+  <group unless="$(eval arg('llp')=='disabled')">
+    <machine unless="$(eval arg('llp')=='local')" name="llp" address="$(arg llp)">
+    </machine>
 
-      <machine unless="$(eval arg('llp')=='local')" name="llp" address="$(arg llp)">
-      </machine>
+    <include file="$(find execute_asap)/launch/trace_chaser_LLP.launch" >
+      <arg name="ns" value="$(arg ns)" />            <!-- Robot namespace           -->
+      <arg name="spurn" value="$(arg spurn)" />      <!-- Prevent node         -->
+      <arg name="nodes" value="$(arg nodes)" />      <!-- Launch node group    -->
+      <arg name="extra" value="$(arg extra)" />      <!-- Inject extra nodes   -->
+      <arg name="debug" value="$(arg debug)" />      <!-- Debug node group     -->
+      <arg name="output" value="$(arg output)" />
+    </include>
+  </group>
 
-      <include file="$(find execute_asap)/launch/td_chaser_LLP.launch" >
-        <arg name="ns" value="$(arg ns)" />            <!-- Robot namespace           -->
-        <arg name="spurn" value="$(arg spurn)" />      <!-- Prevent node         -->
-        <arg name="nodes" value="$(arg nodes)" />      <!-- Launch node group    -->
-        <arg name="extra" value="$(arg extra)" />      <!-- Inject extra nodes   -->
-        <arg name="debug" value="$(arg debug)" />      <!-- Debug node group     -->
-        <arg name="output" value="$(arg output)" />
-      </include>
+  <!-- MLP -->
+  <group unless="$(eval arg('mlp')=='disabled')">
+    <machine unless="$(eval arg('mlp')=='local')" name="mlp" address="$(arg mlp)">
+    </machine>
 
-      <!-- If we have specified a bag, then play it back into flight software-->
-      <!-- node pkg="astrobee" type="check_env.sh" name="llp_check_env" output="screen" -->
-
-    </group>
-
-    <!-- MLP -->
-    <group unless="$(eval arg('mlp')=='disabled')">
-
-      <machine unless="$(eval arg('mlp')=='local')" name="mlp" address="$(arg mlp)">
-      </machine>
-
-      <!-- If we have specified a bag, then play it back into flight software-->
-      <include file="$(find execute_asap)/launch/td_chaser_MLP.launch" >
-        <arg name="ns" value="$(arg ns)" />            <!-- Robot namespace           -->
-        <arg name="env" value="$(arg env)" />          <!-- ISS/ground -->
-        <arg name="spurn" value="$(arg spurn)" />      <!-- Prevent node         -->
-        <arg name="nodes" value="$(arg nodes)" />      <!-- Launch node group    -->
-        <arg name="extra" value="$(arg extra)" />      <!-- Inject extra nodes   -->
-        <arg name="debug" value="$(arg debug)" />      <!-- Debug node group     -->
-        <arg name="output" value="$(arg output)" />
-      </include>
-
-      <!-- If we have specified a bag, then play it back into flight software-->
-      <!-- node pkg="astrobee" type="check_env.sh" name="mlp_check_env" output="screen" -->
-
-    </group>
+    <include file="$(find execute_asap)/launch/td_chaser_MLP.launch" >
+      <arg name="ns" value="$(arg ns)" />            <!-- Robot namespace           -->
+      <arg name="env" value="$(arg env)" />          <!-- ISS/ground -->
+      <arg name="spurn" value="$(arg spurn)" />      <!-- Prevent node         -->
+      <arg name="nodes" value="$(arg nodes)" />      <!-- Launch node group    -->
+      <arg name="extra" value="$(arg extra)" />      <!-- Inject extra nodes   -->
+      <arg name="debug" value="$(arg debug)" />      <!-- Debug node group     -->
+      <arg name="output" value="$(arg output)" />
+    </include>
+  </group>
 
 </launch>

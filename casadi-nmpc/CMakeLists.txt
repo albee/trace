@@ -65,14 +65,19 @@ include_directories(${EIGEN3_INCLUDE_DIR} ${catkin_INCLUDE_DIRS})
 
 add_library(casadi_nmpc src/casadi_nmpc_nodelet.cc src/casadi_nmpc_utils.cc src/casadi_nmpc_ros.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/../backup-controller/src/backup_controller.cc)
-target_link_libraries(casadi_nmpc ${catkin_LIBRARIES} ${EIGEN_LIBRARIES} casadi)
+
+target_link_libraries(casadi_nmpc 
+  ${catkin_LIBRARIES} ${EIGEN_LIBRARIES} casadi
+)
 
 target_include_directories(casadi_nmpc PUBLIC ${catkin_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIRS} include casadi
   ${CMAKE_CURRENT_SOURCE_DIR}/../motion-planner-interface/include
   ${CMAKE_CURRENT_SOURCE_DIR}/../data/include 
   ${CMAKE_CURRENT_SOURCE_DIR}/../backup-controller/include)
 
-add_dependencies(casadi_nmpc ${catkin_EXPORTED_TARGETS})
+add_dependencies(casadi_nmpc
+  ${catkin_EXPORTED_TARGETS}
+)
 
 install(TARGETS casadi_nmpc DESTINATION lib)
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/

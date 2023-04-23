@@ -40,7 +40,7 @@ TRACE's major dependencies include:
 Most of TRACE's dependencies are satisfied on debian-based system with:
 
 ```bash
-sudo apt install python3-rospkg-modules gmp m4 ros-kinetic-eigen-conversions libccd libeigen python-dev
+sudo apt install python3-rospkg-modules gmp m4 ros-kinetic-eigen-conversions libccd libeigen python-dev python-yaml
 sudo apt install libpcl-common1.7 libpcl-features1.7 libpcl-kdtree1.7 libpcl-octree1.7 clibpcl-search1.7 libpcl-filters1.7 libpcl-sample-consensus1.7
 pip3 install pycddlib numpy scipy pytope
 

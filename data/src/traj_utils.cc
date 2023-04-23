@@ -95,7 +95,7 @@ std::string call_planner(std::vector<int> params, std::vector<double> chaser_pos
 
   std::cout << CMD <<std::endl;
 
-  std::system(CMD.c_str());  // system takes a char*
+  if (!std::system(CMD.c_str())) { } // system takes a char*
 
   std::cout << "...motion planning call complete.\n(SIM is: " << SIM << ")" << std::endl;
 

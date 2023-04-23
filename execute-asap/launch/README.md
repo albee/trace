@@ -1,7 +1,7 @@
-# TumbleDock nodelet launch files
+# TRACE nodelet launch files
 
-The `execute_asap` node launches nodelets specific to the TumbleDock experiment upon recieving a test number from GDS. 
-Based upon `execute_asap`'s role, either `td_chaser.launch` or `td_target.launch` is called.
+The `execute_asap` node launches nodelets specific to the TRACE experiment upon recieving a test number from GDS. 
+Based upon `execute_asap`'s role, either `trace_chaser.launch` or `trace_target.launch` is called.
 
 From here, specific launch files for the robot's MLP and LLP actually launch each nodelet. Each nodelet is launched as a standalone nodelet, 
 which offers the ability to kill and re-launch them for each test.

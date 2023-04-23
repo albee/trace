@@ -8,9 +8,10 @@
 #include "casadi_nmpc/casadi_nmpc.h"
 #include "backup_controller/backup_controller.h"
 
-#include <ff_msgs/EkfState.h>
 #include <geometry_msgs/PoseWithCovariance.h>
 #include <geometry_msgs/TwistWithCovariance.h>
+
+#include <ff_msgs/EkfState.h>
 #include <ff_msgs/ControlState.h>
 
 #include <Eigen/Dense>
@@ -107,10 +108,10 @@ TEST(CasadiNMPCTest, CheckInputLimits) {
     std::cout << F_xyz_B.getX() << " " << F_xyz_B.getY() << " " << F_xyz_B.getZ() << std::endl;
     std::cout << T_xyz_B.getX() << " " << T_xyz_B.getY() << " " << T_xyz_B.getZ() << std::endl;
 
-    Eigen::Vector3f eig_F_xyz_B{F_xyz_B.getX(), F_xyz_B.getY(), F_xyz_B.getZ()};
-    Eigen::Vector3f eig_T_xyz_B{T_xyz_B.getX(), T_xyz_B.getY(), T_xyz_B.getZ()};
-    bool comp1 = eig_F_xyz_B.isApprox(Eigen::Vector3f{-0.1, -0.1, -0.1});
-    bool comp2 = eig_T_xyz_B.isApprox(Eigen::Vector3f{-0.1, -0.1, -0.1});
+    Eigen::Vector3d eig_F_xyz_B{F_xyz_B.getX(), F_xyz_B.getY(), F_xyz_B.getZ()};
+    Eigen::Vector3d eig_T_xyz_B{T_xyz_B.getX(), T_xyz_B.getY(), T_xyz_B.getZ()};
+    bool comp1 = eig_F_xyz_B.isApprox(Eigen::Vector3d{-0.1, -0.1, -0.1});
+    bool comp2 = eig_T_xyz_B.isApprox(Eigen::Vector3d{-0.1, -0.1, -0.1});
     std::cout << comp1 << " " << comp2 << std::endl;
     EXPECT_TRUE(comp1 && comp2);
     }
@@ -127,10 +128,10 @@ TEST(CasadiNMPCTest, CheckInputLimits) {
     std::cout << F_xyz_B.getX() << " " << F_xyz_B.getY() << " " << F_xyz_B.getZ() << std::endl;
     std::cout << T_xyz_B.getX() << " " << T_xyz_B.getY() << " " << T_xyz_B.getZ() << std::endl;
 
-    Eigen::Vector3f eig_F_xyz_B{F_xyz_B.getX(), F_xyz_B.getY(), F_xyz_B.getZ()};
-    Eigen::Vector3f eig_T_xyz_B{T_xyz_B.getX(), T_xyz_B.getY(), T_xyz_B.getZ()};
-    bool comp1 = eig_F_xyz_B.isApprox(Eigen::Vector3f{0.1, 0.1, 0.1});
-    bool comp2 = eig_T_xyz_B.isApprox(Eigen::Vector3f{0.1, 0.1, 0.1});
+    Eigen::Vector3d eig_F_xyz_B{F_xyz_B.getX(), F_xyz_B.getY(), F_xyz_B.getZ()};
+    Eigen::Vector3d eig_T_xyz_B{T_xyz_B.getX(), T_xyz_B.getY(), T_xyz_B.getZ()};
+    bool comp1 = eig_F_xyz_B.isApprox(Eigen::Vector3d{0.1, 0.1, 0.1});
+    bool comp2 = eig_T_xyz_B.isApprox(Eigen::Vector3d{0.1, 0.1, 0.1});
     std::cout << comp1 << " " << comp2 << std::endl;
     EXPECT_TRUE(comp1 && comp2);
     }
@@ -147,10 +148,10 @@ TEST(CasadiNMPCTest, CheckInputLimits) {
     std::cout << F_xyz_B.getX() << " " << F_xyz_B.getY() << " " << F_xyz_B.getZ() << std::endl;
     std::cout << T_xyz_B.getX() << " " << T_xyz_B.getY() << " " << T_xyz_B.getZ() << std::endl;
 
-    Eigen::Vector3f eig_F_xyz_B{F_xyz_B.getX(), F_xyz_B.getY(), F_xyz_B.getZ()};
-    Eigen::Vector3f eig_T_xyz_B{T_xyz_B.getX(), T_xyz_B.getY(), T_xyz_B.getZ()};
-    bool comp1 = eig_F_xyz_B.isApprox(Eigen::Vector3f{0.05, 0.05, -0.05});
-    bool comp2 = eig_T_xyz_B.isApprox(Eigen::Vector3f{0.05, 0.05, -0.05});
+    Eigen::Vector3d eig_F_xyz_B{F_xyz_B.getX(), F_xyz_B.getY(), F_xyz_B.getZ()};
+    Eigen::Vector3d eig_T_xyz_B{T_xyz_B.getX(), T_xyz_B.getY(), T_xyz_B.getZ()};
+    bool comp1 = eig_F_xyz_B.isApprox(Eigen::Vector3d{0.05, 0.05, -0.05});
+    bool comp2 = eig_T_xyz_B.isApprox(Eigen::Vector3d{0.05, 0.05, -0.05});
     std::cout << comp1 << " " << comp2 << std::endl;
     EXPECT_TRUE(comp1 && comp2);
     }
