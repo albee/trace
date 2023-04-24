@@ -33,15 +33,15 @@
 #include <std_srvs/SetBool.h>
 
 // FSW
-#include <ff_util/ff_nodelet.h>
-#include <ff_util/ff_names.h>
-#include <ff_util/ff_flight.h>
+#include <trace_astrobee_interface/ff_nodelet.h>
+#include <trace_astrobee_interface/ff_names.h>
+#include <trace_astrobee_interface/ff_flight.h>
 
 #include <ff_msgs/ControlState.h>
 #include <ff_msgs/FlightMode.h>
 #include <ff_msgs/FamCommand.h>
 #include <ff_msgs/SignalState.h>
-#include <ff_msg_conversions/ff_msg_conversions.h>
+#include <msg_conversions/msg_conversions.h>
 
 // TRACE
 #include <trace_msgs/TDStatus.h>
@@ -75,9 +75,9 @@ std::string UC_BOUND_TOPIC = "/td/uc_bound/uc_bound";
 std::string TOPIC_TD_STATUS = "td/status";
 std::string TOPIC_TD_TEST_NUMBER = "td/test_number";
 
-class ChaserCoordinatorNodelet : public ff_util::FreeFlyerNodelet {
+class ChaserCoordinatorNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
  public:
-  ChaserCoordinatorNodelet() : ff_util::FreeFlyerNodelet(true) {}  // don't do anything ROS-related in the constructor!
+  ChaserCoordinatorNodelet() : trace_astrobee_interface::FreeFlyerNodelet(true) {}  // don't do anything ROS-related in the constructor!
   ~ChaserCoordinatorNodelet() {}
 
  private:
@@ -113,7 +113,7 @@ class ChaserCoordinatorNodelet : public ff_util::FreeFlyerNodelet {
   ros::Subscriber sub_slam_info_;
   ros::Subscriber sub_inertia_;
 
-  // ff_util::FreeFlyerActionClient<ff_msgs::ControlAction> client_control_;
+  // trace_astrobee_interface::FreeFlyerActionClient<ff_msgs::ControlAction> client_control_;
 
   ros::Timer status_timer_;
   ros::Timer gnc_ctl_setpoint_timer_;
@@ -350,14 +350,14 @@ class ChaserCoordinatorNodelet : public ff_util::FreeFlyerNodelet {
     }
 
     if (test_number_ != 1) {
-      if (!ff_util::FlightUtil::GetFlightMode(flight_mode_, td_flight_mode_)) {
+      if (!trace_astrobee_interface::FlightUtil::GetFlightMode(flight_mode_, td_flight_mode_)) {
           return;
       }  // create a nominal FlightMode
       pub_flight_mode_.publish(flight_mode_);// Publish default flight mode so CTL/FAM will actually perform actuation
 
     }
     else {
-      if (!ff_util::FlightUtil::GetFlightMode(flight_mode_, "off")) {
+      if (!trace_astrobee_interface::FlightUtil::GetFlightMode(flight_mode_, "off")) {
           return;
       }  // create a nominal FlightMode
       pub_flight_mode_.publish(flight_mode_);// Publish default flight mode so CTL/FAM will actually perform actuation
@@ -1932,7 +1932,7 @@ class ChaserCoordinatorNodelet : public ff_util::FreeFlyerNodelet {
 
       // Set flight mode to off
       td_flight_mode_ = "off";
-      if (!ff_util::FlightUtil::GetFlightMode(flight_mode_, td_flight_mode_)) {
+      if (!trace_astrobee_interface::FlightUtil::GetFlightMode(flight_mode_, td_flight_mode_)) {
           return;
       }
       pub_flight_mode_.publish(flight_mode_);

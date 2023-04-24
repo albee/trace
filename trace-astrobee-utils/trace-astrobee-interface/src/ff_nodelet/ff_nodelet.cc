@@ -17,7 +17,7 @@
  */
 
 
-#include <ff_util/ff_nodelet.h>
+#include <trace_astrobee_interface/ff_nodelet.h>
 
 #include <boost/filesystem.hpp>
 
@@ -29,7 +29,7 @@
 #include <cstdint>
 #include <string>
 
-namespace ff_util {
+namespace trace_astrobee_interface {
 
 namespace fs = boost::filesystem;
 
@@ -364,4 +364,4 @@ std::string FreeFlyerNodelet::GetTransform(std::string const& child) {
   return frame;
 }
 
-}  // namespace ff_util
+}  // namespace trace_astrobee_interface

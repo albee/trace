@@ -27,13 +27,13 @@
 #include <ff_msgs/EkfState.h>
 #include <ff_msgs/GraphState.h>
 #include <ff_msgs/FamCommand.h>
-#include <ff_util/ff_nodelet.h>
-#include <ff_util/ff_names.h>
-#include <ff_util/ff_flight.h>
+#include <trace_astrobee_interface/ff_nodelet.h>
+#include <trace_astrobee_interface/ff_names.h>
+#include <trace_astrobee_interface/ff_flight.h>
 
 #include <std_msgs/Float64MultiArray.h>
 #include <std_msgs/MultiArrayDimension.h>
-#include <ff_msg_conversions/ff_msg_conversions.h>
+#include <msg_conversions/msg_conversions.h>
 #include <pluginlib/class_list_macros.h>
 
 // TRACE
@@ -92,9 +92,9 @@ static std::string TOPIC_TD_TUBE_MPC_DEBUG = "td/tube_mpc/debug";
 static std::string TOPIC_TD_STATUS = "td/status";
 static std::string TOPIC_TD_TUBE_MPC_MRPI = "/td/tube_mpc/mrpi";
 
-class CasadiNMPCNodelet : public ff_util::FreeFlyerNodelet {
+class CasadiNMPCNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
  public:
-  CasadiNMPCNodelet() : ff_util::FreeFlyerNodelet(true) {}  // initialization of FreeFlyerNodelet
+  CasadiNMPCNodelet() : trace_astrobee_interface::FreeFlyerNodelet(true) {}  // initialization of FreeFlyerNodelet
   ~CasadiNMPCNodelet() {}
 
   void Run();  // starts the main ROS loop

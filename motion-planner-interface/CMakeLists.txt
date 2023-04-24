@@ -14,10 +14,10 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   message_generation
   message_runtime
-  ff_util
+  trace_astrobee_interface
   trace_msgs
   ff_msgs
-  ff_msg_conversions
+  msg_conversions
 )
 
 add_message_files(
@@ -44,10 +44,10 @@ catkin_package(
     std_msgs
     message_generation
     message_runtime
-    ff_util
+    trace_astrobee_interface
     trace_msgs
     ff_msgs
-    ff_msg_conversions
+    msg_conversions
 )
 
 find_package(Eigen3 REQUIRED)

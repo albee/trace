@@ -16,8 +16,8 @@
  * under the License.
  */
 
-#ifndef FF_UTIL_FF_FLIGHT_H_
-#define FF_UTIL_FF_FLIGHT_H_
+#ifndef trace_astrobee_interface_FF_FLIGHT_H_
+#define trace_astrobee_interface_FF_FLIGHT_H_
 
 // ROS includes
 #include <ros/ros.h>
@@ -39,7 +39,7 @@
 #include <string>
 #include <map>
 
-namespace ff_util {
+namespace trace_astrobee_interface {
 
 // Convenience declarations
 typedef ff_msgs::ControlState Setpoint;
@@ -168,6 +168,6 @@ class FlightUtil {
     geometry_msgs::Pose const& a, geometry_msgs::Pose const& b);
 };
 
-}  // end namespace ff_util
+}  // end namespace trace_astrobee_interface
 
-#endif  // FF_UTIL_FF_FLIGHT_H_
+#endif  // trace_astrobee_interface_FF_FLIGHT_H_

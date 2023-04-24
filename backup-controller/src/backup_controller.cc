@@ -29,9 +29,9 @@
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 // FSW
-#include <ff_util/ff_names.h>
-#include <ff_util/ff_flight.h>
-#include <ff_msg_conversions/ff_msg_conversions.h>
+#include <trace_astrobee_interface/ff_names.h>
+#include <trace_astrobee_interface/ff_flight.h>
+#include <msg_conversions/msg_conversions.h>
 #include <ff_msgs/FamCommand.h>
 #include <ff_msgs/EkfState.h>
 #include <ff_msgs/ControlState.h>

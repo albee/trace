@@ -1,18 +1,62 @@
 # Tutorial
 
-This walkthrough overviews the code for TRACE, which includes a set of rendezvous nodelets, Python coordinating scripts, standalone Python scripts, and a data storage folder. TRACE is intergrated with the Astrobee simulation for testing purposes, but can be adapted to other simulation environments. This tutorial assumes
-you've successfully set up your environment from README.md.
+This walkthrough overviews the code for TRACE, which includes a set of nodelets for performing autonomous rendezvous, supporting infrastructure, and integration with the Astorbee simulation environment. While TRACE is out-of-the-box integrated with the Astrobee simulation for testing purposes, it can be adapted to other simulation environments. This tutorial assumes you've successfully set up your environment from README.md.
+
+## Astrobee Simulation Setup
+
+Next, check out the latest tested version of Astrobee's simulation environment and add it to your `trace-ws`:
+
+```bash
+export ASTROBEE_WS=$HOME/trace-ws/
+git clone https://github.com/nasa/astrobee.git $ASTROBEE_WS/src/astrobee
+pushd $ASTROBEE_WS/src/astrobee
+git checkout v0.16.1
+git submodule update --init --depth 1 description/media
+popd
+```
+
+Now, build Astrobee's dependencies:
+
+```bash
+pushd $ASTROBEE_WS
+cd src/astrobee/scripts/setup
+./add_ros_repository.sh
+sudo apt-get update
+cd debians
+./build_install_debians.sh
+cd ../
+./install_desktop_packages.sh
+sudo rosdep init
+rosdep update
+popd
+```
+
+Finally, configure and run catkin to build both the Astrobee sim and TRACE:
+
+```bash
+pushd $ASTROBEE_WS
+./src/astrobee/scripts/configure.sh -l -F -D
+export CMAKE_PREFIX_PATH="${CMAKE_PREFIX_PATH:+"$CMAKE_PREFIX_PATH:"}${ASTROBEE_WS}/src/astrobee/cmake"
+
+# disable trace-astrobee-utils/astrobee-msgs, since they are also provided by Astrobee
+touch src/trace/trace-astrobee-utils/astrobee-msgs/CATKIN_IGNORE
+popd
+
+catkin build -j2
+```
 
 
 ## Simulation Usage
 
+You can launch TRACE in the Astrobee simulation environment using `trace_astrobee_interface`:
+
 - Launch environment (ISS):
 
-`roslaunch astrobee sim_td.launch world:=iss rviz:=true`
+`roslaunch trace_astrobee_interface sim_trace.launch world:=iss rviz:=true`
 
 - Launch ground environment (ground):
 
-`roslaunch astrobee sim_td.launch world:=granite rviz:=true`
+`roslaunch trace_astrobee_interface sim_trace.launch world:=granite rviz:=true`
 
 - When switching between environments be sure to reset accelerometer bias for both Astrobees:
 
@@ -28,7 +72,8 @@ you've successfully set up your environment from README.md.
 `[-s, --sim]` : Run a simulation test. Defaults to hardware.
 ```
 
-See `execute_asap/README.md` for high-level usage instructions to understand how nodes are started/stoppped and the execution flow.
+See `execute_asap/README.md` for high-level usage instructions to understand how nodes are started/stoppped
+and the execution flow of test commands.
 
 ## Test List
 
@@ -66,33 +111,34 @@ Consult Notion for latest info on test parameters. `x` indicates different param
 
 # Directory Listing
 
-## backup_controller
+## backup-controller
 
-A backup PID controller (translational+attitude) for the Astrobee rigid body dynamics (Ian Hokaj). Commit in progress.
+A backup PID controller (translational+attitude) for the satellite rigid body dynamics.
 
-## casadi_nmpc
+## casadi-nmpc
 
-A robust tube MPC controller. Communicates with chaser_coordinator to receive plans, provides output to FAM. Interruptable (implementation in progress). CasADi must be installed! See the README.md.
+A robust tube MPC controller, using CasADi. Communicates with chaser_coordinator to receive plans, provides output to force allocation module. Relies on uc_bound's calculation of robustly safe sets.
 
-## chaser_coordinator
+## chaser-coordinator
 
-The nodelet package for sending trajectory commands to the controller topic (Chaser). Input can be a trajectory file, or a direct topic call with trajectory info (in progress).
+The nodelet package for sending trajectory commands to the controller (Chaser satellite) and handling overall Chaser test operation. Commanded
+by execute-asap.
 
 ## data
 
-data folder for test `input/` and `output/`
+data folder for test `input/` and `output/`. Also contains utilities for interfacing with the motion planner.
 
-## execute_ASAP
+## execute-asap
 
-High-level commanding scripts. These are currently pure Python scripts that use the ROS parameter server.
+High-level commanding scripts. Pure Python scripts that send off node start-up/shutdown.
 
-## mit_slam
+## mit-slam
 
-Utilizes GTSAM for smoothing and mapping, Teaser++ for point cloud registration. Teaser++ is automatically built with this repo and shouldn't need extra commands to install. It is required to install GTSAM before compiling this repo, see mit_slam/README.md for more details on this.
+Target tumble characterization. Utilizes GTSAM for smoothing and mapping, Teaser++ for point cloud registration frontend.
 
-## polhode_alignment
+## polhode-alignment
 
-Polhode alignment node which performs Setterfield's algorithm to determine principal axis alignment.
+Polhode alignment node which performs Setterfield's algorithm to determine principal axis alignment of the Target satellite.
 
 ## spheres-vertigo
 
@@ -100,16 +146,17 @@ Legacy code to support polhode-alignment and mit-slam.
 
 ## target_coordinator
 
-The nodelet package for sending trajectory commands to the controller topic (Target). Input can be a trajectory file, or a direct topic call with trajectory info (in progress).
+The nodelet package for sending trajectory commands to the controller (Target satellite) and handling overall Target test operation. Commanded
+by execute-asap.
 
-## trace_msgs
+## trace-msgs
 
 Custom msg definitions used by TRACE nodes.
 
-## motion_planner_interface
+## motion-planner-interface
 
 An interface to output of a motion planner. Demonstration motion plans are available in `data/input/sample-trajectories` for demonstration purposes.
 
 ## uc_bound
 
-Uncertainty characterizer, produces an uncertainty bound used by the Tube MPC.
+Uncertainty characterizer, produces an uncertainty bound used by the casadi-nmpc's robust tube MPC for safe Chaser trajectory tracking.

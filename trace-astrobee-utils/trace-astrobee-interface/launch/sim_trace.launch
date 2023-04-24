@@ -105,7 +105,8 @@
     <include if="$(arg rqt)" file="$(find astrobee)/launch/controller/rqt.launch"/>
     <include if="$(arg rviz)" file="$(find astrobee)/launch/controller/rviz.launch">
       <arg if="$(eval arg('world')=='granite')" name="viewfile" value="$(arg world)"/>
-      <arg if="$(eval arg('world')=='iss')" name="viewfile" value="td"/>
+      <arg if="$(eval arg('world')=='iss')" name="viewfile" value="$(arg world)"/>
+      <arg name="world" value="$(arg world)" />
     </include>
     <!-- Launch a recorder for this robot-->
     <include unless="$(eval arg('rec')=='')"

@@ -19,13 +19,13 @@
   <depend>actionlib</depend>
   <depend>tf</depend>
   <depend>ff_msgs</depend>
-  <depend>ff_util</depend>
+  <depend>trace_astrobee_interface</depend>
   <depend>std_msgs</depend>
   <depend>geometry_msgs</depend>
   <depend>message_generation</depend>
   <depend>message_runtime</depend>
   <depend>trace_msgs</depend>
-  <depend>ff_msg_conversions</depend>
+  <depend>msg_conversions</depend>
   <export>
     <nodelet plugin="${prefix}/nodelet_plugins.xml" />
   </export>

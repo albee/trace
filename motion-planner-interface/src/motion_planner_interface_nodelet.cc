@@ -32,14 +32,14 @@
 #include <std_msgs/String.h>
 
 // FSW
-#include <ff_util/ff_nodelet.h>
-#include <ff_util/ff_names.h>
-#include <ff_util/ff_flight.h>
+#include <trace_astrobee_interface/ff_nodelet.h>
+#include <trace_astrobee_interface/ff_names.h>
+#include <trace_astrobee_interface/ff_flight.h>
 #include <ff_msgs/FamCommand.h>
 #include <ff_msgs/ControlState.h>
 #include <ff_msgs/FlightMode.h>
 #include <ff_msgs/EkfState.h>
-#include <ff_msg_conversions/ff_msg_conversions.h>
+#include <msg_conversions/msg_conversions.h>
 
 // TRACE
 #include "mpdebugmsg.h"
@@ -52,9 +52,9 @@
 
 namespace motion_planner_interface {
 
-class MotionPlannerInterfaceNodelet : public ff_util::FreeFlyerNodelet {
+class MotionPlannerInterfaceNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
  public:
-  MotionPlannerInterfaceNodelet() : ff_util::FreeFlyerNodelet(true) {}
+  MotionPlannerInterfaceNodelet() : trace_astrobee_interface::FreeFlyerNodelet(true) {}
   ~MotionPlannerInterfaceNodelet() {}
 
  private:

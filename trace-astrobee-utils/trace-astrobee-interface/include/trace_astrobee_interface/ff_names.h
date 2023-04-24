@@ -16,8 +16,8 @@
  * under the License.
  */
 
-#ifndef FF_UTIL_FF_NAMES_H_
-#define FF_UTIL_FF_NAMES_H_
+#ifndef trace_astrobee_interface_FF_NAMES_H_
+#define trace_astrobee_interface_FF_NAMES_H_
 
 // UNIVERSAL ///////////////////////////////////////////////////////////////////
 
@@ -448,4 +448,4 @@
 
 #define SERVICE_STREAMING_LIGHTS                    "hw/signal_lights/streaming"
 
-#endif  // FF_UTIL_FF_NAMES_H_
+#endif  // trace_astrobee_interface_FF_NAMES_H_

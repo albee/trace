@@ -16,5 +16,5 @@
   <depend>rospy</depend>
   <depend>std_msgs</depend>
   <depend>ff_msgs</depend>
-  <depend>ff_util</depend>
+  <depend>trace_astrobee_interface</depend>
 </package>

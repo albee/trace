@@ -12,7 +12,7 @@
   <env if="$(eval optenv('ROSCONSOLE_CONFIG_FILE','')=='')"
        name="ROSCONSOLE_CONFIG_FILE" value="$(find astrobee)/resources/logging.config"/>
 
-<!--   <include file="$(find ff_util)/launch/ff_nodelet.launch">
+<!--   <include file="$(find trace_astrobee_interface)/launch/ff_nodelet.launch">
     <arg name="name" value="backup_controller" />
     <arg name="manager" value="blargh" />
     <arg name="class" value="backup_controller/backup_controller" />

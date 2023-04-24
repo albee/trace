@@ -37,7 +37,7 @@ TRACE's major dependencies include:
 - Teaser++
 - ROS (for messaging, Astrobee interfacing, and tf convenience functions)
 
-Most of TRACE's dependencies are satisfied on debian-based system with:
+Most of TRACE's dependencies are satisfied on a debian-based system with:
 
 ```bash
 sudo apt install python3-rospkg-modules gmp m4 ros-kinetic-eigen-conversions libccd libeigen python-dev python-yaml
@@ -75,6 +75,7 @@ This repo contains ROS-compatible packages, meant for the `src` directory of a t
 To build, set up a local workspace and clone this repository as the `src` directory:
 
 ```
+cd ~
 mkdir trace-ws
 cd trace-ws
 catkin init

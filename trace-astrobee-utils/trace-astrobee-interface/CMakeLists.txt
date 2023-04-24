@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(ff_util)
+project(trace_astrobee_interface)
 
 ## Compile as C++14, supported in ROS Kinetic and newer
 add_compile_options(-std=c++14)
@@ -12,13 +12,13 @@ find_package(catkin REQUIRED COMPONENTS
   ff_msgs diagnostic_msgs
   tf2_geometry_msgs
   actionlib
-  ff_msg_conversions
+  msg_conversions
 )
 
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ff_nodelet
-  CATKIN_DEPENDS roscpp nodelet dynamic_reconfigure ff_msgs diagnostic_msgs tf2_geometry_msgs actionlib ff_msg_conversions
+  CATKIN_DEPENDS roscpp nodelet dynamic_reconfigure ff_msgs diagnostic_msgs tf2_geometry_msgs actionlib msg_conversions
 )
 
 ###########

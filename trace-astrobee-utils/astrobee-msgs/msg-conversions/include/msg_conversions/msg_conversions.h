@@ -16,8 +16,8 @@
  * under the License.
  */
 
-#ifndef ff_msg_conversions_H_
-#define ff_msg_conversions_H_
+#ifndef msg_conversions_H_
+#define msg_conversions_H_
 
 // #include <config_reader/config_reader.h>
 
@@ -34,7 +34,7 @@
 
 #include <string>
 
-namespace ff_msg_conversions {
+namespace msg_conversions {
 
 Eigen::Vector3d ros_point_to_eigen_vector(const geometry_msgs::Point& p);
 Eigen::Vector3d ros_to_eigen_vector(const geometry_msgs::Vector3& v);
@@ -112,6 +112,6 @@ void EigenCovarianceToMsg(const Eigen::Matrix<double, 6, 6>& covariance, ArrayTy
     }
   }
 }
-}  // namespace ff_msg_conversions
+}  // namespace msg_conversions
 
-#endif  // ff_msg_conversions_H_
+#endif  // msg_conversions_H_

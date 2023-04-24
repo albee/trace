@@ -16,11 +16,11 @@
  * under the License.
  */
 
-#include <ff_msg_conversions/ff_msg_conversions.h>
+#include <msg_conversions/msg_conversions.h>
 
 #include <ros/console.h>
 
-namespace ff_msg_conversions {
+namespace msg_conversions {
 
 Eigen::Vector3d ros_point_to_eigen_vector(const geometry_msgs::Point& p) { return Eigen::Vector3d(p.x, p.y, p.z); }
 
@@ -175,4 +175,4 @@ void EigenPoseCovarianceToMsg(const Eigen::Isometry3d& pose, const Eigen::Matrix
   EigenPoseToMsg(pose, pose_cov_msg.pose);
   EigenCovarianceToMsg(covariance, pose_cov_msg.covariance);
 }
-}  // end namespace ff_msg_conversions
+}  // end namespace msg_conversions

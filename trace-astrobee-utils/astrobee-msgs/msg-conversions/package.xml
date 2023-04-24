@@ -1,5 +1,5 @@
 <package>
-  <name>ff_msg_conversions</name>
+  <name>msg_conversions</name>
   <version>1.0.0</version>
   <description>
     This package converts FF msgs to standard messages visualizable in rviz.

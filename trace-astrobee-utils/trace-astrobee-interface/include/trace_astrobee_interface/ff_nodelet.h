@@ -16,8 +16,8 @@
  * under the License.
  */
 
-#ifndef FF_UTIL_FF_NODELET_H_
-#define FF_UTIL_FF_NODELET_H_
+#ifndef trace_astrobee_interface_FF_NODELET_H_
+#define trace_astrobee_interface_FF_NODELET_H_
 
 // ROS includes
 #include <ros/ros.h>
@@ -30,8 +30,8 @@
 #include <ff_msgs/Heartbeat.h>
 #include <ff_msgs/Trigger.h>
 
-#include <ff_util/ff_faults.h>
-#include <ff_util/ff_names.h>
+#include <trace_astrobee_interface/ff_faults.h>
+#include <trace_astrobee_interface/ff_names.h>
 
 #include <map>
 #include <string>
@@ -50,7 +50,7 @@
 #define FF_ERROR(msg) NODELET_ERROR_STREAM(msg)
 #define FF_FATAL(msg) NODELET_FATAL_STREAM(msg)
 
-namespace ff_util {
+namespace trace_astrobee_interface {
 
 class FreeFlyerNodelet : public nodelet::Nodelet {
  public:
@@ -154,6 +154,6 @@ class FreeFlyerNodelet : public nodelet::Nodelet {
   std::string node_;
 };
 
-}  // namespace ff_util
+}  // namespace trace_astrobee_interface
 
-#endif  // FF_UTIL_FF_NODELET_H_
+#endif  // trace_astrobee_interface_FF_NODELET_H_

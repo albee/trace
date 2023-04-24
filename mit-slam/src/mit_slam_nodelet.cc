@@ -14,7 +14,7 @@
 #include <nodelet/nodelet.h>
 #include <pluginlib/class_list_macros.h>
 
-#include <ff_util/ff_nodelet.h>
+#include <trace_astrobee_interface/ff_nodelet.h>
 
 #include <trace_msgs/TDStatus.h>
 #include "mit_slam/SlamNode.h"
@@ -22,9 +22,9 @@
 
 namespace mit_slam {
 
-  class MitSlamNodelet : public ff_util::FreeFlyerNodelet {
+  class MitSlamNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
    public:
-    MitSlamNodelet() : ff_util::FreeFlyerNodelet(true) {}
+    MitSlamNodelet() : trace_astrobee_interface::FreeFlyerNodelet(true) {}
     ~MitSlamNodelet() {}
 
    private:

@@ -31,9 +31,9 @@
 
 // FSW includes
 #include <ff_msgs/EkfState.h>
-#include <ff_util/ff_names.h>
-#include <ff_util/ff_nodelet.h>
-#include <ff_msg_conversions/ff_msg_conversions.h>
+#include <trace_astrobee_interface/ff_names.h>
+#include <trace_astrobee_interface/ff_nodelet.h>
+#include <msg_conversions/msg_conversions.h>
 
 // Custom includes
 #include <string.h>
@@ -66,9 +66,9 @@ typedef Matrix<float, 1, 7> state_type;
 
 namespace uc_bound {
 
-class UCBoundNodelet : public ff_util::FreeFlyerNodelet {
+class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
  public:
-  UCBoundNodelet() : ff_util::FreeFlyerNodelet(true) {}
+  UCBoundNodelet() : trace_astrobee_interface::FreeFlyerNodelet(true) {}
   ~UCBoundNodelet() {}
 
  private:

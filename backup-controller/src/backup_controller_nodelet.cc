@@ -28,10 +28,10 @@
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 // FSW includes
-#include <ff_util/ff_flight.h>
-#include <ff_util/ff_names.h>
-#include <ff_util/ff_nodelet.h>
-#include <ff_msg_conversions/ff_msg_conversions.h>
+#include <trace_astrobee_interface/ff_flight.h>
+#include <trace_astrobee_interface/ff_names.h>
+#include <trace_astrobee_interface/ff_nodelet.h>
+#include <msg_conversions/msg_conversions.h>
 #include <ff_msgs/ControlState.h>
 #include <ff_msgs/EkfState.h>
 #include <ff_msgs/FamCommand.h>
@@ -47,9 +47,9 @@ std::string TOPIC_TRAJ    = "gnc/ctl/setpoint/pd";
 std::string TOPIC_FAM_CMD = "gnc/ctl/command";
 std::string PARAM_CONTROL = "td/controller";
 
-class BackupControllerNodelet : public ff_util::FreeFlyerNodelet{
+class BackupControllerNodelet : public trace_astrobee_interface::FreeFlyerNodelet{
  public:
-  BackupControllerNodelet() : ff_util::FreeFlyerNodelet(true) {}
+  BackupControllerNodelet() : trace_astrobee_interface::FreeFlyerNodelet(true) {}
   ~BackupControllerNodelet() {}
 
  private:
@@ -94,7 +94,7 @@ class BackupControllerNodelet : public ff_util::FreeFlyerNodelet{
 
   void Initialize(ros::NodeHandle* nh) {
     // FLIGHT MODE
-    if (!ff_util::FlightUtil::GetFlightMode(flight_mode_, flight_mode_name_)) {
+    if (!trace_astrobee_interface::FlightUtil::GetFlightMode(flight_mode_, flight_mode_name_)) {
       return;
     }  // create a nominal FlightMode
     pub_flight_mode_ = nh->advertise<ff_msgs::FlightMode>(TOPIC_MOBILITY_FLIGHT_MODE, 1, true);  // FlightMode

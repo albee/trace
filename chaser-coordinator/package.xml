@@ -18,9 +18,9 @@
   <depend>pluginlib</depend>
   <depend>actionlib</depend>
   <depend>tf</depend>
-  <depend>ff_util</depend>
+  <depend>trace_astrobee_interface</depend>
   <depend>ff_msgs</depend>
-  <depend>ff_msg_conversions</depend>
+  <depend>msg_conversions</depend>
   <depend>geometry_msgs</depend>
   <depend>ff_common</depend>
   <depend>data</depend>

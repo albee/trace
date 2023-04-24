@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(ff_msg_conversions)
+project(msg_conversions)
 
 ## Compile as C++14, supported in ROS Kinetic and newer
 add_compile_options(-std=c++14)
@@ -35,11 +35,11 @@ include_directories(
 )
 
 # Declare C++ libraries
-add_library(ff_msg_conversions
-  src/ff_msg_conversions.cc
+add_library(msg_conversions
+  src/msg_conversions.cc
 )
-add_dependencies(ff_msg_conversions ${catkin_EXPORTED_TARGETS})
-target_link_libraries(ff_msg_conversions ${EIGEN_LIBRARIES} ${catkin_LIBRARIES})
+add_dependencies(msg_conversions ${catkin_EXPORTED_TARGETS})
+target_link_libraries(msg_conversions ${EIGEN_LIBRARIES} ${catkin_LIBRARIES})
 
 #############
 ## Install ##
