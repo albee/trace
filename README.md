@@ -40,10 +40,16 @@ TRACE's major dependencies include:
 Most of TRACE's dependencies are satisfied on a debian-based system with:
 
 ```bash
-sudo apt install python3-rospkg-modules gmp m4 ros-kinetic-eigen-conversions libccd libeigen python-dev python-yaml
+# ROS and core dependencies
+sudo apt install python3-rospkg-modules gmp m4 ros-kinetic-eigen-conversions libccd libeigen python-dev python-yaml ros-noetic-desktop-full
+
+# PCL
 sudo apt install libpcl-common1.7 libpcl-features1.7 libpcl-kdtree1.7 libpcl-octree1.7 clibpcl-search1.7 libpcl-filters1.7 libpcl-sample-consensus1.7
+
+# numerical Python
 pip3 install pycddlib numpy scipy pytope
 
+# additional visualization utilities
 pip3 install tkinter matplotlib
 ```
 
@@ -85,16 +91,7 @@ catkin build -j2
 ```
 
 ## Usage
-See [TUTORIAL.md]() for a walkthrough on running TRACE!
-
-### Simulator
-TRACE is set up to run within Astrobee's simulation environment.
-
-The latest full build instructions for NASA's vanilla Astrobee Flight Software can now be found in NASA's own documentation [here](https://nasa.github.io/astrobee/html/install-nonNASA.html). After setting up NASA's simulation environment, TRACE should be placed within the same workspace and built using:
-
-```
-catkin build
-```
+See [TUTORIAL.md](TUTORIAL.md) for a walkthrough on running TRACE in the Astrobee simulation environment!
 
 
 ## Methods

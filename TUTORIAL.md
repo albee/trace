@@ -144,7 +144,7 @@ Polhode alignment node which performs Setterfield's algorithm to determine princ
 
 Legacy code to support polhode-alignment and mit-slam.
 
-## target_coordinator
+## target-coordinator
 
 The nodelet package for sending trajectory commands to the controller (Target satellite) and handling overall Target test operation. Commanded
 by execute-asap.
@@ -157,6 +157,6 @@ Custom msg definitions used by TRACE nodes.
 
 An interface to output of a motion planner. Demonstration motion plans are available in `data/input/sample-trajectories` for demonstration purposes.
 
-## uc_bound
+## uc-bound
 
 Uncertainty characterizer, produces an uncertainty bound used by the casadi-nmpc's robust tube MPC for safe Chaser trajectory tracking.
