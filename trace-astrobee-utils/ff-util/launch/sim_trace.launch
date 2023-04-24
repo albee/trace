@@ -1,25 +1,4 @@
-<!-- Copyright (c) 2017, United States Government, as represented by the     -->
-<!-- Administrator of the National Aeronautics and Space Administration.     -->
-<!--                                                                         -->
-<!-- All rights reserved.                                                    -->
-<!--                                                                         -->
-<!-- The Astrobee platform is licensed under the TBD -->
-<!-- (the "License"); you may not use this file except in compliance with    -->
-<!-- the License. You may obtain a copy of the License at                    -->
-<!--                                                                         -->
-<!--     http://www.apache.org/licenses/LICENSE-2.0                          -->
-<!--                                                                         -->
-<!-- Unless required by applicable law or agreed to in writing, software     -->
-<!-- distributed under the License is distributed on an "AS IS" BASIS,       -->
-<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or         -->
-<!-- implied. See the License for the specific language governing            -->
-<!-- permissions and limitations under the License.                          -->
-
 <launch>
-<!--
-  Launch options
--->
-
   <!-- Context options (NB: THESE ARE OVERRIDDEN BY ENVIRONMENT VARIABLES)   -->
   <arg name="robot" default="$(optenv ASTROBEE_ROBOT sim)" />
   <arg name="world" default="$(optenv ASTROBEE_WORLD iss)" />
@@ -82,9 +61,9 @@
   <arg if="$(eval arg('world')=='granite')"
     name="pose_queen" default="0 0.6 -0.76 0 0 -0.7071068 0.7071068" />
 
-<!--
+  <!--
   Set variables and start spinning up nodes. Refer to launch file diagram for details.
--->
+  -->
 
   <!-- Make sure all environment variables are set for controller -->
   <!-- Override the robot and world environment variables all the time. The -->
@@ -181,7 +160,6 @@
   </group>
 
   <!-- Auto-insert queen at a desired initial location -->
-
   <group if="$(eval arg('queen')==true and arg('gds_test')==false)">
     <include file="$(find astrobee)/launch/spawn.launch">
       <arg name="robot" value="$(arg robot)" />      <!-- Type of robot      -->
@@ -216,6 +194,42 @@
       <arg name="mlp" value="$(arg mlp)" />          <!-- MLP IP address     -->
       <arg name="dds" value="$(arg dds)" />          <!-- Enable DDS         -->
     </include>
+  </group>
+
+  <!--
+  Startup for execute_asap management node.
+  -->
+
+  <!-- In sim, if robot is bumble. 0 indicates a dummy LLP IP address -->
+  <group if="$(eval arg('ns')=='bumble')">
+    <node
+      pkg="execute_asap" type="execute_asap.py" name="execute_asap"
+      args="bumble 0"
+      output="$(arg output)"/>
+  </group>
+
+   <!-- In sim, if robot is honey -->
+  <group if="$(eval arg('ns')=='honey')">
+    <node
+      pkg="execute_asap" type="execute_asap.py" name="execute_asap"
+      args="honey 0"
+      output="$(arg output)"/>
+  </group>
+
+  <!-- In sim, if robot is queen. 0 indicates a dummy LLP IP address  -->
+  <group if="$(eval arg('ns')=='queen')">
+    <node
+      pkg="execute_asap" type="execute_asap.py" name="execute_asap"
+      args="queen 0"
+      output="$(arg output)"/>
+  </group>
+
+  <!-- If on hardware -->
+  <group if="$(eval arg('ns')=='')">
+    <node
+      pkg="execute_asap" type="execute_asap.py" name="execute_asap"
+      args="/ 0"
+      output="$(arg output)"/>
   </group>
 
 </launch>
