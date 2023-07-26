@@ -13,7 +13,8 @@ find_package(catkin REQUIRED COMPONENTS
   ff_msgs
   std_msgs
   geometry_msgs
-  trace_astrobee_interface
+  ff_util
+  ff_common
   eigen_conversions
   trace_msgs
 )
@@ -31,7 +32,8 @@ catkin_package(
     ff_msgs
     std_msgs
     geometry_msgs
-    trace_astrobee_interface
+    ff_util
+    ff_common
     eigen_conversions
     trace_msgs
 

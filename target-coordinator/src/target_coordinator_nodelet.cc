@@ -22,8 +22,8 @@
 #include <thread>
 
 // FSW
-#include <trace_astrobee_interface/ff_flight.h>
-#include <trace_astrobee_interface/ff_nodelet.h>
+#include <ff_util/ff_flight.h>
+#include <ff_util/ff_nodelet.h>
 
 #include <ff_msgs/ControlState.h>
 #include <ff_msgs/EkfState.h>
@@ -60,10 +60,10 @@ using namespace boost::numeric::odeint;
 
 namespace target_coordinator {
 
-class TargetCoordinatorNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
+class TargetCoordinatorNodelet : public ff_util::FreeFlyerNodelet {
  public:
   TargetCoordinatorNodelet()
-      : trace_astrobee_interface::FreeFlyerNodelet(true) {
+      : ff_util::FreeFlyerNodelet(true) {
   }  // don't need to define in ff_names.h, but can if desired
   ~TargetCoordinatorNodelet() {}
 
@@ -308,12 +308,12 @@ class TargetCoordinatorNodelet : public trace_astrobee_interface::FreeFlyerNodel
       w0_(2) = input_data_(0, 13);
       std::cout << "Target: a0: " << std::endl << a0_ << std::endl;
       std::cout << "Target: w0: " << std::endl << w0_ << std::endl;
-      if (!trace_astrobee_interface::FlightUtil::GetFlightMode(flight_mode_, td_flight_mode_)) {
+      if (!ff_util::FlightUtil::GetFlightMode(flight_mode_, td_flight_mode_)) {
           return;
       }  // create a nominal FlightMode
       pub_flight_mode_.publish(flight_mode_);
     } else {
-      if (!trace_astrobee_interface::FlightUtil::GetFlightMode(flight_mode_, "off")) {
+      if (!ff_util::FlightUtil::GetFlightMode(flight_mode_, "off")) {
           return;
       }  // create a nominal FlightMode
       pub_flight_mode_.publish(flight_mode_);
@@ -529,7 +529,7 @@ class TargetCoordinatorNodelet : public trace_astrobee_interface::FreeFlyerNodel
       // Set flight mode to off
       enable_default_ctl();
       td_flight_mode_ = "off";
-      if (!trace_astrobee_interface::FlightUtil::GetFlightMode(flight_mode_, td_flight_mode_)) {
+      if (!ff_util::FlightUtil::GetFlightMode(flight_mode_, td_flight_mode_)) {
           return;
       }
       pub_flight_mode_.publish(flight_mode_);

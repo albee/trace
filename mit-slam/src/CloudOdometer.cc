@@ -45,7 +45,6 @@ Eigen::Matrix4f CloudOdometer::Register(teaser::PointCloud& src_cloud,
   Eigen::Matrix4f tfm;
 
   teaser::RegistrationSolution result = teaser_solver_->solve(src_cloud, tgt_cloud, correspondences);
-
   // Parse rotation and translation solutions.
   tfm.block(0, 0, 3, 3) = result.rotation.cast<float>();
   tfm.block(0, 3, 3, 1) = result.translation.cast<float>();

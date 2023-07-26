@@ -8,7 +8,7 @@
 /td/mit_slam/slam_ground: false
 
 # State output to console for each callback.
-/td/mit_slam/verbose: false
+/td/mit_slam/verbose: true
 
 # Print time taken for each component
 /td/mit_slam/timing_verbose: false

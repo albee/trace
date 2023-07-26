@@ -33,9 +33,9 @@
 #include <std_srvs/SetBool.h>
 
 // FSW
-#include <trace_astrobee_interface/ff_nodelet.h>
-#include <trace_astrobee_interface/ff_names.h>
-#include <trace_astrobee_interface/ff_flight.h>
+#include <ff_util/ff_nodelet.h>
+#include <ff_util/ff_names.h>
+#include <ff_util/ff_flight.h>
 
 #include <ff_msgs/ControlState.h>
 #include <ff_msgs/FlightMode.h>
@@ -75,9 +75,9 @@ std::string UC_BOUND_TOPIC = "/td/uc_bound/uc_bound";
 std::string TOPIC_TD_STATUS = "td/status";
 std::string TOPIC_TD_TEST_NUMBER = "td/test_number";
 
-class ChaserCoordinatorNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
+class ChaserCoordinatorNodelet : public ff_util::FreeFlyerNodelet {
  public:
-  ChaserCoordinatorNodelet() : trace_astrobee_interface::FreeFlyerNodelet(true) {}  // don't do anything ROS-related in the constructor!
+  ChaserCoordinatorNodelet() : ff_util::FreeFlyerNodelet(true) {}  // don't do anything ROS-related in the constructor!
   ~ChaserCoordinatorNodelet() {}
 
  private:
@@ -113,7 +113,7 @@ class ChaserCoordinatorNodelet : public trace_astrobee_interface::FreeFlyerNodel
   ros::Subscriber sub_slam_info_;
   ros::Subscriber sub_inertia_;
 
-  // trace_astrobee_interface::FreeFlyerActionClient<ff_msgs::ControlAction> client_control_;
+  // ff_util::FreeFlyerActionClient<ff_msgs::ControlAction> client_control_;
 
   ros::Timer status_timer_;
   ros::Timer gnc_ctl_setpoint_timer_;
@@ -350,14 +350,14 @@ class ChaserCoordinatorNodelet : public trace_astrobee_interface::FreeFlyerNodel
     }
 
     if (test_number_ != 1) {
-      if (!trace_astrobee_interface::FlightUtil::GetFlightMode(flight_mode_, td_flight_mode_)) {
+      if (!ff_util::FlightUtil::GetFlightMode(flight_mode_, td_flight_mode_)) {
           return;
       }  // create a nominal FlightMode
       pub_flight_mode_.publish(flight_mode_);// Publish default flight mode so CTL/FAM will actually perform actuation
 
     }
     else {
-      if (!trace_astrobee_interface::FlightUtil::GetFlightMode(flight_mode_, "off")) {
+      if (!ff_util::FlightUtil::GetFlightMode(flight_mode_, "off")) {
           return;
       }  // create a nominal FlightMode
       pub_flight_mode_.publish(flight_mode_);// Publish default flight mode so CTL/FAM will actually perform actuation
@@ -1932,7 +1932,7 @@ class ChaserCoordinatorNodelet : public trace_astrobee_interface::FreeFlyerNodel
 
       // Set flight mode to off
       td_flight_mode_ = "off";
-      if (!trace_astrobee_interface::FlightUtil::GetFlightMode(flight_mode_, td_flight_mode_)) {
+      if (!ff_util::FlightUtil::GetFlightMode(flight_mode_, td_flight_mode_)) {
           return;
       }
       pub_flight_mode_.publish(flight_mode_);
@@ -2229,6 +2229,7 @@ class ChaserCoordinatorNodelet : public trace_astrobee_interface::FreeFlyerNodel
   }
 
   void send_body_traj() {
+    std::cout << "[CHASER COORD]: SENDING TRAJECTORY..." << std::endl;
     /* Converts standard format nominal traj (in inertial frame) to nominal Target body frame and sends to controller.
     Note that the standard format trajectory begins AFTER a set wait time; this propagation starts after that wait time.
     */
@@ -2245,7 +2246,7 @@ class ChaserCoordinatorNodelet : public trace_astrobee_interface::FreeFlyerNodel
           k++;
       }
     }
-
+    
     eigen_x_des_traj_body_ = eigen_x_des_traj_;  // this will also populate attitude with the nominal propagation
     MatrixXd eigen_x_des_traj_offset_ = eigen_x_des_traj_;
     int num_rows = eigen_x_des_traj_body_.rows();
@@ -2253,33 +2254,32 @@ class ChaserCoordinatorNodelet : public trace_astrobee_interface::FreeFlyerNodel
         eigen_x_des_traj_body_(0, 3) = 0.0;
         eigen_x_des_traj_body_(0, 6) = 0.0;
       }
-
+    
     eigen_x_des_traj_offset_.col(1) = eigen_x_des_traj_.col(1) - targ_offset_(0) * VectorXd::Ones(num_rows);
     eigen_x_des_traj_offset_.col(2) = eigen_x_des_traj_.col(2) - targ_offset_(1) * VectorXd::Ones(num_rows);
     eigen_x_des_traj_offset_.col(3) = eigen_x_des_traj_.col(3) - targ_offset_(2) * VectorXd::Ones(num_rows);
     Eigen::Vector3d original_pos0 = eigen_x_des_traj_offset_.block(0, 1, 1, 3).transpose();
     Eigen::Vector3d original_vel0 = eigen_x_des_traj_offset_.block(0, 4, 1, 3).transpose();
-
+    
     // target attitude, nominal
     tf2::Quaternion q_targ_IB{q_targ_(0), q_targ_(1), q_targ_(2), q_targ_(3)};  // target body pose wrt inertial frame
     Eigen::Matrix3d R_targ_IB = q2dcm(q_targ_).cast<double>();
-
+    
     // target velocity, nominal
     Eigen::Vector3d omega_targ_I = R_targ_IB * omega_targ0_.cast<double>();
-
+    
     // NODELET_ERROR_STREAM("J " << J_ << "\R_targ_IB" << R_targ_IB << "\nomega_targ_I" << omega_targ_I <<
     //   "\noriginal_pos0" << original_pos0 << "\noriginal_vel0" << original_vel0);
-
+    
     // Propagate for all time steps
     double dt_traj = eigen_x_des_traj_(1, 0) - eigen_x_des_traj_(0, 0);
     double t = 0.0;
     state_type x;  // eigen [1 x 7] of [quat, orientation]
-
+    
     // we have these initial conditions from ROS params
     x.segment(0,4) = q_targ_;  // this is the q used by the motion planner at the instant it starts (after wait time)
-    x.segment(4,7) = omega_targ_;
+    x.segment(4,3) = omega_targ_;
     // NODELET_ERROR_STREAM("At body send, quat is: " << q_targ_);
-
     for (int i = 0; i < num_rows; i++) {
         Eigen::Vector3d original_pos = eigen_x_des_traj_offset_.block(i, 1, 1, 3).transpose();
         Eigen::Vector3d original_vel = eigen_x_des_traj_offset_.block(i, 4, 1, 3).transpose();

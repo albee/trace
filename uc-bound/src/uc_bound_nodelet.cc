@@ -31,8 +31,8 @@
 
 // FSW includes
 #include <ff_msgs/EkfState.h>
-#include <trace_astrobee_interface/ff_names.h>
-#include <trace_astrobee_interface/ff_nodelet.h>
+#include <ff_util/ff_names.h>
+#include <ff_util/ff_nodelet.h>
 #include <msg_conversions/msg_conversions.h>
 
 // Custom includes
@@ -66,9 +66,9 @@ typedef Matrix<float, 1, 7> state_type;
 
 namespace uc_bound {
 
-class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
+class UCBoundNodelet : public ff_util::FreeFlyerNodelet {
  public:
-  UCBoundNodelet() : trace_astrobee_interface::FreeFlyerNodelet(true) {}
+  UCBoundNodelet() : ff_util::FreeFlyerNodelet(true) {}
   ~UCBoundNodelet() {}
 
  private:
@@ -239,6 +239,7 @@ class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
   void Initialize(ros::NodeHandle* nh) {
     /* This is called when the nodelet is loaded into the nodelet manager
     */
+    NODELET_INFO_STREAM("[UC BOUND] Initializing.");
     ros::param::getCached("/td/sim", sim_);
 
     // subscribers
@@ -369,7 +370,6 @@ class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
     int j = msg->layout.dim[1].size;
     std::vector<double> data = msg->data;
     eigen_x_des_traj_ = Eigen::Map<Eigen::MatrixXd>(data.data(), j, i).transpose().cast<float>();
-
     traj_rate_ = 1.0/traj_dt_;
     have_traj_ = true;
     // std::cout << "[UC BOUND]: traj: " << std::endl <<  eigen_x_des_traj_ <<
@@ -388,6 +388,8 @@ class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
     J_(2, 0) = J_(0, 2);
   }
 
+  
+
   /*
   Calculate uncertainty bound
   */
@@ -397,6 +399,7 @@ class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
     /*******************
     1. Organize nominal chaser trajectory data
     *******************/
+    std::cout << "[UC BOUND] Calculting uncertainty bound" << std::endl;
     int num_rows = nom_chaser_traj_data.rows();
     MatrixXf nom_chaser_pos(num_rows, 3);
     MatrixXf nom_chaser_vel(num_rows, 3);
@@ -438,7 +441,6 @@ class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
     Vector4f nom_targ_q0 = est_targ_att0;
     Matrix3f nom_targ_R0 = q2dcm(nom_targ_q0);
     Vector3f nom_omega_targ0_I = nom_targ_R0 * est_targ_w0;
-
     MatrixXf nom_targ_traj(num_rows, 7);
     nom_targ_traj(0, 0) = nom_targ_q0(0);
     nom_targ_traj(0, 1) = nom_targ_q0(1);
@@ -447,7 +449,6 @@ class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
     nom_targ_traj(0, 4) = est_targ_w0(0);
     nom_targ_traj(0, 5) = est_targ_w0(1);
     nom_targ_traj(0, 6) = est_targ_w0(2);
-
     MatrixXf nom_chaser_pos_targ(num_rows, 3);
     nom_chaser_pos_targ.row(0) = nom_targ_R0 * nom_chaser_pos.row(0).transpose();
     MatrixXf nom_chaser_vel_targ(num_rows, 3);
@@ -455,10 +456,8 @@ class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
         nom_targ_R0 * nom_chaser_vel.row(0).transpose() +
         nom_omega_targ0_I.cross(nom_targ_R0 *
                                 nom_chaser_pos.row(0).transpose());
-
     state_type x;
     x = nom_targ_traj.row(0);
-
     runge_kutta_dopri5<state_type, double, state_type, double, vector_space_algebra> stepper;
 
     // **** Boost RK4 method ****
@@ -486,6 +485,7 @@ class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
                                  nom_chaser_pos.row(i).transpose());
     }
 
+
     /*******************
     3. Monte Carlo trials with perturbed initial target attitude/angular velocity
     *******************/
@@ -500,6 +500,8 @@ class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
     MatrixXf uncertainty_bound(4, 3);
     MatrixXf w_pos_data(num_trials*num_rows, 3);
     MatrixXf w_vel_data(num_trials*num_rows, 3);
+
+
 
     // Motion constraint parameters:
     std::vector<float> p_constraint_ros;
@@ -531,6 +533,8 @@ class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
     Vector3f v_constraint;
     v_constraint << v_constraint_ros[0], v_constraint_ros[1], v_constraint_ros[2];  // m/s
 
+
+
     // parameters for random perturbation to initial target state:
     std::random_device rd{};
     std::mt19937 gen{rd()};
@@ -555,6 +559,7 @@ class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
     std::uniform_real_distribution<float> J_prod_dis_2(-max_J_prod_2_, max_J_prod_2_);
     std::uniform_real_distribution<float> J_prod_dis_3(-max_J_prod_3_, max_J_prod_3_);
 
+
     for (int k = 0; k < num_trials_; k++) {
       // randomly initialize attitude/angular velocity
       Vector4f real_targ_att0;
@@ -575,6 +580,8 @@ class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
         w0_perturb(0) = 0.0;
         w0_perturb(1) = 0.0;
       }
+
+      
 
 
       real_targ_att0 = vec2q(est_targ_att0_vec + att0_vec_perturb);
@@ -603,6 +610,7 @@ class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
       }
 
       // Now propagate the perturbed target motion
+
       Vector4f real_targ_q0 = real_targ_att0;
       Matrix3f real_targ_R0 = q2dcm(real_targ_q0);
 
@@ -617,7 +625,6 @@ class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
 
       state_type x;
       x = real_targ_traj.row(0);
-
 
 
       t = 0.0;
@@ -663,7 +670,7 @@ class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
       z_vel = nom_chaser_vel.row(1);
 
       t = 0.0;
-      for (int i = 1; i < num_rows; i++) {
+      for (int i = 1; i < num_rows-1; i++) {
         // Updated state estimate
         Vector3f vec_real = q2vec(real_targ_traj.row(i).head(4));
         Vector3f vec_est;
@@ -679,7 +686,6 @@ class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
         vec_est = vec_real + vec_perturb;
         Vector4f q_est = vec2q(vec_est);
         Matrix3f R_est = q2dcm(q_est);
-
         Vector3f w_real = real_targ_traj.row(i).tail(3);
         Vector3f w_est;
         w_est << 0.0, 0.0, 0.0;
@@ -693,7 +699,6 @@ class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
         }
         w_est = w_real + w_perturb;
         Vector3f w_est_I = R_est * w_est;
-
         // Compute disturbance
         x_pos = R_est.transpose() * nom_chaser_pos_targ.row(i).transpose();
         x_vel = R_est.transpose() * (nom_chaser_vel_targ.row(i).transpose() - w_est_I.cross(R_est * x_pos));
@@ -735,6 +740,7 @@ class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
         }
       }
 
+
       // Analyze the resulting chaser trajectory to determine if motion constraints have been violated
       float max_x = real_chaser_pos.col(0).maxCoeff();
       float min_x = real_chaser_pos.col(0).minCoeff();
@@ -760,7 +766,6 @@ class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
           min_z > (p_constraint_center(2) - p_constraint(2))) {
         success_pos = 1;
       }
-
       if (max_vx < v_constraint(0) && max_vy < v_constraint(1) &&
           max_vz < v_constraint(2)) {
         success_vel = 1;
@@ -794,6 +799,7 @@ class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
 
     }  // End Monte Carlo trials
 
+
     MatrixXf abs_w_pos_data = w_pos_data.cwiseAbs();
     float max_w_pos_x = abs_w_pos_data.col(0).maxCoeff();
     float max_w_pos_y = abs_w_pos_data.col(1).maxCoeff();
@@ -824,6 +830,7 @@ class UCBoundNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
       uncertainty_bound(2, 2) = 1e-5;
       uncertainty_bound(3, 2) = -1e-5;
     }
+
 
     return uncertainty_bound;
   }

@@ -14,7 +14,7 @@
 #include <nodelet/nodelet.h>
 #include <pluginlib/class_list_macros.h>
 
-#include <trace_astrobee_interface/ff_nodelet.h>
+#include <ff_util/ff_nodelet.h>
 
 #include <trace_msgs/TDStatus.h>
 #include "mit_slam/SlamNode.h"
@@ -22,9 +22,9 @@
 
 namespace mit_slam {
 
-  class MitSlamNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
+  class MitSlamNodelet : public ff_util::FreeFlyerNodelet {
    public:
-    MitSlamNodelet() : trace_astrobee_interface::FreeFlyerNodelet(true) {}
+    MitSlamNodelet() : ff_util::FreeFlyerNodelet(true) {}
     ~MitSlamNodelet() {}
 
    private:
@@ -42,8 +42,6 @@ namespace mit_slam {
 
     void Initialize(ros::NodeHandle* nh) {
       ros::param::getCached("/td/sim", sim_);
-      sub_status_ = nh->subscribe<trace_msgs::TDStatus>(
-          "td/status", 5, &MitSlamNodelet::StatusCallback, this);
 
       // Activate the main SLAM pipeline
       mit_slam::SlamNode::Params slam_params = SlamParamsFromRos();
@@ -61,14 +59,18 @@ namespace mit_slam {
       slam_node_->SetupCloudOdometer(cloud_params);
 
       // Activate the graph manager
-      mit_slam::GraphManager::Params graph_params =
-          mit_slam::GraphParamsFromRos();
+      mit_slam::GraphManager::Params graph_params;
+      graph_params = mit_slam::GraphParamsFromRos();
       slam_node_->SetupGraphManager(graph_params);
 
       ros::param::getCached("/td/mit_slam/loop_rate", loop_rate_);
       ros::param::getCached("/td/mit_slam/viz_hardware", viz_hardware_);
 
       thread_.reset(new std::thread(&mit_slam::MitSlamNodelet::Run, this));
+
+      
+      sub_status_ = nh->subscribe<trace_msgs::TDStatus>(
+          "td/status", 5, &MitSlamNodelet::StatusCallback, this);
       }
 
       void Run() {

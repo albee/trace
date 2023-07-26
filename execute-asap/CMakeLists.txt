@@ -5,7 +5,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   nodelet
   ff_msgs
-  trace_astrobee_interface
+  ff_util
 )
 
 catkin_package(

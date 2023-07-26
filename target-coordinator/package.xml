@@ -21,7 +21,7 @@
   <depend>actionlib</depend>
   <depend>tf</depend>
   <depend>ff_msgs</depend>
-  <depend>trace_astrobee_interface</depend>
+  <depend>ff_util</depend>
   <depend>geometry_msgs</depend>
   <depend>msg_conversions</depend>
   <depend>sensor_msgs</depend>

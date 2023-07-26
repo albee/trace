@@ -14,7 +14,8 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   message_generation
   message_runtime
-  trace_astrobee_interface
+  ff_util
+  ff_common
   trace_msgs
   ff_msgs
   msg_conversions
@@ -44,7 +45,8 @@ catkin_package(
     std_msgs
     message_generation
     message_runtime
-    trace_astrobee_interface
+    ff_util
+    ff_common
     trace_msgs
     ff_msgs
     msg_conversions

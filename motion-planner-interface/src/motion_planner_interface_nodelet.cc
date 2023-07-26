@@ -32,9 +32,9 @@
 #include <std_msgs/String.h>
 
 // FSW
-#include <trace_astrobee_interface/ff_nodelet.h>
-#include <trace_astrobee_interface/ff_names.h>
-#include <trace_astrobee_interface/ff_flight.h>
+#include <ff_util/ff_nodelet.h>
+#include <ff_util/ff_names.h>
+#include <ff_util/ff_flight.h>
 #include <ff_msgs/FamCommand.h>
 #include <ff_msgs/ControlState.h>
 #include <ff_msgs/FlightMode.h>
@@ -52,9 +52,9 @@
 
 namespace motion_planner_interface {
 
-class MotionPlannerInterfaceNodelet : public trace_astrobee_interface::FreeFlyerNodelet {
+class MotionPlannerInterfaceNodelet : public ff_util::FreeFlyerNodelet {
  public:
-  MotionPlannerInterfaceNodelet() : trace_astrobee_interface::FreeFlyerNodelet(true) {}
+  MotionPlannerInterfaceNodelet() : ff_util::FreeFlyerNodelet(true) {}
   ~MotionPlannerInterfaceNodelet() {}
 
  private:
@@ -324,6 +324,7 @@ class MotionPlannerInterfaceNodelet : public trace_astrobee_interface::FreeFlyer
     // check that output was produced
     std::ifstream indata;
     std::string time_file = TRAJ_PATH_ + "result_time_0.dat";
+    std::cout << "Filename: " << time_file << std::endl;
     indata.open(time_file);
     if(indata.fail()){
       NODELET_ERROR_STREAM("[MotionPlannerInterface]: Planner executable call failed! No output.");

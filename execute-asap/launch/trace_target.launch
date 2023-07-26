@@ -3,7 +3,7 @@
   <arg name="world" default="$(optenv ASTROBEE_WORLD iss)" />
   <arg name="llp" default="local" />          <!-- LLP IP address            -->
   <arg name="mlp" default="local" />          <!-- MLP IP address           -->
-  <arg name="ns" default="" />                <!-- Robot namespace           -->
+  <arg name="ns" default="bumble" />                <!-- Robot namespace           -->
   <arg name="spurn" default=""/>              <!-- PRevent a specific node   -->
   <arg name="nodes" default=""/>              <!-- Launch specific nodes     -->
   <arg name="extra" default=""/>              <!-- Inject an additional node -->
@@ -21,6 +21,8 @@
 
 
     <!-- LLP -->
+
+  <group ns="$(arg ns)">
     <group unless="$(eval arg('llp')=='disabled')">
       <machine unless="$(eval arg('llp')=='local')" name="llp" address="$(arg llp)">
       </machine>
@@ -40,7 +42,7 @@
       <machine unless="$(eval arg('mlp')=='local')" name="mlp" address="$(arg mlp)">
       </machine>
 
-      <include file="$(find execute_asap)/launch/td_target_MLP.launch" >
+      <include file="$(find execute_asap)/launch/trace_target_MLP.launch" >
         <arg name="ns" value="$(arg ns)" />            <!-- Robot namespace           -->
         <arg name="spurn" value="$(arg spurn)" />      <!-- Prevent node         -->
         <arg name="nodes" value="$(arg nodes)" />      <!-- Launch node group    -->
@@ -49,5 +51,6 @@
         <arg name="output" value="$(arg output)" />
       </include>
     </group>
+  </group>
 
 </launch>
