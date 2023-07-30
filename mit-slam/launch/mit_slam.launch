@@ -5,32 +5,48 @@
 
   <env name="ASTROBEE_ROBOT" value="$(arg robot)" />
   <env name="ASTROBEE_WORLD" value="$(arg world)" />
-  <!-- <env if="$(eval optenv('ASTROBEE_CONFIG_DIR','')=='')"
+  <env if="$(eval optenv('ASTROBEE_CONFIG_DIR','')=='')"
        name="ASTROBEE_CONFIG_DIR" value="$(find astrobee)/config" />
   <env if="$(eval optenv('ASTROBEE_RESOURCE_DIR','')=='')"
        name="ASTROBEE_RESOURCE_DIR" value="$(find astrobee)/resources" />
   <env if="$(eval optenv('ROSCONSOLE_CONFIG_FILE','')=='')"
-       name="ROSCONSOLE_CONFIG_FILE" value="$(find astrobee)/resources/logging.config"/> -->
+       name="ROSCONSOLE_CONFIG_FILE" value="$(find astrobee)/resources/logging.config"/>
 
   <arg name="spurn" default=""/>                 <!-- Prevent a specific node   -->
   <arg name="nodes" default=""/>                 <!-- Launch specific nodes     -->
   <arg name="extra" default=""/>                 <!-- Inject an additional node -->
   <arg name="debug" default=""/>                 <!-- Debug a node set          -->
   <arg name="dds" default="false"/>              <!-- Should DDS be started     -->
-  <arg name="output" default="screen"/>          <!-- Where nodes should log    -->
+  <arg name="output" default="log"/>             <!-- Where nodes should log    -->
 
-  <rosparam command="load" file="$(find execute_asap)/config/mit-slam-config/slam_params_ground.yaml"/>
-  <rosparam command="load" file="$(find execute_asap)/config/mit-slam-config/blob_params_ground.yaml"/>
-  <rosparam command="load" file="$(find execute_asap)/config/mit-slam-config/cloud_params_ground.yaml"/>
-  <rosparam command="load" file="$(find execute_asap)/config/mit-slam-config/graph_params_ground.yaml"/>
+  <rosparam command="load" file="$(find execute_asap)/config/mit-slam-config/slam_params_iss.yaml"/>
+  <rosparam command="load" file="$(find execute_asap)/config/mit-slam-config/blob_params_iss.yaml"/>
+  <rosparam command="load" file="$(find execute_asap)/config/mit-slam-config/cloud_params_iss.yaml"/>
+  <rosparam command="load" file="$(find execute_asap)/config/mit-slam-config/graph_params_iss.yaml"/>
 
   <param name="/td/mit_slam/activate" type="bool" value="true" />
-  <!-- <param name="/use_sim_time" type="bool" value="true" /> -->
+  <param name="/use_sim_time" type="bool" value="true" />
   <param name="/td/mit_slam/viz_hardware" type="bool" value="true" />
   <param name="/td/sim" type="str" value="false" />
+
+  <!-- Start a nodelet manager, if needed -->
+  <!-- <node
+        pkg="nodelet" type="nodelet" name="slam_manager"
+        args="manager"
+        output="log"/> -->
+
+  <!-- Now inject the nodelet into the nodelet manager -->
+  <!-- <node pkg="nodelet" type="nodelet" name="mit_slam"
+        required="false" respawn="false"
+        args="load mit_slam/MitSlamNodelet slam_manager"
+        output="screen"/> -->
+
+
 
   <node pkg="nodelet" type="nodelet" name="mit_slam"
       required="false" respawn="false"
       args="standalone mit_slam/MitSlamNodelet"
-      output="$(arg output)"/>
+      output="log"/>
+
+
 </launch>

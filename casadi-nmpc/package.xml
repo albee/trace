@@ -20,7 +20,8 @@
   <depend>tf</depend>
   <depend>external</depend>
   <depend>ff_msgs</depend>
-  <depend>trace_astrobee_interface</depend>
+  <depend>ff_util</depend>
+  <depend>ff_common</depend>
   <depend>geometry_msgs</depend>
   <depend>data</depend>
   <depend>trace_msgs</depend>

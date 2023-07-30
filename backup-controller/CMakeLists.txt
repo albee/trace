@@ -7,6 +7,8 @@ catkin_package(
   CATKIN_DEPENDS
     roscpp
     nodelet
+    ff_util
+    ff_common
     pluginlib
     actionlib
     tf

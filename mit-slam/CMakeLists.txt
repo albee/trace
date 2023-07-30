@@ -8,7 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   nodelet
   ff_msgs
-  trace_astrobee_interface
+  ff_util
   msg_conversions
   data
   polhode_alignment

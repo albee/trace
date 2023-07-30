@@ -41,7 +41,9 @@ import target_asap
 # Globals for sim and hardware.
 rospack = rospkg.RosPack()
 DATA_PATH = rospack.get_path("data")
+print("[EXECUTE ASAP]: Data path ---> " + DATA_PATH)
 TRAJ_GEN_PATH = rospack.get_path("motion_planner_interface")
+print("[EXECUTE ASAP]: Trajectory Generation Path -----> "+ TRAJ_GEN_PATH)
 BAG_PATH_SIM = DATA_PATH + "/output/rosbags/"  # must end in /, dir must exist!
 BAG_PATH_HARDWARE = "/data/bags/"  # must end in /, dir must exist!
 # Example: /data/bags/2021-04-14/bsharp/delayed/20210414_1701_phase1Loc_test_bag_0.bag
@@ -112,13 +114,13 @@ CHASER_TRAJS_GND_SIM = {1: DATA_PATH+"", # test1 software launch checkout
     5: DATA_PATH+"/input/sample-trajectories/ground-traj3-public/", # test5 motion planner unit test
     6: DATA_PATH+"", # test6 SLAM unit test (chaser stationary)
     7: DATA_PATH+"/input/sample-trajectories/slam-traj/chaser_slam_traj_ground.csv", # test7 SLAM unit test (chaser motion)
-    8: TRAJ_GEN_PATH+"/input/sample-trajectories/ground-traj3-public/", # test8 full pipeline: nominal MPC, EKF state mode
-    9: TRAJ_GEN_PATH+"/input/sample-trajectories/ground-traj3-public/", # test9 full pipeline: tube MPC, EKF state mode
-    10: TRAJ_GEN_PATH+"/input/sample-trajectories/ground-traj3-public/", # test10 full pipeline: tube MPC, EKF state mode, HazCam recording
-    11: TRAJ_GEN_PATH+"/input/sample-trajectories/ground-traj3-public/", # test11 full pipeline: tube MPC, SLAM state mode
+    8: DATA_PATH+"/input/sample-trajectories/ground-traj3-public/", # test8 full pipeline: nominal MPC, EKF state mode
+    9: DATA_PATH+"/input/sample-trajectories/ground-traj3-public/", # test9 full pipeline: tube MPC, EKF state mode
+    10: DATA_PATH+"/input/sample-trajectories/ground-traj3-public/", # test10 full pipeline: tube MPC, EKF state mode, HazCam recording
+    11: DATA_PATH+"/input/sample-trajectories/ground-traj3-public/", # test11 full pipeline: tube MPC, SLAM state mode
     12: DATA_PATH+"/input/sample-trajectories/TEST12-GND/",  # test12 predefined trajectory tube MPC with Astrobee noise levels
-    13: TRAJ_GEN_PATH+"/input/sample-trajectories/ground-traj3-public/",
-    14: TRAJ_GEN_PATH+"/input/sample-trajectories/ground-traj3-public/",
+    13: DATA_PATH+"/input/sample-trajectories/ground-traj3-public/",
+    14: DATA_PATH+"/input/sample-trajectories/ground-traj3-public/",
     15: DATA_PATH+"/input/sample-trajectories/TEST3-GND/",
     16: DATA_PATH+"/input/sample-trajectories/TEST3-GND/",
     77: DATA_PATH+"/input/sample-trajectories/TEST12-GND/"  # debug
@@ -146,16 +148,16 @@ CHASER_TRAJS_ISS_SIM = {1: DATA_PATH+"", # test1 software launch checkout
     2: DATA_PATH+"", # test2 target coordinator unit test
     3: DATA_PATH+"/input/sample-trajectories/TEST3-ISS/", # test3 tube-MPC unit test (and gain switch)
     4: DATA_PATH+"/input/sample-trajectories/TEST4-ISS/", # Test4 PD attitude control unit test
-    5: TRAJ_GEN_PATH+"/input/sample-trajectories/iss-traj2-public/", # test5 motion planner unit test
+    5: DATA_PATH+"/input/sample-trajectories/iss-traj2-public/", # test5 motion planner unit test
     6: DATA_PATH+"", # test6 SLAM unit test (chaser stationary)
     7: DATA_PATH+"/input/sample-trajectories/slam-traj/chaser_slam_traj.csv", # test7 SLAM unit test (chaser motion)
-    8: TRAJ_GEN_PATH+"/input/sample-trajectories/iss-traj2-public/", # test8 full pipeline: nominal MPC, EKF state mode
-    9: TRAJ_GEN_PATH+"/input/sample-trajectories/iss-traj2-public/", # test9 full pipeline: tube MPC, EKF state mode
-    10: TRAJ_GEN_PATH+"/input/sample-trajectories/iss-traj2-public/", # test10 full pipeline: tube MPC, EKF state mode, HazCam recording
-    11: TRAJ_GEN_PATH+"/input/sample-trajectories/iss-traj2-public/", # test11 full pipeline: tube MPC, SLAM state mode
+    8: DATA_PATH+"/input/sample-trajectories/iss-traj2-public/", # test8 full pipeline: nominal MPC, EKF state mode
+    9: DATA_PATH+"/input/sample-trajectories/iss-traj2-public/", # test9 full pipeline: tube MPC, EKF state mode
+    10: DATA_PATH+"/input/sample-trajectories/iss-traj2-public/", # test10 full pipeline: tube MPC, EKF state mode, HazCam recording
+    11: DATA_PATH+"/input/sample-trajectories/iss-traj2-public/", # test11 full pipeline: tube MPC, SLAM state mode
     12: DATA_PATH+"/input/sample-trajectories/TEST12-ISS/", # test12 predefined trajectory tube MPC with Astrobee noise levels
-    13: TRAJ_GEN_PATH+"/input/sample-trajectories/iss-traj2-public/",
-    14: TRAJ_GEN_PATH+"/input/sample-trajectories/iss-traj2-public/",
+    13: DATA_PATH+"/input/sample-trajectories/iss-traj2-public/",
+    14: DATA_PATH+"/input/sample-trajectories/iss-traj2-public/",
     15: DATA_PATH+"/input/sample-trajectories/MIT-ISS/", # standard MPC
     16: DATA_PATH+"/input/sample-trajectories/MIT-ISS/",  # tube MPC
     77: DATA_PATH+"/input/sample-trajectories/TEST12-ISS/"  # debug
@@ -416,12 +418,11 @@ class ASAP:
         global ROSBAG_NAME
 
         BAG_PATH = self.get_bag_path()
-
         epoch_str = datetime.datetime.now().strftime("%Y%m%d_%H%M")
         ROSBAG_NAME = epoch_str + "_roam_test" + str(test_number)
         #epoch_str = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         #ROSBAG_NAME = "test" + str(test_number) + "_" + epoch_str
-        print("rosbag started: " + ROSBAG_NAME)
+        print("[EXECUTE ASAP]: Rosbag started -----> " + ROSBAG_NAME)
 
         # Starts a bag for either local machine or hardware.
         command = ""
@@ -432,7 +433,7 @@ class ASAP:
                 if (test_number == 2):
                     command = "rosbag record --split --size=95 -O "+ BAG_PATH + ROSBAG_NAME + "_target.bag " + TOPICS_SIM_TARG_NAVCAM + " __name:=roam_bagger"
                 else:
-                    command = "rosbag record --split --size=95 -O "+ BAG_PATH + ROSBAG_NAME + "_target.bag " + TOPICS_SIM_TARG + " __name:=roam_bagger"
+                    command = "rosbag record --split --size=95 -O "+ BAG_PATH + ROSBAG_NAME + "_target.bag " + TOPICS_SIM_TARG_NAVCAM + " __name:=roam_bagger"
             else:
                 if (test_number == 6 or test_number == 7 or test_number == 10):
                     command = "rosbag record --split --size=95 -O "+ BAG_PATH + ROSBAG_NAME + "_chaser_w_haz.bag " + TOPICS_SIM_CHASER_FULL + " __name:=roam_bagger"
@@ -567,7 +568,6 @@ class ASAP:
 
         # Start TD nodelets, start BOTH chaser_asap and target_asap threads since it's sim.
         if self.bee_is_sim == True:
-            print("[EXECUTE_ASAP]: ENV:= "+ENV+"; SIM:= "+SIM)
             rospy.set_param("/td/test_killed", False)
 
             # Begin ROS data recording
@@ -625,12 +625,11 @@ class ASAP:
                 # Launch nodelets
                 self.start_td_nodelets()
 
-                # target coordinator takes it from here
                 print("[EXECUTE_ASAP]: Test passed to chaser coordinator.")
+            
 
         # Assume this is running individually on each Astrobee. Run a single thread.
         else:
-            print("*** [EXECUTE_ASAP]: Using ENV:= "+ENV+" SIM:= "+SIM+" ***")
 
             # Begin ROS data recording
             if test_number != -1 and self.roam_bagger == "enabled":
@@ -659,7 +658,6 @@ class ASAP:
                         traj_file = TARGET_TRAJS_ISS_LUT[8]
                 else:
                     traj_file = self.bee_data_dirs[0][ENV][SIM][test_number]
-                    print(traj_file)
                 target_asap.target_execute_test(traj_file, self.bee_topic_prefixes[0], test_number, self.bee_is_ground, False)
 
                 # Ensure params are set before nodelets start running
@@ -741,7 +739,6 @@ class ASAP:
         # stop test
         if test_num == -1:
            OKAY = True
-        print(OKAY)
         return OKAY
 
     def stop_signal_lights(self, pub_signal_lights):
@@ -770,12 +767,15 @@ if __name__ == "__main__":
         ROBOT_NAME_ARG = "/"
     else:  # happens in sim
         ROBOT_NAME_ARG = myargv[1]  # robot name as argument for sim
+    print("[ROBOT_NAME_ARG AS ARGUMENT FROR SIM] "+ ROBOT_NAME_ARG)
     print("[EXECUTE_ASAP]: " + ROBOT_NAME_ARG)
 
     # Set up the main testing interface.
     ASAP_main = ASAP(bee_roles =          ['target',     'chaser'],
                      bee_topic_prefixes = ['/bumble/',   '/queen/'],
                      bee_data_dirs =      [TARGET_TRAJS, CHASER_TRAJS])
+    print(f"[ROBOT_ROLES]: {ASAP_main.bee_roles}")
+    print(f"[ROBOTS]: {ASAP_main.bee_topic_prefixes}")
 
     signal(SIGINT, ASAP_main.handler)  # for ctl-c handling
 
@@ -801,7 +801,7 @@ if __name__ == "__main__":
     ### ROS initialization
     # initialize GDS params
     rospy.set_param("/td/gds_ground", "false")
-    rospy.set_param("/td/gds_sim", "hardware")
+    rospy.set_param("/td/gds_sim", "sim")
     rospy.set_param("/td/gds_test_num", -1)
     rospy.set_param("/td/role_from_GDS", "robot_name")  # default to using robot_name
     rospy.set_param("/td/gds_roam_bagger", "enabled")  # "true" or "false"
@@ -828,7 +828,7 @@ if __name__ == "__main__":
         roam_bagger = rospy.get_param("/td/gds_roam_bagger")  # force to be string
 
         # set ASAP based on GDS
-        ASAP_main.bee_is_ground = ground
+        ASAP_main.bee_is_ground = ground # (= 'false')
         if sim_string == "sim":
             rospy.set_param('/td/sim', 'true')  # crucial for correct motion planner call
             ASAP_main.bee_is_sim = True
@@ -850,6 +850,7 @@ if __name__ == "__main__":
 
         # Set params to send GDS telemetry (5x slower)
         param_set_count += 1
+        
         if (param_set_count > 5):
             param_set_count = 0
             rospy.set_param("/td/chaser/gds_telem",
@@ -869,5 +870,7 @@ if __name__ == "__main__":
         if (ASAP_main.test_num == -1 and ASAP_main.test_started == True):
             ASAP_main.stop_test()
             ASAP_main.stop_signal_lights(pub_signal)
+
+        print(f"[EXECUTE ASAP]: Current Test ---> {ASAP_main.test_num}")
 
         sleep_rate.sleep()

@@ -14,7 +14,7 @@
 	<depend>tf2</depend>
 	<depend>geometry_msgs</depend>
 	<depend>ff_msgs</depend>
-	<depend>trace_astrobee_interface</depend>
+	<depend>ff_util</depend>
 	<depend>nodelet</depend>
 	<depend>std_msgs</depend>
 	<depend>pluginlib</depend>

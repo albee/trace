@@ -8,7 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   nodelet
   ff_msgs
-  trace_astrobee_interface
+  ff_util
   msg_conversions
   data
   trace_msgs
@@ -26,7 +26,7 @@ catkin_package(
     actionlib
     tf
     ff_msgs
-    trace_astrobee_interface
+    ff_util
     geometry_msgs
     msg_conversions
     sensor_msgs

@@ -18,7 +18,7 @@
 
   <!-- General options -->
   <arg name="gviz" default="false" />           <!-- Start GNC visualizer    -->
-  <arg name="rviz" default="false" />           <!-- Start visualization     -->
+  <arg name="rviz" default="true" />           <!-- Start visualization     -->
   <arg name="sviz" default="false" />           <!-- Start simulation GUI    -->
   <arg name="rqt" default="false" />            <!-- Start user interface    -->
   <arg name="gds" default="false" />            <!-- Enable GDS              -->
@@ -104,8 +104,6 @@
     </include>
     <include if="$(arg rqt)" file="$(find astrobee)/launch/controller/rqt.launch"/>
     <include if="$(arg rviz)" file="$(find astrobee)/launch/controller/rviz.launch">
-      <arg if="$(eval arg('world')=='granite')" name="viewfile" value="$(arg world)"/>
-      <arg if="$(eval arg('world')=='iss')" name="viewfile" value="$(arg world)"/>
       <arg name="world" value="$(arg world)" />
     </include>
     <!-- Launch a recorder for this robot-->
@@ -202,35 +200,35 @@
   -->
 
   <!-- In sim, if robot is bumble. 0 indicates a dummy LLP IP address -->
-  <group if="$(eval arg('ns')=='bumble')">
+  <group>
     <node
-      pkg="execute_asap" type="execute_asap.py" name="execute_asap"
+      pkg="execute_asap" type="execute_asap.py" name="execute_asap_bumble"
       args="bumble 0"
       output="$(arg output)"/>
   </group>
 
-   <!-- In sim, if robot is honey -->
+   <!-- In sim, if robot is honey
   <group if="$(eval arg('ns')=='honey')">
     <node
       pkg="execute_asap" type="execute_asap.py" name="execute_asap"
       args="honey 0"
       output="$(arg output)"/>
-  </group>
+  </group> -->
 
   <!-- In sim, if robot is queen. 0 indicates a dummy LLP IP address  -->
-  <group if="$(eval arg('ns')=='queen')">
+  <group>
     <node
-      pkg="execute_asap" type="execute_asap.py" name="execute_asap"
+      pkg="execute_asap" type="execute_asap.py" name="execute_asap_queen"
       args="queen 0"
       output="$(arg output)"/>
   </group>
 
   <!-- If on hardware -->
-  <group if="$(eval arg('ns')=='')">
+  <!-- <group if="$(eval arg('ns')=='')">
     <node
       pkg="execute_asap" type="execute_asap.py" name="execute_asap"
       args="/ 0"
       output="$(arg output)"/>
-  </group>
+  </group> -->
 
 </launch>

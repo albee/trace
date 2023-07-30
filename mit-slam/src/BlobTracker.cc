@@ -16,6 +16,7 @@ BlobTracker::~BlobTracker() {}
 
 std::pair<Eigen::Vector3f, Eigen::MatrixXf>
 BlobTracker::Centroid(const sensor_msgs::PointCloud2& pcd) {
+  std::cout << "CETROID CALCULATION !!!!";
   // Variables to track centroid, pointer to data, and useful data points.
   Eigen::Vector3f centroid{0.0, 0.0, 0.0};
   sensor_msgs::PointCloud2ConstIterator<float> iter_x(pcd, "x");

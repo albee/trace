@@ -136,7 +136,7 @@ def print_test_msg(test_number):
 if __name__ == "__main__":
 	# Parse input
 	DATA_PATH = rospack.get_path("data")+"/"
-	TRAJ_FILE = "input/sample-trajectories/chaser_sample_traj.csv"
+	TRAJ_FILE = "input/sample-trajectories/TEST12-ISS/"
 	bee_topic_prefix = "/"
 
 	parser = argparse.ArgumentParser(description='Run a desired test session.',

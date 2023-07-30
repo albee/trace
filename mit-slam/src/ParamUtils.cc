@@ -107,6 +107,7 @@ CloudOdometer::Params CloudParamsFromRos() {
 
 
 GraphManager::Params GraphParamsFromRos() {
+  std::cout << "MIT SLAM ----- PARAMETERS FROM ROS    0" << std::endl;
   GraphManager::Params params;
 
   ros::param::getCached("/td/mit_slam/timing_verbose", params.timing_verbose);
@@ -120,7 +121,7 @@ GraphManager::Params GraphParamsFromRos() {
   // TODO: better ways to do this for Astrobee cube (SPHERES was spherical)
   ros::param::getCached("/td/mit_slam/graph/blob_range_bias", params.blob_range_bias);
 
-
+  std::cout << "MIT SLAM ----- PARAMETERS FROM ROS    1" << std::endl;
   gtsam::imuBias::ConstantBias bias0(gtsam::Vector6::Zero());
   params.bias0 = bias0;
 
@@ -137,6 +138,7 @@ GraphManager::Params GraphParamsFromRos() {
   ros::param::getCached("/td/mit_slam/graph/ppNM", ppNM_ros);
   ros::param::getCached("/td/mit_slam/graph/vpNM", vpNM_ros);
   ros::param::getCached("/td/mit_slam/graph/bpNM", bpNM_ros);
+  std::cout << "MIT SLAM ----- PARAMETERS FROM ROS    2" << std::endl;
   auto ppNM = gtsam::noiseModel::Diagonal::Sigmas(
       (gtsam::Vector(6) << ppNM_ros[0], ppNM_ros[1], ppNM_ros[2], ppNM_ros[3], ppNM_ros[4], ppNM_ros[5]).finished());
   auto vpNM = gtsam::noiseModel::Diagonal::Sigmas(
@@ -144,6 +146,7 @@ GraphManager::Params GraphParamsFromRos() {
   auto bpNM = gtsam::noiseModel::Diagonal::Sigmas(
       (gtsam::Vector(6) << bpNM_ros[0], bpNM_ros[1], bpNM_ros[2], bpNM_ros[3], bpNM_ros[4], bpNM_ros[5]).finished());
 
+  std::cout << "MIT SLAM ----- PARAMETERS FROM ROS    3" << std::endl;
   double blobpNM_mag;
   ros::param::getCached("/td/mit_slam/graph/blobpNM", blobpNM_mag);
   auto blobpNM = gtsam::noiseModel::Isotropic::Sigma(3, blobpNM_mag);
@@ -158,6 +161,7 @@ GraphManager::Params GraphParamsFromRos() {
   double tpNM_mag;
   ros::param::getCached("/td/mit_slam/graph/tpNM", tpNM_mag);
   auto tpNM = gtsam::noiseModel::Isotropic::Sigma(3, tpNM_mag); // [m]
+  std::cout << "MIT SLAM ----- PARAMETERS FROM ROS    4" << std::endl;
 
   // LIDAR odometry noise
   // Not sure if this is good for loop closures, but will keep them the same for now.
@@ -170,6 +174,7 @@ GraphManager::Params GraphParamsFromRos() {
   auto lcNM = gtsam::noiseModel::Diagonal::Sigmas(
       (gtsam::Vector(6) << lcNM_ros[0], lcNM_ros[1], lcNM_ros[2], lcNM_ros[3], lcNM_ros[4], lcNM_ros[5]).finished());
 
+  std::cout << "MIT SLAM ----- PARAMETERS FROM ROS    5" << std::endl;
   // Rotation kinematic factor noise
   double rkfNM_mag;
   ros::param::getCached("/td/mit_slam/graph/rkfNM", rkfNM_mag);
@@ -180,6 +185,8 @@ GraphManager::Params GraphParamsFromRos() {
   ros::param::getCached("/td/mit_slam/graph/blobNM", blobNM_ros);
   auto blobNM = gtsam::noiseModel::Diagonal::Sigmas(
     (gtsam::Vector(3) << blobNM_ros[0], blobNM_ros[1], blobNM_ros[2]).finished());
+  
+  std::cout << "MIT SLAM ----- PARAMETERS FROM ROS    6" << std::endl;
 
   params.ppNM = ppNM;
   params.vpNM = vpNM;
@@ -206,6 +213,7 @@ GraphManager::Params GraphParamsFromRos() {
   ros::param::getCached("/td/mit_slam/graph/imu_gyro_bias_rw_sigma", gyro_bias_rw_sigma);   // assuming 62.5 Hz operation
   ros::param::getCached("/td/mit_slam/graph/imu_integration_error_cov_factor", integration_error_cov_factor);
   ros::param::getCached("/td/mit_slam/graph/imu_bias_acc_omega_int_factor", bias_acc_omega_int_factor);
+  std::cout << "MIT SLAM ----- PARAMETERS FROM ROS    7" << std::endl;
 
   gtsam::Matrix33 measured_acc_cov = gtsam::Matrix33::Identity(3,3) * pow(accel_noise_sigma, 2);
   gtsam::Matrix33 measured_omega_cov = gtsam::Matrix33::Identity(3,3) * pow(gyro_noise_sigma, 2);
@@ -213,6 +221,8 @@ GraphManager::Params GraphParamsFromRos() {
   gtsam::Matrix33 bias_acc_cov = gtsam::Matrix33::Identity(3,3) * pow(accel_bias_rw_sigma, 2);
   gtsam::Matrix33 bias_omega_cov = gtsam::Matrix33::Identity(3,3) * pow(gyro_bias_rw_sigma, 2);
   gtsam::Matrix66 bias_acc_omega_int = gtsam::Matrix::Identity(6,6)*bias_acc_omega_int_factor;
+
+  std::cout << "MIT SLAM ----- PARAMETERS FROM ROS    8" << std::endl;
 
   params.accel_noise_sigma = accel_noise_sigma;
   params.gyro_noise_sigma = gyro_noise_sigma;

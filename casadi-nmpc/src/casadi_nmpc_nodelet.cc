@@ -30,7 +30,7 @@ namespace casadi_nmpc {
     ros::param::getCached("/td/ground", ground_);
     ros::param::getCached("/td/sim", sim_);
 
-    std::string name = trace_astrobee_interface::FreeFlyerNodelet::GetPlatform();
+    std::string name = ff_util::FreeFlyerNodelet::GetPlatform();
 
     // load in CasADi functions
     std::string DATA_PATH = ros::package::getPath("data")+"/";

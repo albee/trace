@@ -219,6 +219,7 @@ void SlamNode::ChaserEKFCallback(const ff_msgs::EkfState::ConstPtr msg) {
   float qy = msg->pose.orientation.y;
   float qz = msg->pose.orientation.z;
   float qw = msg->pose.orientation.w;
+  
   if (qx != 0 || qy != 0 || qz != 0 || qw != 0) {
     chaser_ekf_state_.quat << msg->pose.orientation.x,
                               msg->pose.orientation.y,
@@ -294,7 +295,7 @@ void SlamNode::PointCloudCallback(const sensor_msgs::PointCloud2 &msg) {
   if (params_.activate) {
     // Save message so it can be used by graph update
     pcd_msg_ = msg;
-
+    //std::cout << "!!!!!!!! WE GOT A HAZ CAM POINT CLOUD MESSAGE !!!!!!" << std::endl;
     // Save frame ID for visualization purposes
     params_.pcd_frame_id = msg.header.frame_id;
 
@@ -308,13 +309,14 @@ void SlamNode::PointCloudCallback(const sensor_msgs::PointCloud2 &msg) {
 */
 void SlamNode::GraphUpdate(const ros::TimerEvent& t) {
   if (params_.activate && pcds_available_ && states_initialized_ && !params_.slam_spoof) {
-
+    std::cout << "[MIT SLAM]: NEW GRAPH UPDATE" << std::endl;
     // increment keyframe index
     frame_idx_++;
 
     // check if we have enough frames to do inertia estimation
     if (frame_idx_ - params_.convergence_frames > (params_.omega_meas_frames / params_.graph_dt) && !inertia_estimated_) {
       inertia_est_activate_ = true;
+      std::cout << "[MIT SLAM]: ACTIVATING INERTIA ESTIMATION" << std::endl;
     }
 
     if (params_.verbose || params_.timing_verbose) {
@@ -322,10 +324,12 @@ void SlamNode::GraphUpdate(const ros::TimerEvent& t) {
       std::cout << std::endl;
       std::cout << "[MIT-SLAM] Frame index: " << frame_idx_ << std::endl;
     }
+    std::cout << params_.verbose << std::endl;
+    std::cout << params_.timing_verbose << std::endl;
 
     // Begin update timing measurement
     auto graph_start = std::chrono::high_resolution_clock::now();
-
+    
     auto graph_preloop_start = std::chrono::high_resolution_clock::now();
 
     // Get estimate of target's centroid and truncate the point cloud
@@ -343,7 +347,6 @@ void SlamNode::GraphUpdate(const ros::TimerEvent& t) {
       std::cout << "MIT SLAM nodelet successfully reset." << std::endl;
     }
     else {
-
       auto feat_start = std::chrono::high_resolution_clock::now();
       // Adjust point cloud feature thresholds based on centroid distance
       double new_norm_radius = cloud_odometer_->params_.norm_scale * centroid_H_.norm();
@@ -399,8 +402,10 @@ void SlamNode::GraphUpdate(const ros::TimerEvent& t) {
       auto feat_finish = std::chrono::high_resolution_clock::now();
       std::chrono::duration<double> feat_elapsed = feat_finish - feat_start;
 
+
       // If first frame, initialize graph. Else, add normal factors
       if (frame_idx_ == 0) {
+        std::cout << " FRAME ID is ZERO " << std::endl;
         // Initialize G frame
         T_GC0_ << 1, 0, 0, -centroid_CG(0),
                   0, 1, 0, -centroid_CG(1),
@@ -517,6 +522,7 @@ void SlamNode::GraphUpdate(const ros::TimerEvent& t) {
                                                            matches_final_);
         //T_HiHj_ = cloud_odometer_->RegisterICP(eigen_cloud_database_[frame_idx_ - 1],
                                                //eigen_cloud_database_[frame_idx_]);
+
 
         T_CiCj_ = (params_.T_C2H * T_HiHj_ * params_.T_C2H.inverse()).inverse();
         if (params_.verbose || params_.timing_verbose) {
@@ -675,6 +681,7 @@ void SlamNode::GraphUpdate(const ros::TimerEvent& t) {
             std::cout << "\n[MIT-SLAM] --- END OF GRAPH UPDATE ---\n\n";
         }
 
+        std::cout << "\n[PUBLISHING] \n\n";
         // Publish state estimates. In future, this will happen in propagate function
         PublishChaserPoseEst(chaser_est_state_.quat, chaser_est_state_.pos);
         PublishTargetPoseEst(target_est_state_.quat, target_est_state_.pos);
@@ -714,7 +721,7 @@ void SlamNode::GraphUpdate(const ros::TimerEvent& t) {
         // If in sim, publish point clouds for visualization
         if (params_.sim.compare("true") == 0 || params_.viz_hardware) {
           PublishMatchPointCloud(eigen_pcd, matches_final_, params_.pcd_frame_id);
-          PublishEstPointCloud(T_HiHj_, params_.pcd_frame_id);
+          // PublishEstPointCloud(T_HiHj_, params_.pcd_frame_id);
           if (loop_closure_success_) {
               prev_loop_eigen_pcd_ = eigen_cloud_database_[loop_idx_];
               PublishEstLoopPointCloud(T_HiHj_loop_, params_.pcd_frame_id);
@@ -732,11 +739,11 @@ void SlamNode::GraphUpdate(const ros::TimerEvent& t) {
           ConsoleOutput();
         }
       }
-
       // Reset loop closure variables
       T_CiCj_loop_ = Eigen::MatrixXf::Identity(4, 4);
       T_HiHj_loop_ = Eigen::MatrixXf::Identity(4, 4);
       loop_closure_success_ = false;
+      std::cout << "\n [MIT SLAM]: ------------- RESET COMPLETE --------------- \n\n";
     }
   }
 }
@@ -1572,11 +1579,16 @@ void SlamNode::PublishEstPointCloud(const Eigen::Matrix4f &pose_odometry,
   // compute "estimated" current point cloud using the previous frame and the estimated delta-pose
   Eigen::Matrix<float, 4, Eigen::Dynamic> prev_eigen_pcd_h;
   prev_eigen_pcd_h.resize(4, prev_eigen_pcd_.cols());
+  std::cout << "\n ----- " << std::endl;
+  std::cout << prev_eigen_pcd_h.cols();
+  std::cout << prev_eigen_pcd_h.rows();
+  std::cout << "----- \n\n";
+  
+  // prev_eigen_pcd_h.topRows(3) = prev_eigen_pcd_;
   prev_eigen_pcd_h.topRows(3) = prev_eigen_pcd_;
   prev_eigen_pcd_h.bottomRows(1) = Eigen::Matrix<float, 1, Eigen::Dynamic>::Ones(prev_eigen_pcd_.cols());
   Eigen::Matrix<float, 4, Eigen::Dynamic> current_h = pose_odometry * prev_eigen_pcd_h;
   Eigen::Matrix<float, 3, Eigen::Dynamic> current = current_h.topRows(3);
-
   sensor_msgs::PointCloud2 est_pcd = CreatePointCloud2(current);
   est_pcd.header.frame_id = frame_id;
   est_point_cloud_pub_.publish(est_pcd);
