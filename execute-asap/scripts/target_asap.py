@@ -18,7 +18,8 @@ DATA_PATH = rospack.get_path("data")+"/"
 def target_execute_test(traj_file, bee_topic_prefix, test_number=-1, ground='false', sim=False):
 	""" Run a target test.
 	"""
-	print('==========================================================[TARGET_ASAP]: Running...')
+	print("""==========================================================
+	         [TARGET_ASAP]: Running...""")
 	rospy.set_param('/td/ground', ground)  # options are: ['false', 'true']
 	rospy.set_param('td/role', "target")
 

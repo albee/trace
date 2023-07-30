@@ -2229,7 +2229,7 @@ class ChaserCoordinatorNodelet : public ff_util::FreeFlyerNodelet {
   }
 
   void send_body_traj() {
-    std::cout << "[CHASER COORD]: SENDING TRAJECTORY..." << std::endl;
+    std::cout << "[CHASER_COORD]: Sending trajectory..." << std::endl;
     /* Converts standard format nominal traj (in inertial frame) to nominal Target body frame and sends to controller.
     Note that the standard format trajectory begins AFTER a set wait time; this propagation starts after that wait time.
     */

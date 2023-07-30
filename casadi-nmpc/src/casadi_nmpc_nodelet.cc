@@ -279,19 +279,19 @@ namespace casadi_nmpc {
       u_torques = calc_torques_PD(false);
       u_opt_ << u_forces, u_torques;
 
-      NODELET_INFO_STREAM(
-         "\n******************\n"
-      << "STANDARD MPC:"
-      << "\ntraj_idx_: " << traj_idx_
-      << "\nr_des: " << eigen_x_des_traj_.block(traj_idx_, 1, 1, 3)
-      << "\nr_real: " << x_real_complete_.segment(0, 3).transpose()
-      << "\nquat_des: " << eigen_x_des_traj_.block(traj_idx_, 7, 1, 4)
-      << "\nquat_real: " << x_real_complete_.segment(3, 4).transpose()
-      << "\nw_des: " << eigen_x_des_traj_.block(traj_idx_, 11, 1, 3)
-      << "\nw_real: " << x_real_complete_.segment(10, 3).transpose()
-      << "\nu_forces: " << u_forces.transpose()
-      << "\nu_torques: " << u_torques.transpose()
-      << "\n******************");
+    //   NODELET_INFO_STREAM(
+    //      "\n******************\n"
+    //   << "STANDARD MPC:"
+    //   << "\ntraj_idx_: " << traj_idx_
+    //   << "\nr_des: " << eigen_x_des_traj_.block(traj_idx_, 1, 1, 3)
+    //   << "\nr_real: " << x_real_complete_.segment(0, 3).transpose()
+    //   << "\nquat_des: " << eigen_x_des_traj_.block(traj_idx_, 7, 1, 4)
+    //   << "\nquat_real: " << x_real_complete_.segment(3, 4).transpose()
+    //   << "\nw_des: " << eigen_x_des_traj_.block(traj_idx_, 11, 1, 3)
+    //   << "\nw_real: " << x_real_complete_.segment(10, 3).transpose()
+    //   << "\nu_forces: " << u_forces.transpose()
+    //   << "\nu_torques: " << u_torques.transpose()
+    //   << "\n******************");
     }
 
     // Regulation (using Standard MPC)
@@ -300,16 +300,16 @@ namespace casadi_nmpc {
       u_torques = calc_torques_PD(true);
       u_opt_ << u_forces, u_torques;
 
-      NODELET_INFO_STREAM(
-            "\n******************\n"
-        << "traj_idx_: " << traj_idx_ << " N_traj_: " << N_traj_ << " t_elapsed_: " << t_elapsed_
-        << "\nquat_des: " << eigen_x_des_traj_reg_.block(traj_idx_, 7, 1, 4)
-        << "\nquat_real: " << x_real_complete_.segment(3, 4).transpose()
-        << "\nw_des: " << eigen_x_des_traj_reg_.block(traj_idx_, 11, 1, 3)
-        << "\nw_real: " << x_real_complete_.segment(10, 3).transpose()
-        << "\nu_forces: " << u_forces.transpose()
-        << "\nu_torques: " << u_torques.transpose()
-        << "\n******************");
+      // NODELET_INFO_STREAM(
+      //       "\n******************\n"
+      //   << "traj_idx_: " << traj_idx_ << " N_traj_: " << N_traj_ << " t_elapsed_: " << t_elapsed_
+      //   << "\nquat_des: " << eigen_x_des_traj_reg_.block(traj_idx_, 7, 1, 4)
+      //   << "\nquat_real: " << x_real_complete_.segment(3, 4).transpose()
+      //   << "\nw_des: " << eigen_x_des_traj_reg_.block(traj_idx_, 11, 1, 3)
+      //   << "\nw_real: " << x_real_complete_.segment(10, 3).transpose()
+      //   << "\nu_forces: " << u_forces.transpose()
+      //   << "\nu_torques: " << u_torques.transpose()
+      //   << "\n******************");
     }
 
     // note time, increment traj_idx_

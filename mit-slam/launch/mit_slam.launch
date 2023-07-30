@@ -46,7 +46,7 @@
   <node pkg="nodelet" type="nodelet" name="mit_slam"
       required="false" respawn="false"
       args="standalone mit_slam/MitSlamNodelet"
-      output="log"/>
+      output="$(arg output)"/>
 
 
 </launch>

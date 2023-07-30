@@ -26,7 +26,7 @@
   <arg name="extra" default=""/>                 <!-- Inject an additional node -->
   <arg name="debug" default=""/>                 <!-- Debug a node set          -->
   <arg name="dds" default="false"/>              <!-- Should DDS be started     -->
-  <arg name="output" default="screen"/>          <!-- Where nodes should log    -->
+  <arg name="output" default="log"/>          <!-- Where nodes should log    -->
 
   <rosparam command="load" file="$(find execute_asap)/config/casadi-nmpc-config/casadi_nmpc_params.yaml"/>
   <rosparam command="load" file="$(find execute_asap)/config/uc-bound-config/uc_bound_params.yaml"/>
@@ -35,13 +35,14 @@
   <node
         pkg="nodelet" type="nodelet" name="nmpc_manager"
         args="manager"
-        output="$(arg output)"/>
+        output="log"/>
 
   <!-- Now inject the nodelet into the nodelet manager -->
+  <!-- Force non-screen logging for verbose CasADi (can be disabled in CasADi CMakeLists.txt)-->
   <node pkg="nodelet" type="nodelet" name="casadi_nmpc"
         required="false" respawn="false"
         args="load casadi_nmpc/CasadiNMPCNodelet nmpc_manager"
-        output="$(arg output)"/>
+        output="log"/>
 
   <!-- <node pkg="casadi_nmpc" type="z_poly_calc.py" name="z_poly_calc"
         required="false" respawn="false"

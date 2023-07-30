@@ -41,9 +41,9 @@ import target_asap
 # Globals for sim and hardware.
 rospack = rospkg.RosPack()
 DATA_PATH = rospack.get_path("data")
-print("[EXECUTE ASAP]: Data path ---> " + DATA_PATH)
+print("[EXECUTE ASAP]: Data path: " + DATA_PATH)
 TRAJ_GEN_PATH = rospack.get_path("motion_planner_interface")
-print("[EXECUTE ASAP]: Trajectory Generation Path -----> "+ TRAJ_GEN_PATH)
+print("[EXECUTE ASAP]: Trajectory generation path: "+ TRAJ_GEN_PATH)
 BAG_PATH_SIM = DATA_PATH + "/output/rosbags/"  # must end in /, dir must exist!
 BAG_PATH_HARDWARE = "/data/bags/"  # must end in /, dir must exist!
 # Example: /data/bags/2021-04-14/bsharp/delayed/20210414_1701_phase1Loc_test_bag_0.bag
@@ -422,7 +422,7 @@ class ASAP:
         ROSBAG_NAME = epoch_str + "_roam_test" + str(test_number)
         #epoch_str = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         #ROSBAG_NAME = "test" + str(test_number) + "_" + epoch_str
-        print("[EXECUTE ASAP]: Rosbag started -----> " + ROSBAG_NAME)
+        print("[EXECUTE ASAP]: Rosbag started: " + ROSBAG_NAME)
 
         # Starts a bag for either local machine or hardware.
         command = ""
@@ -767,15 +767,12 @@ if __name__ == "__main__":
         ROBOT_NAME_ARG = "/"
     else:  # happens in sim
         ROBOT_NAME_ARG = myargv[1]  # robot name as argument for sim
-    print("[ROBOT_NAME_ARG AS ARGUMENT FROR SIM] "+ ROBOT_NAME_ARG)
-    print("[EXECUTE_ASAP]: " + ROBOT_NAME_ARG)
+    print("[EXECUTE_ASAP]: ROBOT_NAME_ARG: "+ ROBOT_NAME_ARG)
 
     # Set up the main testing interface.
     ASAP_main = ASAP(bee_roles =          ['target',     'chaser'],
                      bee_topic_prefixes = ['/bumble/',   '/queen/'],
                      bee_data_dirs =      [TARGET_TRAJS, CHASER_TRAJS])
-    print(f"[ROBOT_ROLES]: {ASAP_main.bee_roles}")
-    print(f"[ROBOTS]: {ASAP_main.bee_topic_prefixes}")
 
     signal(SIGINT, ASAP_main.handler)  # for ctl-c handling
 
@@ -852,6 +849,8 @@ if __name__ == "__main__":
         param_set_count += 1
         
         if (param_set_count > 5):
+            print("[EXECUTE ASAP]: Current test: " + str(ASAP_main.test_num))
+
             param_set_count = 0
             rospy.set_param("/td/chaser/gds_telem",
                 [str(global_gds_param_count), str(ASAP_main.test_num), str(ASAP_main.td_flight_mode), str(ASAP_main.td_control_mode), str(ASAP_main.slam_activate), str(ASAP_main.target_regulate_finished),
@@ -870,7 +869,5 @@ if __name__ == "__main__":
         if (ASAP_main.test_num == -1 and ASAP_main.test_started == True):
             ASAP_main.stop_test()
             ASAP_main.stop_signal_lights(pub_signal)
-
-        print(f"[EXECUTE ASAP]: Current Test ---> {ASAP_main.test_num}")
 
         sleep_rate.sleep()

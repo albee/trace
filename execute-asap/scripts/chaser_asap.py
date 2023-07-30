@@ -20,7 +20,8 @@ def chaser_execute_test(traj_file, bee_topic_prefix, test_number=-1, ground='fal
 	"""
 	Run a chaser test.
 	"""
-	print('[CHASER_ASAP]: Running...')
+	print("""==========================================================
+	         [CHASER_ASAP]: Running...""")
 	# Set baseline parameters
 	rospy.set_param('/td/ground', ground)  # options are: ['false', 'true']
 	rospy.set_param('/td/casadi_on_target', False)
@@ -129,9 +130,9 @@ def select_IC_by_axis(axis, r_RI):
 
 def print_test_msg(test_number):
 	if test_number==-1:  # stop execution
-		print('[CHASER_ASAP] Killing test...')
+		print('[CHASER_ASAP]: Killing test...')
 	else:  # software launch test
-		print('[CHASER_ASAP] Running test...')
+		print('[CHASER_ASAP]: Running test...')
 
 if __name__ == "__main__":
 	# Parse input

@@ -45,6 +45,12 @@ popd
 catkin build -j2
 ```
 
+Don't forget to source your workspace!
+
+```bash
+source $ASTROBEE_WS/devel/setup.bash
+```
+
 
 ## Simulation Usage
 
@@ -89,25 +95,36 @@ and the execution flow of test commands.
 - 8 Full pipeline: Nominal MPC, EKF state mode
 - 9 Full pipeline: Tube MPC, EKF state mode
 - 10 Full pipeline: Tube MPC, EKF state mode, recording HazCam data
-- ~~11 Full pipeline Tube MPC, SLAM state mode, online updates~~
+- 11 (not recommended) Full pipeline Tube MPC, SLAM state mode, online updates
 - 12 Tube MPC full traj with Astrobee noise uc_bound
 - 13 Full pipeline: SLAM spoof: test8 w/ SLAM spoof (EKF state mode, no online updates)
-- ~~14 Full pipeline: SLAM spoof: test11 w/ SLAM spoof (SLAM state mode, online updates)~~
+- 14 (not recommended) Full pipeline: SLAM spoof: test11 w/ SLAM spoof (SLAM state mode, online updates)
 - 15: Multi-waypoint translation test with Astrobee noise uc_bound, standard MPC
 - 16: Multi-waypoint translation test with Astrobee noise uc_bound, tube MPC
  
 **Standard Tests/Full Pipeline**
-Consult Notion for latest info on test parameters. `x` indicates different parameter settings for this test.
+8-digit tests use parameters to execute the full TRACE pipeline in different ways. `x` indicates different parameter settings for this test.
 
-- 11(x): x-axis, tri-axial tumble
-- 12(x): ...
-- 13(x)
-- 21(x)
-- 22(x)
-- 23(x)
-- 31(x)
-- 32(x)...
-- 33(x): z-axis, no tumble
+Currently implemented parameters are
+
+| Parameter Setting | Direction1x(xxxxxx) | Tumblex1(xxxxxx) | Controllerxx(1xxxxx) | Gainsxx(x1xxxx) | Plannerxx(xx1xxx) | Use Default PD on Target xx(xxx1xx) | Spoofingxx(xxxx1x) | Online Updates xx(xxxxx1) |
+|-------------------|--------------------|------------------|----------------------|-----------------|--------------------|------------------------------------|--------------------|--------------------------|
+| 1                 | X-axis motion      | tri-axial        | Standard MPC (Chaser)| YAML gains      | Default            | Use MPC (Target)                  | No spoof           | no online updates        |
+| 2                 | Y-axis motion      | Near flat spin   | Tube MPC (Chaser)    | permissive u    | Shortest wait time | Use default PD (Target)           | Spoof              | online updates           |
+| 3                 | Z-axis motion      | No tumble        |                      | tight u         |                    |                                    |                    |                          |
+| 4                 |                    |                  | cautious tube MPC   |                  |                    | Note: only allowed for tri-axial! | Note: only allowed for y-axis! |                          |
+
+For example, direction and tumble are controlled by the following parameter combinations:
+
+- 11(...): x-axis, tri-axial tumble
+- 12(...): ...
+- 13(...)
+- 21(...)
+- 22(...)
+- 23(...)
+- 31(...)
+- 32(...)...
+- 33(...): z-axis, no tumble
 
 # Directory Listing
 
@@ -136,13 +153,17 @@ High-level commanding scripts. Pure Python scripts that send off node start-up/s
 
 Target tumble characterization. Utilizes GTSAM for smoothing and mapping, Teaser++ for point cloud registration frontend.
 
+## motion-planner-interface
+
+An interface to output of a motion planner. Demonstration motion plans are available in `data/input/sample-trajectories` for demonstration purposes.
+
 ## polhode-alignment
 
 Polhode alignment node which performs Setterfield's algorithm to determine principal axis alignment of the Target satellite.
 
 ## spheres-vertigo
 
-Legacy code to support polhode-alignment and mit-slam.
+Legacy code to support polhode-alignment and `mit-slam`.
 
 ## target-coordinator
 
@@ -152,10 +173,6 @@ by execute-asap.
 ## trace-msgs
 
 Custom msg definitions used by TRACE nodes.
-
-## motion-planner-interface
-
-An interface to output of a motion planner. Demonstration motion plans are available in `data/input/sample-trajectories` for demonstration purposes.
 
 ## uc-bound
 

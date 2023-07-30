@@ -670,7 +670,7 @@ class UCBoundNodelet : public ff_util::FreeFlyerNodelet {
       z_vel = nom_chaser_vel.row(1);
 
       t = 0.0;
-      for (int i = 1; i < num_rows-1; i++) {
+      for (int i = 1; i < num_rows; i++) {
         // Updated state estimate
         Vector3f vec_real = q2vec(real_targ_traj.row(i).head(4));
         Vector3f vec_est;

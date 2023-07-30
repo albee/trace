@@ -295,7 +295,7 @@ void SlamNode::PointCloudCallback(const sensor_msgs::PointCloud2 &msg) {
   if (params_.activate) {
     // Save message so it can be used by graph update
     pcd_msg_ = msg;
-    //std::cout << "!!!!!!!! WE GOT A HAZ CAM POINT CLOUD MESSAGE !!!!!!" << std::endl;
+
     // Save frame ID for visualization purposes
     params_.pcd_frame_id = msg.header.frame_id;
 
@@ -309,23 +309,23 @@ void SlamNode::PointCloudCallback(const sensor_msgs::PointCloud2 &msg) {
 */
 void SlamNode::GraphUpdate(const ros::TimerEvent& t) {
   if (params_.activate && pcds_available_ && states_initialized_ && !params_.slam_spoof) {
-    std::cout << "[MIT SLAM]: NEW GRAPH UPDATE" << std::endl;
+    std::cout << "[MIT SLAM]: New graph update." << std::endl;
     // increment keyframe index
     frame_idx_++;
 
     // check if we have enough frames to do inertia estimation
     if (frame_idx_ - params_.convergence_frames > (params_.omega_meas_frames / params_.graph_dt) && !inertia_estimated_) {
       inertia_est_activate_ = true;
-      std::cout << "[MIT SLAM]: ACTIVATING INERTIA ESTIMATION" << std::endl;
+      std::cout << "[MIT SLAM]: Activating inertia estimation." << std::endl;
     }
 
     if (params_.verbose || params_.timing_verbose) {
       std::cout << "[MIT-SLAM] --- NEW GRAPH UPDATE ---" << std::endl;
       std::cout << std::endl;
       std::cout << "[MIT-SLAM] Frame index: " << frame_idx_ << std::endl;
+      std::cout << params_.verbose << std::endl;
+      std::cout << params_.timing_verbose << std::endl;
     }
-    std::cout << params_.verbose << std::endl;
-    std::cout << params_.timing_verbose << std::endl;
 
     // Begin update timing measurement
     auto graph_start = std::chrono::high_resolution_clock::now();
@@ -405,7 +405,7 @@ void SlamNode::GraphUpdate(const ros::TimerEvent& t) {
 
       // If first frame, initialize graph. Else, add normal factors
       if (frame_idx_ == 0) {
-        std::cout << " FRAME ID is ZERO " << std::endl;
+        std::cout << "[MIT_SLAM] frame_idx is 0." << std::endl;
         // Initialize G frame
         T_GC0_ << 1, 0, 0, -centroid_CG(0),
                   0, 1, 0, -centroid_CG(1),
@@ -474,6 +474,7 @@ void SlamNode::GraphUpdate(const ros::TimerEvent& t) {
                                                                                    cloud_database_[frame_idx_],
                                                                                    feature_database_[frame_idx_ - 1],
                                                                                    feature_database_[frame_idx_]);
+
           // Randomly down-sample the matches if there are too many
           if (matches.size() > params_.downsample_thresh) {
             matches_final_ = DownSampleMatches(matches);
@@ -517,9 +518,26 @@ void SlamNode::GraphUpdate(const ros::TimerEvent& t) {
 
         auto reg_start = std::chrono::high_resolution_clock::now();
 
-        T_HiHj_ = cloud_odometer_->Register(cloud_database_[frame_idx_ - 1],
-                                                           cloud_database_[frame_idx_],
-                                                           matches_final_);
+        // we must ensure that teaserpp gets point clouds of the same size
+        // incoming point cloud data might not guarantee this, so we limit to the size of the matches we found
+        teaser::PointCloud cloud_src_out;
+        teaser::PointCloud cloud_dest_out;
+        std::vector<std::pair<int, int>> matches_out;
+        size_t idx = 0;
+        for(auto ptr = matches_final_.begin(); ptr < matches_final_.end(); ptr++){
+          // std::cout << ptr->first << "," << ptr->second << std::endl;
+          cloud_src_out.push_back(cloud_database_[frame_idx_ - 1][ptr->first]);
+          cloud_dest_out.push_back(cloud_database_[frame_idx_][ptr->second]);
+          matches_out.push_back(std::pair<int, int>(idx, idx));
+          ++idx;
+        }
+          
+            T_HiHj_ = cloud_odometer_->Register(cloud_src_out,
+                                                cloud_dest_out,
+                                                matches_out);
+        // T_HiHj_ = cloud_odometer_->Register(cloud_database_[frame_idx_ - 1],
+        //                                                    cloud_database_[frame_idx_],
+        //                                                    matches_final_);
         //T_HiHj_ = cloud_odometer_->RegisterICP(eigen_cloud_database_[frame_idx_ - 1],
                                                //eigen_cloud_database_[frame_idx_]);
 
@@ -681,7 +699,7 @@ void SlamNode::GraphUpdate(const ros::TimerEvent& t) {
             std::cout << "\n[MIT-SLAM] --- END OF GRAPH UPDATE ---\n\n";
         }
 
-        std::cout << "\n[PUBLISHING] \n\n";
+        std::cout << "\n[MIT_SLAM] Publishing... \n\n";
         // Publish state estimates. In future, this will happen in propagate function
         PublishChaserPoseEst(chaser_est_state_.quat, chaser_est_state_.pos);
         PublishTargetPoseEst(target_est_state_.quat, target_est_state_.pos);
@@ -996,9 +1014,24 @@ void SlamNode::AttemptLoopClosure() {
     }
 
     // Register the matches
-    T_HiHj_loop_ = cloud_odometer_->Register(cloud_database_[loop_idx_],
-                                             cloud_database_[frame_idx_],
-                                             matches_final_loop_);
+
+    // we must ensure that teaserpp gets point clouds of the same size
+    // incoming point cloud data might not guarantee this, so we limit to the size of the matches we found
+    teaser::PointCloud cloud_src_out;
+    teaser::PointCloud cloud_dest_out;
+    std::vector<std::pair<int, int>> matches_out;
+    size_t idx = 0;
+    for(auto ptr = matches_final_loop_.begin(); ptr < matches_final_loop_.end(); ptr++){
+      // std::cout << ptr->first << "," << ptr->second << std::endl;
+      cloud_src_out.push_back(cloud_database_[loop_idx_][ptr->first]);
+      cloud_dest_out.push_back(cloud_database_[frame_idx_][ptr->second]);
+      matches_out.push_back(std::pair<int, int>(idx, idx));
+      ++idx;
+    }
+
+    T_HiHj_loop_ = cloud_odometer_->Register(cloud_src_out,
+                                             cloud_dest_out,
+                                             matches_out);
 
    //T_HiHj_loop_ = cloud_odometer_->RegisterICP(eigen_cloud_database_[loop_idx_],
                                       //    eigen_cloud_database_[frame_idx_]);
@@ -1579,10 +1612,10 @@ void SlamNode::PublishEstPointCloud(const Eigen::Matrix4f &pose_odometry,
   // compute "estimated" current point cloud using the previous frame and the estimated delta-pose
   Eigen::Matrix<float, 4, Eigen::Dynamic> prev_eigen_pcd_h;
   prev_eigen_pcd_h.resize(4, prev_eigen_pcd_.cols());
-  std::cout << "\n ----- " << std::endl;
-  std::cout << prev_eigen_pcd_h.cols();
-  std::cout << prev_eigen_pcd_h.rows();
-  std::cout << "----- \n\n";
+  // std::cout << "\n ----- " << std::endl;
+  // std::cout << prev_eigen_pcd_h.cols();
+  // std::cout << prev_eigen_pcd_h.rows();
+  // std::cout << "----- \n\n";
   
   // prev_eigen_pcd_h.topRows(3) = prev_eigen_pcd_;
   prev_eigen_pcd_h.topRows(3) = prev_eigen_pcd_;

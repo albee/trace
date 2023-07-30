@@ -27,7 +27,7 @@ This code can also interface with Astrobee's simulation environment for convenie
 ## Code Structure
 TRACE is designed to run on a debian-based system, and has recently been used with both Ubuntu 16.04 and 20.04.
 
-TRACE's modules are general-purpose. In this repo, they are integrated with ROS for communication and require a minimal set of Astrobee-derived messages and support functions, bundled in `trace-astrobee-utils` under Apache v2.0. Full simulation tests of TRACE are possible using NASA's Astrobee simulator. Discussion of this setup is described [below](## Usage).
+TRACE's modules are general-purpose. In this repo, they are integrated with ROS for communication and require a minimal set of Astrobee-derived messages and support functions, bundled in `trace-astrobee-utils` under Apache v2.0. Full simulation tests of TRACE are possible using NASA's Astrobee simulator. Discussion of this setup is described [below](##Usage).
 
 ## Dependencies
 TRACE's major dependencies include:
@@ -37,11 +37,20 @@ TRACE's major dependencies include:
 - Teaser++
 - ROS (for messaging, Astrobee interfacing, and tf convenience functions)
 
+If you haven't configured ROS yet, add its package lists:
+
+```bash
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+sudo apt install curl # if you haven't already installed curl
+curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+sudo apt update
+```
+
 Most of TRACE's dependencies are satisfied on a debian-based system with:
 
 ```bash
 # ROS and core dependencies
-sudo apt install python3-rospkg-modules gmp m4 ros-kinetic-eigen-conversions libccd libeigen python-dev python-yaml ros-noetic-desktop-full
+sudo apt install python3-rospkg-modules libgmp3-dev m4 ros-noetic-eigen-conversions libccd-dev libeigen3-dev python-dev python-yaml ros-noetic-desktop-full
 
 # PCL
 sudo apt install libpcl-common1.7 libpcl-features1.7 libpcl-kdtree1.7 libpcl-octree1.7 clibpcl-search1.7 libpcl-filters1.7 libpcl-sample-consensus1.7
@@ -75,8 +84,14 @@ sudo make install
 popd
 ```
 
+# Astrobee dependencies
+
+Finally, this implementation of TRACE offers tight integration with the Astrobee simulation for visualization and systems testing. Minimal Astrobee-derived messages and base classes are therefore required; however, TRACE's core algorithms can be separated, if desired:
+
+Follow the instructions from [TUTORIAL.md](TUTORIAL.md/## Astrobee Simulation Setup) for Astrobee simulation setup.
+
 ## Build
-This repo contains ROS-compatible packages, meant for the `src` directory of a traditional ROS [catkin](http://wiki.ros.org/catkin) workspace. Minimal Astrobee-derived messages and support classes are provided in `trace-astrobee-utils`.
+This repo contains ROS-compatible packages, meant for the `src` directory of a traditional ROS [catkin](http://wiki.ros.org/catkin) workspace.
 
 To build, set up a local workspace and clone this repository as the `src` directory:
 

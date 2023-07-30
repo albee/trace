@@ -324,7 +324,7 @@ class MotionPlannerInterfaceNodelet : public ff_util::FreeFlyerNodelet {
     // check that output was produced
     std::ifstream indata;
     std::string time_file = TRAJ_PATH_ + "result_time_0.dat";
-    std::cout << "Filename: " << time_file << std::endl;
+
     indata.open(time_file);
     if(indata.fail()){
       NODELET_ERROR_STREAM("[MotionPlannerInterface]: Planner executable call failed! No output.");
