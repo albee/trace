@@ -105,7 +105,7 @@ and the execution flow of test commands.
 **Standard Tests/Full Pipeline**
 8-digit tests use parameters to execute the full TRACE pipeline in different ways. `x` indicates different parameter settings for this test.
 
-Currently implemented parameters are
+Currently implemented parameters are:
 
 | Parameter Setting | Direction1x(xxxxxx) | Tumblex1(xxxxxx) | Controllerxx(1xxxxx) | Gainsxx(x1xxxx) | Plannerxx(xx1xxx) | Use Default PD on Target xx(xxx1xx) | Spoofingxx(xxxx1x) | Online Updates xx(xxxxx1) |
 |-------------------|--------------------|------------------|----------------------|-----------------|--------------------|------------------------------------|--------------------|--------------------------|
