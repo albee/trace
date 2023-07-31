@@ -109,10 +109,10 @@ Currently implemented parameters are
 
 | Parameter Setting | Direction1x(xxxxxx) | Tumblex1(xxxxxx) | Controllerxx(1xxxxx) | Gainsxx(x1xxxx) | Plannerxx(xx1xxx) | Use Default PD on Target xx(xxx1xx) | Spoofingxx(xxxx1x) | Online Updates xx(xxxxx1) |
 |-------------------|--------------------|------------------|----------------------|-----------------|--------------------|------------------------------------|--------------------|--------------------------|
-| 1                 | X-axis motion      | tri-axial        | Standard MPC (Chaser)| YAML gains      | Default            | Use MPC (Target)                  | No spoof           | no online updates        |
-| 2                 | Y-axis motion      | Near flat spin   | Tube MPC (Chaser)    | permissive u    | Shortest wait time | Use default PD (Target)           | Spoof              | online updates           |
-| 3                 | Z-axis motion      | No tumble        |                      | tight u         |                    |                                    |                    |                          |
-| 4                 |                    |                  | cautious tube MPC   |                  |                    | Note: only allowed for tri-axial! | Note: only allowed for y-axis! |                          |
+| 1                 | X-axis motion      | Tri-axial tumble        | Standard MPC (Chaser)| Default gains      | Default            | Use MPC (Target)                  | No spoof           | No online updates        |
+| 2                 | Y-axis motion      | Near flat spin   | Tube MPC (Chaser)    | Permissive inputs    | Shortest wait time | Use default PD (Target)           | Spoof              | Online updates           |
+| 3                 | Z-axis motion      | No tumble        |                      | Tight inputs         |                    |                                    |                    |                          |
+| 4                 |                    |                  | "Cautious" tube MPC   |                  |                    | Note: only allowed for tri-axial! | Note: only allowed for y-axis! |                          |
 
 For example, direction and tumble are controlled by the following parameter combinations:
 
