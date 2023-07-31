@@ -27,7 +27,7 @@ This code can also interface with Astrobee's simulation environment for convenie
 ## Code Structure
 TRACE is designed to run on a debian-based system, and has recently been used with both Ubuntu 16.04 and 20.04.
 
-TRACE's modules are general-purpose. In this repo, they are integrated with ROS for communication and require a minimal set of Astrobee-derived messages and support functions, bundled in `trace-astrobee-utils` under Apache v2.0. Full simulation tests of TRACE are possible using NASA's Astrobee simulator. Discussion of this setup is described [below](##Usage).
+TRACE's modules are general-purpose. In this repo, they are integrated with ROS for communication and require a minimal set of Astrobee-derived messages and support functions, bundled in `trace-astrobee-utils` under Apache v2.0. Full simulation tests of TRACE are possible using NASA's Astrobee simulator. Discussion of this setup is described [below](#Usage).
 
 ## Dependencies
 TRACE's major dependencies include:
