@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First full academically-licensed release of TRACE.
 - `motion-planner-interface` for plug-and-play motion planner integration.
+- `TUTORIAL.md` and `README.md` for setup guidance.
+- Significant simplification of dependency installation.
 
 ### Removed
 

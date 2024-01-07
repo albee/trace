@@ -7,7 +7,7 @@ This walkthrough overviews the code for TRACE, which includes a set of nodelets 
 Next, check out the latest tested version of Astrobee's simulation environment and add it to your `trace-ws`:
 
 ```bash
-export ASTROBEE_WS=$HOME/trace-ws/
+export ASTROBEE_WS=${HOME}/trace-ws/
 git clone https://github.com/nasa/astrobee.git $ASTROBEE_WS/src/astrobee
 pushd $ASTROBEE_WS/src/astrobee
 git checkout v0.16.1
@@ -18,6 +18,9 @@ popd
 Now, build Astrobee's dependencies:
 
 ```bash
+sudo apt update
+sudo apt upgrade
+
 pushd $ASTROBEE_WS
 cd src/astrobee/scripts/setup
 ./add_ros_repository.sh
@@ -36,12 +39,9 @@ Finally, configure and run catkin to build both the Astrobee sim and TRACE:
 ```bash
 pushd $ASTROBEE_WS
 ./src/astrobee/scripts/configure.sh -l -F -D
+
+# This step is very important! If your paths are wrong, you will not be able to build Astrobee packages.
 export CMAKE_PREFIX_PATH="${CMAKE_PREFIX_PATH:+"$CMAKE_PREFIX_PATH:"}${ASTROBEE_WS}/src/astrobee/cmake"
-
-# disable trace-astrobee-utils/astrobee-msgs, since they are also provided by Astrobee
-touch src/trace/trace-astrobee-utils/astrobee-msgs/CATKIN_IGNORE
-popd
-
 catkin build -j2
 ```
 
@@ -56,7 +56,7 @@ source $ASTROBEE_WS/devel/setup.bash
 
 You can launch TRACE in the Astrobee simulation environment using `trace_astrobee_interface`:
 
-- Launch environment (ISS):
+- Launch space environment (ISS):
 
 `roslaunch trace_astrobee_interface sim_trace.launch world:=iss rviz:=true`
 
@@ -70,15 +70,23 @@ You can launch TRACE in the Astrobee simulation environment using `trace_astrobe
 `rosrun executive teleop_tool -ns "honey/" -reset_bias`
 
 - Run a TRACE test (after sim launch)
+
 ```
-`rosrun execute_asap pub_gds_topics.py --ground --sim 1` : to run test 1 on the ground for sim
+`rosrun execute_asap pub_gds_topics.py --sim 1` : to run test 1 on the ISS for sim.
+
+`rosrun execute_asap pub_gds_topics.py --ground --sim 1` : to run test 1 on the ground for sim.
+
+`rosrun execute_asap pub_gds_topics.py --sim -1` : to stop a test. You will see lots of output as the nodes are stopped.
+
 
 `[-g, --ground]` : Run a ground test. Default to ISS.
 
 `[-s, --sim]` : Run a simulation test. Defaults to hardware.
 ```
 
-See `execute_asap/README.md` for high-level usage instructions to understand how nodes are started/stoppped
+Test2, Test6, and Test7 are good demonstration tests to try out next.
+
+See `execute_asap/README.md` for high-level usage instructions to understand how nodes are started/stopped
 and the execution flow of test commands.
 
 ## Test List
@@ -163,7 +171,7 @@ Polhode alignment node which performs Setterfield's algorithm to determine princ
 
 ## spheres-vertigo
 
-Legacy code to support polhode-alignment and `mit-slam`.
+Legacy code to support `polhode-alignment` and `mit-slam`.
 
 ## target-coordinator
 

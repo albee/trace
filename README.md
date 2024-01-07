@@ -11,7 +11,7 @@
 
 TRACE (Tumbling Rendezvous via Autonmous Characterization and Execution) is a set of software modules that enable autonomous rendezvous with arbitrary tumbling targets. A significant percentage of space debris like rocket bodies and [defunct satellites](https://earth.esa.int/eogateway/missions/envisat) are in uncontrolled tumbles, often with unknown tumble characteristics. In order to soft dock for servicing, refueling, or de-orbit, a servicer spacecaft must figure out the nature of the target's tumble and safely reach the target. This often eliminates teleoperation as a feasible option---this is where TRACE comes in. TRACE has been [demonstrated on-orbit](https://spectrum.ieee.org/space-junk-astrobee) over multiple test sessions on the International Space Station using NASA's Astrobee robots. 
 
-## Backgrond
+## Background
 TRACE was developed as part of the ROAM/TumbleDock project, a collaboration between the MIT Space Systems Lab and DLR's Institute of Robotics and Mechatronics. TRACE observes a tumbling Target, estimates its state/parameters, creates a motion plan to reach it, and then plans/tracks robustly in real-time to reach a safe rendezvous position known as the "mating point." This code has flown multiple times on the International Space Station, verifying the real-time performance of the various algorithmic components on hardware. The work, including its assumptions and experimental results, is summarized in detail in few useful references below:
 
 - [K. Albee et al., “A robust observation, planning, and control pipeline for autonomous rendezvous with tumbling targets,” Frontiers in Robotics and AI, vol. 8, p. 234, 2021, doi: 10.3389/frobt.2021.641338.](https://www.frontiersin.org/articles/10.3389/frobt.2021.641338/full)
@@ -25,11 +25,14 @@ This code can also interface with Astrobee's simulation environment for convenie
 
 
 ## Code Structure
-TRACE is designed to run on a debian-based system, and has recently been used with both Ubuntu 16.04 and 20.04.
+TRACE is designed to run on a debian-based system, and has recently been used with both Ubuntu 16.04 and 20.04. Your base system should be
+a bare version of either 16.04 or 20.04 (recommended).
 
-TRACE's modules are general-purpose. In this repo, they are integrated with ROS for communication and require a minimal set of Astrobee-derived messages and support functions, bundled in `trace-astrobee-utils` under Apache v2.0. Full simulation tests of TRACE are possible using NASA's Astrobee simulator. Discussion of this setup is described [below](#Usage).
+*Note: You might also choose to start from NASA Astrobee's preconfigured Ubuntu 20.04 container if you prefer working with Docker. See [below](# Astrobee dependencies).*
 
-## Dependencies
+TRACE's modules are general-purpose. In this repo, they are integrated with ROS for communication. Full simulation tests (and Astrobee hardware integration) of TRACE are possible using NASA's Astrobee simulator. Discussion of this setup is described [below](#Usage).
+
+## Dependencies and Setup
 TRACE's major dependencies include:
 
 - GTSAM
@@ -50,58 +53,64 @@ Most of TRACE's dependencies are satisfied on a debian-based system with:
 
 ```bash
 # ROS and core dependencies
-sudo apt install python3-rospkg-modules libgmp3-dev m4 ros-noetic-eigen-conversions libccd-dev libeigen3-dev python-dev python-yaml ros-noetic-desktop-full
-
-# PCL
-sudo apt install libpcl-common1.7 libpcl-features1.7 libpcl-kdtree1.7 libpcl-octree1.7 clibpcl-search1.7 libpcl-filters1.7 libpcl-sample-consensus1.7
+sudo apt install pip3 python-is-python3 python3-rospkg-modules libgmp3-dev m4 ros-noetic-eigen-conversions libccd-dev libeigen3-dev python-dev python-yaml ros-noetic-desktop-full python3-catkin-tools libpcl-dev wget git
 
 # numerical Python
-pip3 install pycddlib numpy scipy pytope
-
-# additional visualization utilities
-pip3 install tkinter matplotlib
+pip3 install pycddlib scipy numpy pytope matplotlib
 ```
 
-Additional dependencies (GTSAM, CasADi, Teaser++) are satisfied using the following sources:
+At this point, you are ready to set up your `trace-ws` workspace for TRACE. If you haven't already sourced ROS, do that now:
 
 ```bash
-git submodule init
-git submodule update
-
-# gtsam
-pushd src/trace/external/gtsam && mkdir build && cd build && cmake .. -DGTSAM_BUILD_WITH_MARCH_NATIVE=OFF -DGTSAM_USE_SYSTEM_EIGEN=ON &&  make -j2
-sudo make install
-popd
-
-# casadi
-pushd src/trace/external/casadi && mkdir build && cd build && cmake .. && make -j2
-sudo make install
-popd
-
-# teaserpp
-pushd src/trace/external/TEASER-plusplus && mkdir build && cd build && cmake .. -DBUILD_TEASER_FPFH=ON &&  make -j2
-sudo make install
-popd
+# See ROS install instructions for your system for details if you are not used to this step:
+# https://wiki.ros.org/ROS/Tutorials/InstallingandConfiguringROSEnvironment
+source /opt/ros/noetic/setup.bash
 ```
 
-# Astrobee dependencies
-
-Finally, this implementation of TRACE offers tight integration with the Astrobee simulation for visualization and systems testing. Minimal Astrobee-derived messages and base classes are therefore required; however, TRACE's core algorithms can be separated, if desired:
-
-Follow the instructions from [TUTORIAL.md](TUTORIAL.md/## Astrobee Simulation Setup) for Astrobee simulation setup.
-
-## Build
-This repo contains ROS-compatible packages, meant for the `src` directory of a traditional ROS [catkin](http://wiki.ros.org/catkin) workspace.
-
-To build, set up a local workspace and clone this repository as the `src` directory:
-
-```
+```bash
 cd ~
 mkdir trace-ws
 cd trace-ws
 catkin init
 git clone https://github.com/albee/trace  # might need to use SSH instead
-mv trace src
+mv trace src/trace
+```
+
+External dependencies (GTSAM, CasADi, Teaser++) are satisfied using the following sources:
+
+```bash
+cd src
+git submodule update --init --recursive
+
+# gtsam
+pushd external/gtsam && mkdir build && cd build && cmake .. -DGTSAM_BUILD_WITH_MARCH_NATIVE=OFF -DGTSAM_USE_SYSTEM_EIGEN=ON &&  make -j2
+sudo make install
+popd
+
+# casadi
+pushd external/casadi && mkdir build && cd build && cmake .. && make -j2
+sudo make install
+popd
+
+# teaserpp
+pushd external/TEASER-plusplus && mkdir build && cd build && cmake .. -DBUILD_TEASER_FPFH=ON &&  make -j2
+sudo make install
+popd
+```
+
+### Astrobee dependencies
+
+Finally, this implementation of TRACE offers tight integration with the Astrobee simulation for visualization and systems testing. Minimal Astrobee-derived messages and base classes are therefore required; however, TRACE's core algorithms can be separated, if desired:
+
+Follow the instructions from [TUTORIAL.md](TUTORIAL.md/##Astrobee Simulation Setup) for Astrobee simulation setup.
+
+## Build
+This repo contains ROS-compatible packages, meant for the `src` directory of a traditional ROS [catkin](http://wiki.ros.org/catkin) workspace.
+
+To build, go to your `trace-ws` workspace :
+
+```
+cd ~/trace-ws
 catkin build -j2
 ```
 
