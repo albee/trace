@@ -28,7 +28,7 @@ This code can also interface with Astrobee's simulation environment for convenie
 TRACE is designed to run on a debian-based system, and has recently been used with both Ubuntu 16.04 and 20.04. Your base system should be
 a bare version of either 16.04 or 20.04 (recommended).
 
-*Note: You might also choose to start from NASA Astrobee's preconfigured Ubuntu 20.04 container if you prefer working with Docker. See [below](# Astrobee dependencies).*
+*Note: You might also choose to start from NASA Astrobee's preconfigured Ubuntu 20.04 container if you prefer working with Docker. See [below](#astrobee-dependencies).*
 
 TRACE's modules are general-purpose. In this repo, they are integrated with ROS for communication. Full simulation tests (and Astrobee hardware integration) of TRACE are possible using NASA's Astrobee simulator. Discussion of this setup is described [below](#Usage).
 
@@ -102,7 +102,7 @@ popd
 
 Finally, this implementation of TRACE offers tight integration with the Astrobee simulation for visualization and systems testing. Minimal Astrobee-derived messages and base classes are therefore required; however, TRACE's core algorithms can be separated, if desired:
 
-Follow the instructions from [TUTORIAL.md](TUTORIAL.md/##Astrobee Simulation Setup) for Astrobee simulation setup.
+Follow the instructions from [TUTORIAL.md](TUTORIAL.md/#astrobee-simulation-setup) for Astrobee simulation setup.
 
 ## Build
 This repo contains ROS-compatible packages, meant for the `src` directory of a traditional ROS [catkin](http://wiki.ros.org/catkin) workspace.
